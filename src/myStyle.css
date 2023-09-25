@@ -1,0 +1,267 @@
+.Polaris-Icon--isColored {
+  margin: auto;
+}
+
+.gridItem:hover {
+  cursor: pointer;
+  background-color: #f9fafb;
+}
+
+.gridItem .bgd {
+  /* background-color: grey; */
+  width: 50px;
+  height: 50px;
+}
+
+.gridItem:hover .bgd {
+  opacity: 0.7;
+}
+.gridItem:hover .iconDiv {
+  background-color: #dfe3e8;
+}
+.description {
+  color: grey;
+  margin-top: 5px;
+  font-size: 10;
+}
+
+.Polaris-ButtonGroup {
+  float: right;
+}
+.Polaris-DataTable__Cell--verticalAlignTop {
+  vertical-align: middle;
+}
+
+.Polaris-ActionList {
+  min-width: 150px;
+}
+
+.Polaris-DropZone-FileUpload__Button {
+  display: none;
+}
+.Polaris-DisplayText--sizeExtraLarge {
+  text-align: center;
+}
+.itemRL {
+  margin-left: 20px;
+  min-width: 200px;
+  /* max-width: 0px; */
+}
+
+.divItemName {
+  display: inline-block;
+  min-width: 150px;
+  align-items: middle;
+}
+.divItemID {
+  display: inline-block;
+  min-width: 80px;
+  align-items: middle;
+}
+.divItemStatus {
+  float: right;
+  align-items: middle;
+  /* min-width: 150px; */
+}
+
+.Polaris-Filters-ConnectedFilterControl__MoreFiltersButtonContainer {
+  display: none;
+}
+
+.Polaris-Filters-ConnectedFilterControl__RightContainer
+  .Polaris-Filters-ConnectedFilterControl__Item {
+  /* display: none; */
+}
+
+.Polaris-Popover__Section {
+  min-width: 200px;
+  max-height: 100px;
+}
+
+.titleDev {
+  color: #007ace;
+}
+.react-tagsinput-tag {
+  background-color: #f0f0f0;
+  border-radius: 2px;
+  border: 1px solid #f0f0f0;
+  color: #f0f0f0;
+  display: none;
+  font-family: sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  margin-bottom: 5px;
+  margin-right: 5px;
+  padding: 5px;
+}
+.iconDiv {
+  color: #f4f6f8;
+  background-color: #f4f6f8;
+  max-width: 40px;
+  min-width: 40px; /* or whatever width you want. */
+  max-height: 40px;
+  min-height: 40px; /* or whatever width you want. */
+  display: inline-block;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  margin-right: 20px;
+  border-radius: 2px;
+  padding: 10;
+}
+.overlayDiv {
+  width: 100%;
+  height: 100%;
+}
+
+.full-height {
+  height: 100%;
+}
+
+.Polaris-Modal-Dialog__Modal {
+  background-color: white;
+  box-shadow: none;
+}
+
+.Polaris-Modal-CloseButton--withoutTitle {
+  display: none;
+}
+.react-tag-input {
+  height: 3em;
+}
+
+.react-tag-input__input {
+  height: 3em;
+}
+
+#circle {
+  background: #47c1bf;
+  width: 70px;
+  height: 70px;
+  border-radius: 64px;
+}
+#circle2 {
+  background: #eec200;
+  width: 70px;
+  height: 70px;
+  border-radius: 64px;
+}
+#circle div {
+  position: relative;
+  left: 19px;
+  top: 19px;
+  width: 90px;
+  height: 90px;
+  color: white;
+  text-align: center;
+}
+
+.dot {
+  height: 70px;
+  width: 70px;
+  background-color: #fead9a;
+  border-radius: 50%;
+  display: inline-block;
+}
+.dot2 {
+  height: 70px;
+  width: 70px;
+  background-color: #b7ecec;
+  border-radius: 50%;
+  display: inline-block;
+}
+.dot3 {
+  height: 70px;
+  width: 70px;
+  background-color: #b4e1fa;
+  border-radius: 50%;
+  display: inline-block;
+}
+.dot4 {
+  height: 70px;
+  width: 70px;
+  background-color: #ffc58b;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+#roundeddiv {
+  padding: 5px;
+  border-radius: 4px;
+  background-color: #e3f2fd;
+  max-width: 110px;
+}
+#roundeddiv2 {
+  padding: 5px;
+  border-radius: 4px;
+  background-color: #f3e5f5;
+  max-width: 110px;
+}
+#roundeddiv3 {
+  padding: 5px;
+  border-radius: 4px;
+  background-color: #fce4ec;
+  max-width: 110px;
+}
+.fullWidthDiv {
+  width: 100%;
+}
+.Polaris-ResourceList__EmptySearchResultWrapper {
+  padding-bottom: 0px;
+  padding-top: 0px;
+}
+.Polaris-EmptySearchResult__Image {
+  width: 300px;
+  height: 300px;
+}
+/* .Polaris-Filters-ConnectedFilterControl__RightContainer
+  .Polaris-Filters-ConnectedFilterControl__Item {
+  display: none;
+} */
+/* .Polaris-DropZone--sizeExtraLarge {
+  min-height: 10rem;
+}
+.Polaris-DropZone--hasOutline{
+  padding: 0em;
+} */
+
+/* .recharts-surface {
+  padding-left: 0;
+  margin-left: 0;
+} */
+.Polaris-DisplayText--sizeExtraLarge {
+  text-align: left;
+}
+
+.apexcharts-zoom-icon,
+.apexcharts-zoomin-icon,
+.apexcharts-zoomout-icon,
+.apexcharts-reset-icon,
+.apexcharts-pan-icon,
+.apexcharts-selection-icon,
+.apexcharts-menu-icon,
+.apexcharts-toolbar-custom-icon {
+  display: none;
+}
+.Polaris-ResourceItem__Content {
+  align-items: center;
+}
+
+.react-tag-input {
+  height: 100px;
+}
+.react-tag-input__tag {
+  line-height: 3;
+}
+
+.Polaris-DropZone--sizeExtraLarge {
+  min-height: 8rem;
+  max-height: 8rem;
+}
+.Polaris-DropZone-FileUpload__Image.Polaris-DropZone-FileUpload--sizeExtraLarge {
+  width: 50px;
+}
+
+.Polaris-DataTable__Cell--verticalAlignTop {
+  max-width: 400px;
+}
