@@ -21,11 +21,7 @@ function App() {
   return useRoutes([
     {
       path: "/",
-      element: (
-        <NavigationLayout>
-          <Login />
-        </NavigationLayout>
-      ),
+      element: <Login />,
     },
     {
       path: "/admin/employees",
