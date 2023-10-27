@@ -101,39 +101,37 @@ const AddEditEmployee = (props) => {
     >
       {isSaving ? <Loading /> : null}
       <Card sectioned>
-        <Form onSubmit={handleSave}>
-          <FormLayout>
-            <FormLayout.Group>
-              <TextField
-                value={item.name}
-                onChange={handleChangeName}
-                error={nameError}
-                label="Name"
-                requiredIndicator
-              />
+        <FormLayout>
+          <FormLayout.Group>
+            <TextField
+              value={item.name}
+              onChange={handleChangeName}
+              error={nameError}
+              label="Name"
+              requiredIndicator
+            />
 
-              <TextField
-                value={item.phoneNumber}
-                onChange={handleChangePhoneNumber}
-                error={phoneNumberError}
-                label="Phone Number"
-                type="email"
-              />
-            </FormLayout.Group>
+            <TextField
+              value={item.phoneNumber}
+              onChange={handleChangePhoneNumber}
+              error={phoneNumberError}
+              label="Phone Number"
+              type="email"
+            />
+          </FormLayout.Group>
 
-            <FormLayout.Group>
-              <Select
-                label="Gender"
-                options={genders.map((item, index) => {
-                  return { label: item.label, value: item.value };
-                })}
-                onChange={handleSelectChangeGender}
-                value={item.gender}
-                placeholder="Please choose an option"
-              />
-            </FormLayout.Group>
-          </FormLayout>
-        </Form>
+          <FormLayout.Group>
+            <Select
+              label="Gender"
+              options={genders.map((item, index) => {
+                return { label: item.label, value: item.value };
+              })}
+              onChange={handleSelectChangeGender}
+              value={item.gender}
+              placeholder="Please choose an option"
+            />
+          </FormLayout.Group>
+        </FormLayout>
       </Card>
       <PageActions
         primaryAction={{
