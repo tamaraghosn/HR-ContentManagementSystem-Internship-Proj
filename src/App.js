@@ -2,8 +2,7 @@ import React, { useCallback, useState } from "react";
 // import "@shopify/polaris/build/esm/styles.css";
 import {
   BrowserRouter,
-  Routes, // instead of "Switch"
-  Route,
+  useRoutes, // instead of "Switch"
 } from "react-router-dom";
 import "./Assets/Styles/globals.css";
 import "./Assets/Styles/react-tagsinput.css";
@@ -12,42 +11,38 @@ import Profile from "./Pages/Profile";
 import NavigationLayout from "./Components/NavigationLayout";
 import Employees from "./Pages/Employees/List";
 import AddEditEmployee from "./Pages/Employees/AddEdit";
+import { Nav } from "react-bootstrap";
 
 function App() {
   if (process.env.NODE_ENV === "production") {
     console.log = function () {};
   }
 
-  return (
-    <Routes>
-      <Route path="/" element={<Login />} />
-      <Route path="/profile" element={<Profile />} />
-
-      <Route
-        path="/admin/employees"
-        element={
-          <NavigationLayout>
-            <Employees />
-          </NavigationLayout>
-        }
-      />
-      <Route
-        path="/admin/employees/new"
-        element={
-          <NavigationLayout>
-            <AddEditEmployee type="add" />
-          </NavigationLayout>
-        }
-      />
-      <Route
-        path="/admin/employees/:id"
-        element={
-          <NavigationLayout>
-            <AddEditEmployee type="edit" />
-          </NavigationLayout>
-        }
-      />
-    </Routes>
-  );
+  return useRoutes([
+    {
+      path: "/",
+      element: (
+        <NavigationLayout>
+          <Login />
+        </NavigationLayout>
+      ),
+    },
+    {
+      path: "/admin/employees",
+      element: (
+        <NavigationLayout>
+          <Employees />
+        </NavigationLayout>
+      ),
+    },
+    {
+      path: "/admin/employees/new",
+      element: (
+        <NavigationLayout>
+          <AddEditEmployee type="add" />
+        </NavigationLayout>
+      ),
+    },
+  ]);
 }
 export default App;

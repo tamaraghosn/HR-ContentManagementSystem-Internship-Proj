@@ -17,6 +17,8 @@ import {
 import axios from "../../Assets/Lib/axios";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { genders } from "../../constants";
+
 const AddEditEmployee = (props) => {
   const navigate = useNavigate();
   const { id } = useParams();
@@ -122,7 +124,9 @@ const AddEditEmployee = (props) => {
             <FormLayout.Group>
               <Select
                 label="Gender"
-                options={optionsGender}
+                options={genders.map((item, index) => {
+                  return { label: item.label, value: item.value };
+                })}
                 onChange={handleSelectChangeGender}
                 value={item.gender}
                 placeholder="Please choose an option"
