@@ -12,13 +12,11 @@ import {
   Toast,
   Button,
   Form,
+  Select,
 } from "@shopify/polaris";
 import axios from "../../Assets/Lib/axios";
-import Select from "react-select";
-import makeAnimated from "react-select/animated";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-const animatedComponents = makeAnimated();
 const AddEditEmployee = (props) => {
   const navigate = useNavigate();
   const { id } = useParams();
@@ -37,12 +35,16 @@ const AddEditEmployee = (props) => {
     setPhoneNumberError("");
   };
   const [phoneNumberError, setPhoneNumberError] = useState("");
-
-  const handleChangeAddress = (newValue) => {
-    setItem({ ...item, address: newValue });
-    setAddressError("");
+  const handleSelectChangeGender = (newValue) => {
+    setItem({ ...item, gender: newValue });
+    setPhoneNumberError("");
   };
-  const [addressError, setAddressError] = useState("");
+  const [genderError, setGenderError] = useState("");
+  const optionsGender = [
+    { label: "Male", value: "male" },
+    { label: "Female", value: "female" },
+  ];
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -87,22 +89,12 @@ const AddEditEmployee = (props) => {
       onDismiss={toggleActive}
     />
   ) : null;
-  const customStyles = {
-    option: (styles, state) => ({
-      ...styles,
-      cursor: "pointer",
-    }),
-    control: (styles) => ({
-      ...styles,
-      cursor: "pointer",
-    }),
-  };
 
   return (
     <Page
-      title={`${props.type === "add" ? "Add" : "Edit"} User`}
+      title={`${props.type === "add" ? "Add" : "Edit"} Employee`}
       // backAction={[{ onAction: () => navigate("/admin/users") }]}
-      backAction={{ onAction: () => navigate("/admin/users") }}
+      backAction={{ onAction: () => navigate("/admin/employees") }}
       narrowWidth
     >
       {isSaving ? <Loading /> : null}
@@ -126,18 +118,11 @@ const AddEditEmployee = (props) => {
           </FormLayout.Group>
 
           <FormLayout.Group>
-            <TextField
-              value={item.name}
-              onChange={handleChangeName}
-              error={nameError}
-              label="Name"
-            />
-
-            <TextField
-              value={item.phoneNumber}
-              onChange={handleChangePhoneNumber}
-              error={phoneNumberError}
-              label="Phone Number"
+            <Select
+              label="Gender"
+              options={optionsGender}
+              onChange={handleSelectChangeGender}
+              value={item.gender}
             />
           </FormLayout.Group>
         </FormLayout>

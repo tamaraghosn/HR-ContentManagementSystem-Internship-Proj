@@ -152,7 +152,7 @@ function NavigationLayout(props) {
 
           onAction: () => {
             axios
-              .post(`api/logout`)
+              .post(`/logout`)
               .then((result) => {
                 Cookies.set("shift-management-accesstoken", null);
                 navigate("/");
@@ -186,12 +186,13 @@ function NavigationLayout(props) {
         Cookies.get("shift-management-name") &&
         Cookies.get("shift-management-name")
       }
-      // initials={
-      //   Cookies.get("shift-management-name") &&
-      //   Cookies.get("shift-management-name").split(" ")[0].charAt(0) +
-      //     " " +
-      //     Cookies.get("shift-management-name").split(" ")[1].charAt(0)
-      // }
+      initials={
+        Cookies.get("shift-management-name") &&
+        Cookies.get("shift-management-name").split(" ")[0].charAt(0) +
+          " " +
+          Cookies.get("shift-management-name").split(" ")[1].charAt(0)
+      }
+      //  detail="Jaded Pixel"
       open={userMenuActive}
       onToggle={toggleUserMenuActive}
     />

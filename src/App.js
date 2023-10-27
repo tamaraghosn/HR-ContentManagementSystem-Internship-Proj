@@ -24,7 +24,7 @@ function App() {
       <Route path="/profile" element={<Profile />} />
 
       <Route
-        path="/admin/users"
+        path="/admin/employees"
         element={
           <NavigationLayout>
             <Employees />
@@ -32,7 +32,7 @@ function App() {
         }
       />
       <Route
-        path="/admin/users/new"
+        path="/admin/employees/new"
         element={
           <NavigationLayout>
             <AddEditEmployee type="add" />
@@ -40,7 +40,7 @@ function App() {
         }
       />
       <Route
-        path="/admin/users/:id"
+        path="/admin/employees/:id"
         element={
           <NavigationLayout>
             <AddEditEmployee type="edit" />

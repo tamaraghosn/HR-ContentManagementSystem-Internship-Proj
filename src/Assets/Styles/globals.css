@@ -1,192 +1,23 @@
-.Polaris-DropZone-FileUpload__Button {
-  display: none;
-}
-.Polaris-DisplayText--sizeExtraLarge {
-  text-align: center;
-}
-
-/* .Polaris-Modal-Dialog__Modal {
-  background-color: transparent;
-  box-shadow: none;
-} */
-
-.Polaris-Modal-CloseButton--withoutTitle {
-  /* display: none; */
-}
-
-.Polaris-ResourceList__EmptySearchResultWrapper {
-  padding-bottom: 0px;
-  padding-top: 0px;
-}
-.Polaris-EmptySearchResult__Image {
-  width: 300px;
-  height: 300px;
-}
-.Polaris-ButtonGroup {
-  justify-content: center;
-  flex-wrap: nowrap !important;
-}
-.Polaris-DataTable__Cell .Polaris-ButtonGroup {
-  float: right;
-}
+/* TABLE LOADER */
 .spinnerContainer {
   height: 200px;
   width: 100%;
   position: relative;
   display: table;
 }
-
 .vertical-center {
   text-align: center;
   display: table-cell;
   vertical-align: middle;
 }
 
-/* .Polaris-TopBar {
-  background-color: #12b4a5 !important;
-} */
-/* .Polaris-TopBar-UserMenu__Name {
-  color: white;
-}*/
-/* .Polaris-Modal-CloseButton {
-  display: none;
-} */
-.stickyHeader {
-  position: -webkit-sticky;
-  position: sticky;
-  top: 0;
-  background-color: white;
-  padding-top: 50px;
-  z-index: 1;
-}
-.testClick {
-  cursor: pointer;
-  margin: -1.6rem;
-  padding: 1.6rem;
-}
-.Polaris-DropZone--sizeExtraLarge {
-  min-height: 8rem;
-  max-height: 8rem;
-}
-.MuiPaginationItem-sizeLarge {
-  font-size: 0.8rem !important;
-}
-.MuiPaginationItem-sizeLarge .MuiPaginationItem-icon {
-  font-size: 1.7rem !important;
-}
-.MuiPagination-ul {
-  display: inline-flex !important;
-}
-.Polaris-Link {
-  color: gray;
-}
-.gridItem:hover {
-  cursor: pointer;
-  background-color: #f9fafb;
-}
-
-.gridItem .bgd {
-  background-color: grey;
-  width: 50px;
-  height: 50px;
-}
-
-.gridItem:hover .bgd {
-  opacity: 0.7;
-}
-.gridItem:hover .iconDiv {
-  background-color: #dfe3e8;
-}
-.description {
-  color: grey;
-  margin-top: 5px;
-  font-size: 10;
-}
-.titleDev {
-  color: #006fbb;
-  margin-left: 10px;
-}
-.iconDiv {
-  background-color: #f4f6f8;
-  width: 40px;
-  height: 40px;
-  justify-content: center;
-  border-radius: 2px;
-  text-align: center;
-  display: flex;
-  padding: 10px 0;
-}
-.gridIcon {
-  width: 20px;
-  height: 20px;
-}
-.rowClick {
-  cursor: pointer;
-}
-.rowDiv {
-  display: flex;
-  flex-direction: row;
-}
-.Polaris-DropZone-FileUpload__Action {
-  display: none;
-}
-.Polaris-DropZone--sizeLarge {
-  min-height: 5rem !important;
-}
-.Polaris-IndexTable-Checkbox--expanded {
+/* DATATABLE STYLE */
+.Polaris-Filters__Spinner {
   display: none !important;
 }
-.Polaris-IndexTable__ColumnHeaderCheckboxWrapper {
-  display: none !important;
+.Polaris-Filters__AddFilter span {
+  content: "Joe's Task: " !important;
 }
-/* .Polaris-TopBar-UserMenu__Details {
-  color: white;
-} */
-/* tbody .Polaris-DataTable__Cell {
-  padding: 0px !important;
-}
-.row_click {
-  cursor: pointer;
-  padding: var(--p-space-4);
-} */
-/* tbody .Polaris-DataTable__Cell {
-  padding: 0px !important;
-} */
-.row_click {
-  /* cursor: pointer; */
-  padding: var(--p-space-4);
-}
-.row_click2 {
-  padding: var(--p-space-4);
-}
-.CircularProgressbar {
-  max-width: 100px !important;
-}
-.Polaris-DropZone-FileUpload__Action::after {
-  content: "Add File" !important;
-
-  /* display: none !important; */
-}
-.Polaris-DropZone-FileUpload__Action {
-  width: 80px !important;
-  height: 15px !important;
-
-  /* display: none !important; */
-}
-.Polaris-DropZone-FileUpload__Action {
-  background: transparent !important;
-}
-.Polaris-Icon {
-  margin: 0;
-}
-.imgSquare {
-  width: 120px;
-  height: 120px;
-  object-fit: cover;
-  cursor: pointer;
-}
-/* aa */
-.columnFlex {
-  display: flex;
-  flex-direction: column;
+.Polaris-Filters__AddFilter span::after {
+  content: "Add filter" !important;
 }

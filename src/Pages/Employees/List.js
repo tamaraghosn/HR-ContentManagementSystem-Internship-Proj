@@ -19,11 +19,11 @@ import {
   Badge,
   Frame,
   InlineError,
+  ChoiceList,
 } from "@shopify/polaris";
 import axios from "../../Assets/Lib/axios";
 import { useRef } from "react";
 import emptyListImage from "../../Assets/Images/emptyList.svg";
-// import Pagination from "@material-ui/lab/Pagination";
 import { useNavigate } from "react-router-dom";
 import { MultiSelect } from "react-multi-select-component";
 import Select from "react-select";
@@ -46,8 +46,8 @@ const Employees = () => {
     tableTotalPages: 0,
     isListEmpty: false,
   });
-  const handleAddUser = () => {
-    navigate("/admin/users/new");
+  const handleAddEmployee = () => {
+    navigate("/admin/employees/new");
   };
   function handleFiltersQueryChange(queryValue) {
     refBoolPage.current = false;
@@ -64,20 +64,20 @@ const Employees = () => {
   }, [handleAvailabilityRemove, handleQueryValueRemove]);
 
   const filters = [
-    //   {
-    //     key: "availability",
-    //     label: "Filter by",
-    //     filter: (
-    //       <ChoiceList
-    //         title="Filter by"
-    //         titleHidden
-    //         choices={[{ label: "Name", value: "name" }]}
-    //         selected={availability || []}
-    //         onChange={handleAvailabilityChange}
-    //       />
-    //     ),
-    //     shortcut: true,
-    //   },
+    {
+      key: "availability",
+      label: "Filter by",
+      filter: (
+        <ChoiceList
+          title="Filter by"
+          titleHidden
+          choices={[{ label: "Name", value: "name" }]}
+          selected={availability || []}
+          onChange={handleAvailabilityChange}
+        />
+      ),
+      shortcut: false,
+    },
   ];
 
   const appliedFilters = [];
@@ -103,7 +103,7 @@ const Employees = () => {
         <Image src={emptyListImage}></Image>
       </div>
       <div className="mb-3">
-        <Text variant="headingLg" as="h5" color="subdued">
+        <Text variant="bodyLg" as="p" tone="subdued">
           No results found
         </Text>
       </div>
@@ -124,7 +124,7 @@ const Employees = () => {
     setPage(value);
   };
   const handleEdit = (id) => {
-    navigate(`/admin/users/${id}`);
+    navigate(`/admin/employees/${id}`);
   };
 
   useEffect(() => {
@@ -132,12 +132,12 @@ const Employees = () => {
   }, [ts, availability, queryValue, page]);
 
   async function fetchData() {
-    let responseUsers = "";
+    let responseEmployees = "";
     let responseFeatures = [];
 
     try {
-      responseUsers = await axios.get(
-        `/users?per_page=${perPage}&page=${refBoolPage.current ? page : 1}${
+      responseEmployees = await axios.get(
+        `/employees?per_page=${perPage}&page=${refBoolPage.current ? page : 1}${
           queryValue
             ? `&filter[${
                 availability === "" ? "name" : availability
@@ -147,7 +147,7 @@ const Employees = () => {
       );
       setPageObject({
         ...pageObject,
-        tableItems: responseUsers.data.data.data.map((item, index) => [
+        tableItems: responseEmployees.data.data.data.map((item, index) => [
           item?.name && item.name,
           item.is_active ? (
             <Badge status="success">Active</Badge>
@@ -159,8 +159,8 @@ const Employees = () => {
           </ButtonGroup>,
         ]),
         isLoading: false,
-        isListEmpty: !responseUsers.data.data.data.length ? true : false,
-        tableTotalPages: responseUsers.data.data.total,
+        isListEmpty: !responseEmployees.data.data.data.length ? true : false,
+        tableTotalPages: responseEmployees.data.data.total,
       });
     } catch (error) {
       console.log(error);
@@ -185,7 +185,7 @@ const Employees = () => {
   const [active, setActive] = useState(false);
   const toggleActive = useCallback(() => setActive((active) => !active), []);
   const [toastContent, setToastContent] = useState(
-    "This user has been successfully deleted"
+    "This employee has been successfully deleted"
   );
 
   const toastMarkup = active ? (
@@ -194,18 +194,19 @@ const Employees = () => {
 
   return (
     <Page
-      title="Users"
+      title="Employees"
       primaryAction={
-        <Button primary onClick={handleAddUser}>
-          Add User
+        <Button variant="primary" onClick={handleAddEmployee}>
+          Add Employee
         </Button>
       }
     >
-      <Card>
+      <Card padding="0">
         {loadingMarkup}
 
         <Filters
           queryValue={queryValue}
+          queryPlaceholder="Search..."
           filters={filters}
           appliedFilters={appliedFilters}
           onQueryChange={handleFiltersQueryChange}
@@ -239,7 +240,12 @@ const Employees = () => {
               paddingBottom: "10px",
             }}
           >
-            <Pagination count={10} variant="outlined" />
+            <Pagination
+              variant="outlined"
+              count={Math.ceil(pageObject.tableTotalPages / perPage)}
+              page={page}
+              onChange={handleChangePage}
+            />
             {/* <Pagination
               count={Math.ceil(pageObject.tableTotalPages / perPage)}
               page={page}

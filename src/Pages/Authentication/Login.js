@@ -165,17 +165,25 @@ function Login() {
       axios
         .post(`${process.env.REACT_APP_BASE_URL}/login`, form_data)
         .then((res) => {
-          console.log(res.data);
+          console.log("test", res.data);
           Cookies.set("shift-management-password", passwordValue);
           Cookies.set("shift-management-accesstoken", res.data.data.token, {
             expires: 7,
           });
-          res?.data?.user?.name &&
-            Cookies.set(
-              "shift-management-name",
-              res.data.user.first_name + " " + res.data.user.last_name
-            );
-          navigate("admin/users");
+
+          Cookies.set(
+            "shift-management-name",
+            `${
+              res?.data?.data?.user?.first_name
+                ? res?.data?.data?.user?.first_name
+                : ""
+            } ${
+              res?.data?.data?.user?.last_name
+                ? res?.data?.data?.user?.last_name
+                : ""
+            }`
+          );
+          navigate("admin/employees");
         })
         .catch(function (error) {
           window.grecaptcha.reset();
