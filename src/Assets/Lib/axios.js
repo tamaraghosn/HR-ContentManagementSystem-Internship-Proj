@@ -12,8 +12,8 @@ instance.interceptors.response.use(
   },
   (error) => {
     if (error.response.status === 401) {
-      window.location.href = "/";
-      Cookies.set("shift-management-accesstoken", null);
+      //window.location.href = "/";
+      // Cookies.set("shift-management-accesstoken", null);
     } else {
       return Promise.reject(error);
     }

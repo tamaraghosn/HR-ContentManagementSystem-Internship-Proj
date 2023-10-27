@@ -4,7 +4,7 @@ import {
   ActionList,
   Card,
   TextField,
-  TextContainer,
+  Text,
   ContextualSaveBar,
   FormLayout,
   Modal,
@@ -152,7 +152,7 @@ function NavigationLayout(props) {
 
           onAction: () => {
             axios
-              .post(`logout`)
+              .post(`api/logout`)
               .then((result) => {
                 Cookies.set("shift-management-accesstoken", null);
                 navigate("/");
@@ -233,24 +233,10 @@ function NavigationLayout(props) {
         items={[
           {
             url: "/",
-            onClick: () => navigate("/admin/products"),
-            label: "Products",
-            icon: ProductsMajor,
-            selected: window.location.href.indexOf("/admin/products") > -1,
-          },
-          {
-            url: "/",
-            onClick: () => navigate("/admin/features"),
-            label: "Features",
-            icon: CategoriesMajor,
-            selected: window.location.href.indexOf("/admin/features") > -1,
-          },
-          {
-            url: "/",
-            onClick: () => navigate("/admin/discounts"),
-            label: "Discounts",
-            icon: DiscountsMajor,
-            selected: window.location.href.indexOf("/admin/discounts") > -1,
+            onClick: () => navigate("/admin/employees"),
+            label: "Employees",
+            icon: CustomersMajor,
+            selected: window.location.href.indexOf("/admin/employees") > -1,
           },
         ]}
       ></Navigation.Section>
@@ -307,10 +293,10 @@ function NavigationLayout(props) {
       <Layout>
         <Layout.Section>
           <Card sectioned>
-            <TextContainer>
+            <Text>
               <SkeletonDisplayText size="small" />
               <SkeletonBodyText lines={9} />
-            </TextContainer>
+            </Text>
           </Card>
         </Layout.Section>
       </Layout>
@@ -355,8 +341,9 @@ function NavigationLayout(props) {
   };
   const logo = {
     width: 150,
+
     topBarSource: logoImg,
-    url: "/admin/brands",
+    // url: "/admin/employees",
     // accessibilityLabel: "Jaded Pixel",
   };
 

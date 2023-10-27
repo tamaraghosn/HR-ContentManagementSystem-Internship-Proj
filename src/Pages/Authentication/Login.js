@@ -10,6 +10,7 @@ import {
   Toast,
   Modal,
   Text,
+  InlineError,
 } from "@shopify/polaris";
 import axios from "axios";
 import Cookies from "js-cookie";
@@ -101,12 +102,10 @@ function Login() {
                     onChange={onChange}
                   />
                 </div>
-                <Text variant="bodyMd" as="span" color="critical">
-                  {error}
-                </Text>
+                <InlineError message={error} />
                 <Button
                   fullWidth
-                  primary
+                  variant="primary"
                   onClick={handleSignIn}
                   loading={isLoading}
                 >
@@ -164,20 +163,19 @@ function Login() {
       form_data.append("password", passwordValue);
       form_data.append("g-recaptcha-response", captchaValue);
       axios
-        .post(`${process.env.REACT_APP_BASE_URL}login`, form_data)
+        .post(`${process.env.REACT_APP_BASE_URL}/login`, form_data)
         .then((res) => {
           console.log(res.data);
           Cookies.set("shift-management-password", passwordValue);
-          Cookies.set(
-            "shift-management-accesstoken",
-            res.data.authorization.token,
-            {
-              expires: 7,
-            }
-          );
+          Cookies.set("shift-management-accesstoken", res.data.data.token, {
+            expires: 7,
+          });
           res?.data?.user?.name &&
-            Cookies.set("shift-management-name", res.data.user.name);
-          navigate("admin/products");
+            Cookies.set(
+              "shift-management-name",
+              res.data.user.first_name + " " + res.data.user.last_name
+            );
+          navigate("admin/users");
         })
         .catch(function (error) {
           window.grecaptcha.reset();

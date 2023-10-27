@@ -29,7 +29,7 @@ import { MultiSelect } from "react-multi-select-component";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 const animatedComponents = makeAnimated();
-const Products = () => {
+const Employees = () => {
   const navigate = useNavigate();
   const addEditState = useRef("");
   const perPage = 100;
@@ -44,8 +44,8 @@ const Products = () => {
     tableTotalPages: 0,
     isListEmpty: false,
   });
-  const handleAddProduct = () => {
-    navigate("/admin/products/new");
+  const handleAddUser = () => {
+    navigate("/admin/users/new");
   };
   function handleFiltersQueryChange(queryValue) {
     refBoolPage.current = false;
@@ -122,7 +122,7 @@ const Products = () => {
     setPage(value);
   };
   const handleEdit = (id) => {
-    navigate(`/admin/products/${id}`);
+    navigate(`/admin/users/${id}`);
   };
 
   useEffect(() => {
@@ -130,12 +130,12 @@ const Products = () => {
   }, [ts, availability, queryValue, page]);
 
   async function fetchData() {
-    let responseProducts = "";
+    let responseUsers = "";
     let responseFeatures = [];
 
     try {
-      responseProducts = await axios.get(
-        `/products?per_page=${perPage}&page=${refBoolPage.current ? page : 1}${
+      responseUsers = await axios.get(
+        `/users?per_page=${perPage}&page=${refBoolPage.current ? page : 1}${
           queryValue
             ? `&filter[${
                 availability === "" ? "name" : availability
@@ -145,7 +145,7 @@ const Products = () => {
       );
       setPageObject({
         ...pageObject,
-        tableItems: responseProducts.data.data.data.map((item, index) => [
+        tableItems: responseUsers.data.data.data.map((item, index) => [
           item?.name && item.name,
           item.is_active ? (
             <Badge status="success">Active</Badge>
@@ -157,8 +157,8 @@ const Products = () => {
           </ButtonGroup>,
         ]),
         isLoading: false,
-        isListEmpty: !responseProducts.data.data.data.length ? true : false,
-        tableTotalPages: responseProducts.data.data.total,
+        isListEmpty: !responseUsers.data.data.data.length ? true : false,
+        tableTotalPages: responseUsers.data.data.total,
       });
     } catch (error) {
       console.log(error);
@@ -183,7 +183,7 @@ const Products = () => {
   const [active, setActive] = useState(false);
   const toggleActive = useCallback(() => setActive((active) => !active), []);
   const [toastContent, setToastContent] = useState(
-    "This product has been successfully deleted"
+    "This user has been successfully deleted"
   );
 
   const toastMarkup = active ? (
@@ -192,25 +192,25 @@ const Products = () => {
 
   return (
     <Page
-      title="Products"
+      title="Users"
       primaryAction={
-        <Button primary onClick={handleAddProduct}>
-          Add Product
+        <Button primary onClick={handleAddUser}>
+          Add User
         </Button>
       }
     >
       <Card>
         {loadingMarkup}
-        <Card.Section>
-          <Filters
-            queryValue={queryValue}
-            filters={filters}
-            appliedFilters={appliedFilters}
-            onQueryChange={handleFiltersQueryChange}
-            onQueryClear={handleQueryValueRemove}
-            onClearAll={handleFiltersClearAll}
-          />
-        </Card.Section>
+
+        <Filters
+          queryValue={queryValue}
+          filters={filters}
+          appliedFilters={appliedFilters}
+          onQueryChange={handleFiltersQueryChange}
+          onQueryClear={handleQueryValueRemove}
+          onClearAll={handleFiltersClearAll}
+        />
+
         <DataTable
           columnContentTypes={["text", "text", "text", "text"]}
           headings={[
@@ -269,4 +269,4 @@ const Products = () => {
   }
 };
 
-export default Products;
+export default Employees;
