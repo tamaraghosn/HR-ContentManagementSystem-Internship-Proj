@@ -3,8 +3,8 @@
   "version": "0.1.2",
   "private": true,
   "dependencies": {
-    "@material-ui/lab": "^4.0.0-alpha.61",
     "@methodexists/me-rich-editor": "0.0.3",
+    "@mui/material": "^5.14.15",
     "@shopify/browserslist-config": "^3.0.0",
     "@shopify/polaris": "^12.0.0",
     "@shopify/polaris-icons": "^7.8.1",

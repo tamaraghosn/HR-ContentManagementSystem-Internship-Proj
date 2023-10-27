@@ -23,11 +23,13 @@ import {
 import axios from "../../Assets/Lib/axios";
 import { useRef } from "react";
 import emptyListImage from "../../Assets/Images/emptyList.svg";
-import Pagination from "@material-ui/lab/Pagination";
+// import Pagination from "@material-ui/lab/Pagination";
 import { useNavigate } from "react-router-dom";
 import { MultiSelect } from "react-multi-select-component";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
+import Pagination from "@mui/material/Pagination";
+
 const animatedComponents = makeAnimated();
 const Employees = () => {
   const navigate = useNavigate();
@@ -237,12 +239,13 @@ const Employees = () => {
               paddingBottom: "10px",
             }}
           >
-            <Pagination
+            <Pagination count={10} variant="outlined" />
+            {/* <Pagination
               count={Math.ceil(pageObject.tableTotalPages / perPage)}
               page={page}
               onChange={handleChangePage}
               size="large"
-            />
+            /> */}
           </div>
         )}
 
