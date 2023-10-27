@@ -99,33 +99,37 @@ const AddEditEmployee = (props) => {
     >
       {isSaving ? <Loading /> : null}
       <Card sectioned>
-        <FormLayout>
-          <FormLayout.Group>
-            <TextField
-              value={item.name}
-              onChange={handleChangeName}
-              error={nameError}
-              label="Name"
-              requiredIndicator
-            />
+        <Form onSubmit={handleSave}>
+          <FormLayout>
+            <FormLayout.Group>
+              <TextField
+                value={item.name}
+                onChange={handleChangeName}
+                error={nameError}
+                label="Name"
+                requiredIndicator
+              />
 
-            <TextField
-              value={item.phoneNumber}
-              onChange={handleChangePhoneNumber}
-              error={phoneNumberError}
-              label="Phone Number"
-            />
-          </FormLayout.Group>
+              <TextField
+                value={item.phoneNumber}
+                onChange={handleChangePhoneNumber}
+                error={phoneNumberError}
+                label="Phone Number"
+                type="email"
+              />
+            </FormLayout.Group>
 
-          <FormLayout.Group>
-            <Select
-              label="Gender"
-              options={optionsGender}
-              onChange={handleSelectChangeGender}
-              value={item.gender}
-            />
-          </FormLayout.Group>
-        </FormLayout>
+            <FormLayout.Group>
+              <Select
+                label="Gender"
+                options={optionsGender}
+                onChange={handleSelectChangeGender}
+                value={item.gender}
+                placeholder="Please choose an option"
+              />
+            </FormLayout.Group>
+          </FormLayout>
+        </Form>
       </Card>
       <PageActions
         primaryAction={{
