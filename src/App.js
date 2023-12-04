@@ -12,6 +12,8 @@ import NavigationLayout from "./Components/NavigationLayout";
 import Employees from "./Pages/Employees/List";
 import AddEditEmployee from "./Pages/Employees/AddEdit";
 import { Nav } from "react-bootstrap";
+import EmployeeProfile from "./Pages/Employees/EmployeeProfile";
+
 
 function App() {
   if (process.env.NODE_ENV === "production") {
@@ -36,6 +38,14 @@ function App() {
       element: (
         <NavigationLayout>
           <AddEditEmployee type="add" />
+        </NavigationLayout>
+      ),
+    },
+    {
+      path: "/admin/employees/profile",
+      element: (
+        <NavigationLayout>
+          <EmployeeProfile></EmployeeProfile>
         </NavigationLayout>
       ),
     },
