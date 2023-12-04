@@ -13,6 +13,8 @@ import {
   Button,
   Form,
   Select,
+  DatePicker,
+  Tag,
 } from "@shopify/polaris";
 import axios from "../../Assets/Lib/axios";
 import { useParams } from "react-router-dom";
@@ -24,28 +26,133 @@ const AddEditEmployee = (props) => {
   const { id } = useParams();
   const [isSaving, setIsSaving] = useState(true);
   const [item, setItem] = useState({
-    name: "",
+    firstName: "",
+    lastName: "",
     phoneNumber: "",
+    name: "",
+    gender:"",
+    workEmailAddress: "",
+    title: "",
+    joiningDate: null,
+    employmentEndDate: null,
+    isActive: false,
+    // isInactive: false,
+    employmentType: "",
+    probationPeriod: "",
+    department:"",
+    jobTitle:"",
+    activeEmployees: "",
+    
   });
-  const handleChangeName = (newValue) => {
-    setItem({ ...item, name: newValue });
-    setNameError("");
+  const handleChangeFirstName = (newValue) => {
+    setItem({ ...item, firstName: newValue });
+    setFirstNameError("");
   };
-  const [nameError, setNameError] = useState("");
+  const [firstNameError, setFirstNameError] = useState("");
+
+  const handleChangeLastName = (newValue) => {
+    setItem({ ...item, lastName: newValue });
+    setLastNameError("");
+  };
+  const [lastNameError, setLastNameError] = useState("");
+
+
   const handleChangePhoneNumber = (newValue) => {
     setItem({ ...item, phoneNumber: newValue });
     setPhoneNumberError("");
   };
   const [phoneNumberError, setPhoneNumberError] = useState("");
+
+  const handleChangeWorkEmailAddress = (newValue) => {
+    setItem({ ...item, workEmailAddress: newValue });
+    setWorkEmailAddressError("");
+  };
+  const [workEmailAddressError, setWorkEmailAddressError] = useState("");
+
+
   const handleSelectChangeGender = (newValue) => {
     setItem({ ...item, gender: newValue });
-    setPhoneNumberError("");
+    setGenderError("");
   };
   const [genderError, setGenderError] = useState("");
+
   const optionsGender = [
     { label: "Male", value: "male" },
     { label: "Female", value: "female" },
   ];
+
+  const handleSelectChangeTitle = (newValue) => {
+    setItem({ ...item, title: newValue });
+    setTitleError("");
+  };
+  const [titleError, setTitleError] = useState("");
+  const optionsTitle = [
+    { label: "Mr", value: "mr" },
+    { label: "Mrs", value: "mrs" },
+    { label: "Ms", value: "ms" },
+    { label: "Miss", value: "miss" },
+    { label: "Mstr", value: "mstr" },
+  ];
+
+
+  const handleChangeJoiningDate = (date) => {
+    setItem({ ...item, joiningDate: date });
+    setJoiningDateError("");
+  };
+  const [joiningDateError, setJoiningDateError] = useState("");
+ 
+  const handleChangeEmploymentEndDate = (date) => {
+    setItem({ ...item, employmentEndDate: date });
+    setItem({ ...item, isInactive: true });
+    setEmploymentEndDateError("");
+
+    
+  };
+  const [employmentEndDateError, setEmploymentEndDateError] = useState("");
+
+  const handleChangeActiveEmploymentStatus = (checked) => {
+    setItem({ ...item, isActive: checked });
+  };
+
+  // const handleChangeInactiveEmploymentStatus = (checked) => {
+  //   setItem({ ...item, isInactive: checked });
+  // };
+
+  const optionsEmploymentType = [
+    { label: "Part-Time", value: "part-time" },
+    { label: "Full-Time", value: "full-time" },
+    { label: "FreeLancer", value: "freelancer" },
+  ];
+
+  const handleSelectChangeEmploymentType = (newValue) => {
+    setItem({ ...item, employmentType: newValue });
+    setEmploymentTypeError("");
+  };
+
+  const [employmentTypeError, setEmploymentTypeError] = useState("");
+
+  const handleChangeProbationPeriod = (newValue) => {
+    setItem({ ...item, probationPeriod: newValue });
+    setprobationPeriodError("");
+  };
+  const [probationPeriodError, setprobationPeriodError] = useState("");
+
+  const handleSelectChangeDepartment = (newValue) => {
+    setItem({ ...item, department: newValue });
+    setDepartmentError("");
+  };
+  const [departmentError, setDepartmentError] = useState("");
+
+  const handleSelectChangeJobTitle = (newValue) => {
+    setItem({ ...item, jobTitle: newValue });
+    setJobTitleError("");
+  };
+  const [jobTitleError, setJobTitleError] = useState("");
+
+  const handleSelectChangeActiveEmployees = (newValue) => {
+    setItem({ ...item, activeEmployees: newValue });
+    
+  };
 
   useEffect(() => {
     fetchData();
@@ -101,39 +208,161 @@ const AddEditEmployee = (props) => {
     >
       {isSaving ? <Loading /> : null}
       <Card sectioned>
-        <Card.Section title="GENERAL INFORMATION">
-          <FormLayout>
-            <FormLayout.Group>
-              <TextField
-                value={item.name}
-                onChange={handleChangeName}
-                error={nameError}
-                label="Name"
+        <FormLayout>
+          <Text variant="headingSm" as="h6">
+            GENERAL INFORMATION
+          </Text>
+          <FormLayout.Group>
+            <TextField
+              value={item.firstName}
+              onChange={handleChangeFirstName}
+              error={firstNameError}
+              label="First Name"
+              requiredIndicator
+            />
+            <TextField
+              value={item.lastName}
+              onChange={handleChangeLastName}
+              error={lastNameError}
+              label="Last Name"
+              requiredIndicator
+            />
+          
+          </FormLayout.Group>
+
+          <FormLayout.Group>
+
+          <TextField
+              value={item.phoneNumber}
+              onChange={handleChangePhoneNumber}
+              error={phoneNumberError}
+              label="Phone Number"
+              type="email"
+              requiredIndicator
+            />            
+            
+            <TextField
+              value={item.workEmailAddress}
+              onChange={handleChangeWorkEmailAddress}
+              error={workEmailAddressError}
+              label="Work Email Address"
+              type="email"
+              requiredIndicator
+            />
+
+          </FormLayout.Group>
+
+        <FormLayout.Group>
+       
+           <Select
+              label="Gender"
+              options={optionsGender.map((item, index) => {
+                return { label: item.label, value: item.value };
+              })}
+              onChange={handleSelectChangeGender}
+              value={item.gender}
+              error={genderError}
+              placeholder="Please choose an option"
+              requiredIndicator
+            />
+
+            <Select
+                label="Title"
+                options={optionsTitle.map((item, index) => {
+                  return { label: item.label, value: item.value };
+                })}
+                onChange={handleSelectChangeTitle}
+                error={titleError}
+                value={item.title}
+                placeholder="Please choose an option"
                 requiredIndicator
               />
 
-              <TextField
-                value={item.phoneNumber}
-                onChange={handleChangePhoneNumber}
-                error={phoneNumberError}
-                label="Phone Number"
-                type="email"
-              />
-            </FormLayout.Group>
+        </FormLayout.Group>
+        <FormLayout.Group>
 
-            <FormLayout.Group>
-              <Select
-                label="Gender"
-                options={genders.map((item, index) => {
+          <TextField
+              label="Joining/Starting Date"
+              value={item.joiningDate}
+              type="date"
+              onChange={handleChangeJoiningDate}
+              placeholder="MM/DD/YYYY"
+              error={joiningDateError}
+              requiredIndicator
+            />
+                
+          <TextField
+              label="Employment End Date" 
+              type="date"
+              value={item.employmentEndDate}
+              onChange={handleChangeEmploymentEndDate}
+              placeholder="MM/DD/YYYY"
+              error={employmentEndDateError}
+              
+            />
+
+        </FormLayout.Group>
+       
+
+        <FormLayout.Group>
+             <Select
+                label="Employment Type"
+                options={optionsEmploymentType.map((item, index) => {
                   return { label: item.label, value: item.value };
                 })}
-                onChange={handleSelectChangeGender}
-                value={item.gender}
+                onChange={handleSelectChangeEmploymentType}
+                value={item.employmentType}
                 placeholder="Please choose an option"
+                error={employmentTypeError}
+                requiredIndicator
               />
-            </FormLayout.Group>
-          </FormLayout>
-        </Card.Section>
+              <TextField
+              value={item.probationPeriod}
+              onChange={handleChangeProbationPeriod}
+              error={probationPeriodError}
+              label="Probation Period"
+              requiredIndicator
+            />
+
+        </FormLayout.Group>
+        <FormLayout.Group>
+             <Select
+                label="Department"
+                onChange={handleSelectChangeDepartment}
+                value={item.department}
+                placeholder="Please choose an option"
+                error={departmentError}
+                requiredIndicator
+                />
+              <Select
+                label="Job Title"
+                onChange={handleSelectChangeJobTitle}
+                error={jobTitleError}
+                value={item.jobTitle}
+                placeholder="Please choose an option"
+                requiredIndicator
+                />
+        
+
+        </FormLayout.Group>
+              <Select
+                label="Line manager/supervisor"
+                onChange={handleSelectChangeActiveEmployees}
+                value={item.activeEmployees}
+              
+
+                />
+
+     <Text>Employment Status</Text>
+        <FormLayout.Group>
+          <Checkbox
+            label="Active"
+            checked={item.isActive}
+            onChange={handleChangeActiveEmploymentStatus}
+           />
+        
+          </FormLayout.Group>
+        </FormLayout>
       </Card>
       <PageActions
         primaryAction={{
@@ -165,9 +394,21 @@ const AddEditEmployee = (props) => {
   );
 
   function handleSave() {
-    if (!item.name || !item.phoneNumber) {
-      !item.name && setNameError("This field is required");
+    if (!item.firstName || !item.phoneNumber || !item.lastName || !item.workEmailAddress || !item.gender 
+      || !item.title || !item.joiningDate || !item.employmentEndDate
+      || !item.employmentType || !item.probationPeriod || !item.department || !item.jobTitle ) {
+      !item.firstName && setFirstNameError("This field is required");
+      !item.lastName && setLastNameError("This field is required");
       !item.phoneNumber && setPhoneNumberError("This field is required");
+      !item.workEmailAddress && setWorkEmailAddressError("This field is required");
+      !item.gender && setGenderError("This field is required");
+      !item.title && setTitleError("This field is required");
+      !item.joiningDate && setJoiningDateError("This field is required");
+      // !item.employmentEndDate && setEmploymentEndDateError("This field is required");
+      !item.employmentType && setEmploymentTypeError("This field is required");
+      !item.probationPeriod && setprobationPeriodError("This field is required");
+      !item.department && setDepartmentError("This field is required");
+      !item.jobTitle && setJobTitleError("This field is required");
     } else {
       // setIsSaving(true);
       // const bodyObj = {
