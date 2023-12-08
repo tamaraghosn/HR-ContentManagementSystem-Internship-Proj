@@ -239,6 +239,20 @@ function NavigationLayout(props) {
             icon: CustomersMajor,
             selected: window.location.href.indexOf("/admin/employees") > -1,
           },
+          {
+            url: "/",
+            onClick: () => navigate("/admin/departments"),
+            label: "Departments",
+            icon: CategoriesMajor,
+            selected: window.location.href.indexOf("/admin/departments") > -1,
+          },
+          {
+            url: "/",
+            onClick: () => navigate("/admin/jobtitles"),
+            label: "Job Titles",
+            icon: CustomersMajor,
+            selected: window.location.href.indexOf("/admin/jobtitles") > -1,
+          },
         ]}
       ></Navigation.Section>
       {/* <Navigation.Section

@@ -1,21 +1,19 @@
 import { Card, Tabs, Page } from "@shopify/polaris";
 import { useState, useCallback } from "react";
-// import GeneralInformationForm from "../../Components/InformationForm.js";
 import ContactDetailsForm from "../../Components/ContactDetailsForm.js";
 import BankDetailsForm from "../../Components/BankDetailsForm.js";
 import WorkExperienceForm from "../../Components/WorkExperienceForm.js";
 import EducationForm from "../../Components/EducationForm.js";
 import PersonalInformationForm from "../../Components/PersonalInformationForm.js";
 
-
 const EmployeeProfile = () => {
   const [selected, setSelected] = useState(0);
 
   const handleTabChange = useCallback(
-    selectedTabIndex => setSelected(selectedTabIndex),
-    [] 
+    (selectedTabIndex) => setSelected(selectedTabIndex),
+    []
   );
- 
+
   const tabs = [
     {
       id: "personal-information-1",
@@ -28,7 +26,7 @@ const EmployeeProfile = () => {
       id: "contact-details-1",
       content: "Contact Details",
       panelID: "contact-details-content-1",
-      formComponent: <ContactDetailsForm/>,
+      formComponent: <ContactDetailsForm />,
     },
     {
       id: "bank-details-1",
@@ -53,9 +51,8 @@ const EmployeeProfile = () => {
   return (
     <Page
       title="Employee Profile"
-      
       primaryAction={{
-        content: 'Save',
+        content: "Save",
         onAction: () => {
           // Handle save action logic here
         },
@@ -73,4 +70,3 @@ const EmployeeProfile = () => {
 };
 
 export default EmployeeProfile;
-

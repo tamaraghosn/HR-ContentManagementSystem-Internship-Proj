@@ -8,13 +8,8 @@ import {
   Checkbox,
   FormLayout,
   TextField,
-  InlineError,
   Toast,
-  Button,
-  Form,
   Select,
-  DatePicker,
-  Tag,
 } from "@shopify/polaris";
 import axios from "../../Assets/Lib/axios";
 import { useParams } from "react-router-dom";
@@ -30,7 +25,7 @@ const AddEditEmployee = (props) => {
     lastName: "",
     phoneNumber: "",
     name: "",
-    gender:"",
+    gender: "",
     workEmailAddress: "",
     title: "",
     joiningDate: null,
@@ -39,10 +34,9 @@ const AddEditEmployee = (props) => {
     // isInactive: false,
     employmentType: "",
     probationPeriod: "",
-    department:"",
-    jobTitle:"",
+    department: "",
+    jobTitle: "",
     activeEmployees: "",
-    
   });
   const handleChangeFirstName = (newValue) => {
     setItem({ ...item, firstName: newValue });
@@ -56,7 +50,6 @@ const AddEditEmployee = (props) => {
   };
   const [lastNameError, setLastNameError] = useState("");
 
-
   const handleChangePhoneNumber = (newValue) => {
     setItem({ ...item, phoneNumber: newValue });
     setPhoneNumberError("");
@@ -69,12 +62,9 @@ const AddEditEmployee = (props) => {
   };
   const [workEmailAddressError, setWorkEmailAddressError] = useState("");
 
-
   const handleSelectChangeGender = (newValue) => {
     setItem({ ...item, gender: newValue });
-    setGenderError("");
   };
-  const [genderError, setGenderError] = useState("");
 
   const optionsGender = [
     { label: "Male", value: "male" },
@@ -83,9 +73,7 @@ const AddEditEmployee = (props) => {
 
   const handleSelectChangeTitle = (newValue) => {
     setItem({ ...item, title: newValue });
-    setTitleError("");
   };
-  const [titleError, setTitleError] = useState("");
   const optionsTitle = [
     { label: "Mr", value: "mr" },
     { label: "Mrs", value: "mrs" },
@@ -94,21 +82,16 @@ const AddEditEmployee = (props) => {
     { label: "Mstr", value: "mstr" },
   ];
 
-
   const handleChangeJoiningDate = (date) => {
     setItem({ ...item, joiningDate: date });
     setJoiningDateError("");
   };
   const [joiningDateError, setJoiningDateError] = useState("");
- 
+
   const handleChangeEmploymentEndDate = (date) => {
     setItem({ ...item, employmentEndDate: date });
     setItem({ ...item, isInactive: true });
-    setEmploymentEndDateError("");
-
-    
   };
-  const [employmentEndDateError, setEmploymentEndDateError] = useState("");
 
   const handleChangeActiveEmploymentStatus = (checked) => {
     setItem({ ...item, isActive: checked });
@@ -133,15 +116,11 @@ const AddEditEmployee = (props) => {
 
   const handleChangeProbationPeriod = (newValue) => {
     setItem({ ...item, probationPeriod: newValue });
-    setprobationPeriodError("");
   };
-  const [probationPeriodError, setprobationPeriodError] = useState("");
 
   const handleSelectChangeDepartment = (newValue) => {
     setItem({ ...item, department: newValue });
-    setDepartmentError("");
   };
-  const [departmentError, setDepartmentError] = useState("");
 
   const handleSelectChangeJobTitle = (newValue) => {
     setItem({ ...item, jobTitle: newValue });
@@ -151,7 +130,6 @@ const AddEditEmployee = (props) => {
 
   const handleSelectChangeActiveEmployees = (newValue) => {
     setItem({ ...item, activeEmployees: newValue });
-    
   };
 
   useEffect(() => {
@@ -227,20 +205,18 @@ const AddEditEmployee = (props) => {
               label="Last Name"
               requiredIndicator
             />
-          
           </FormLayout.Group>
 
           <FormLayout.Group>
-
-          <TextField
+            <TextField
               value={item.phoneNumber}
               onChange={handleChangePhoneNumber}
               error={phoneNumberError}
               label="Phone Number"
               type="email"
               requiredIndicator
-            />            
-            
+            />
+
             <TextField
               value={item.workEmailAddress}
               onChange={handleChangeWorkEmailAddress}
@@ -249,39 +225,31 @@ const AddEditEmployee = (props) => {
               type="email"
               requiredIndicator
             />
-
           </FormLayout.Group>
 
-        <FormLayout.Group>
-       
-           <Select
+          <FormLayout.Group>
+            <Select
               label="Gender"
               options={optionsGender.map((item, index) => {
                 return { label: item.label, value: item.value };
               })}
               onChange={handleSelectChangeGender}
               value={item.gender}
-              error={genderError}
               placeholder="Please choose an option"
-              requiredIndicator
             />
 
             <Select
-                label="Title"
-                options={optionsTitle.map((item, index) => {
-                  return { label: item.label, value: item.value };
-                })}
-                onChange={handleSelectChangeTitle}
-                error={titleError}
-                value={item.title}
-                placeholder="Please choose an option"
-                requiredIndicator
-              />
-
-        </FormLayout.Group>
-        <FormLayout.Group>
-
-          <TextField
+              label="Title"
+              options={optionsTitle.map((item, index) => {
+                return { label: item.label, value: item.value };
+              })}
+              onChange={handleSelectChangeTitle}
+              value={item.title}
+              placeholder="Please choose an option"
+            />
+          </FormLayout.Group>
+          <FormLayout.Group>
+            <TextField
               label="Joining/Starting Date"
               value={item.joiningDate}
               type="date"
@@ -290,77 +258,62 @@ const AddEditEmployee = (props) => {
               error={joiningDateError}
               requiredIndicator
             />
-                
-          <TextField
-              label="Employment End Date" 
+
+            <TextField
+              label="Employment End Date"
               type="date"
               value={item.employmentEndDate}
               onChange={handleChangeEmploymentEndDate}
               placeholder="MM/DD/YYYY"
-              error={employmentEndDateError}
-              
             />
+          </FormLayout.Group>
 
-        </FormLayout.Group>
-       
-
-        <FormLayout.Group>
-             <Select
-                label="Employment Type"
-                options={optionsEmploymentType.map((item, index) => {
-                  return { label: item.label, value: item.value };
-                })}
-                onChange={handleSelectChangeEmploymentType}
-                value={item.employmentType}
-                placeholder="Please choose an option"
-                error={employmentTypeError}
-                requiredIndicator
-              />
-              <TextField
+          <FormLayout.Group>
+            <Select
+              label="Employment Type"
+              options={optionsEmploymentType.map((item, index) => {
+                return { label: item.label, value: item.value };
+              })}
+              onChange={handleSelectChangeEmploymentType}
+              value={item.employmentType}
+              placeholder="Please choose an option"
+            />
+            <TextField
               value={item.probationPeriod}
               onChange={handleChangeProbationPeriod}
-              error={probationPeriodError}
               label="Probation Period"
+            />
+          </FormLayout.Group>
+          <FormLayout.Group>
+            <Select
+              label="Department"
+              onChange={handleSelectChangeDepartment}
+              value={item.department}
+              placeholder="Please choose an option"
+              r
+            />
+            <Select
+              label="Job Title"
+              onChange={handleSelectChangeJobTitle}
+              error={jobTitleError}
+              value={item.jobTitle}
+              placeholder="Please choose an option"
               requiredIndicator
             />
+          </FormLayout.Group>
+          <Select
+            label="Line manager/supervisor"
+            onChange={handleSelectChangeActiveEmployees}
+            value={item.activeEmployees}
+          />
 
-        </FormLayout.Group>
-        <FormLayout.Group>
-             <Select
-                label="Department"
-                onChange={handleSelectChangeDepartment}
-                value={item.department}
-                placeholder="Please choose an option"
-                error={departmentError}
-                requiredIndicator
-                />
-              <Select
-                label="Job Title"
-                onChange={handleSelectChangeJobTitle}
-                error={jobTitleError}
-                value={item.jobTitle}
-                placeholder="Please choose an option"
-                requiredIndicator
-                />
-        
-
-        </FormLayout.Group>
-              <Select
-                label="Line manager/supervisor"
-                onChange={handleSelectChangeActiveEmployees}
-                value={item.activeEmployees}
-              
-
-                />
-
-     <Text>Employment Status</Text>
-        <FormLayout.Group>
-          <Checkbox
-            label="Active"
-            checked={item.isActive}
-            onChange={handleChangeActiveEmploymentStatus}
-           />
-        
+          <Text>Employment Status</Text>
+          <FormLayout.Group>
+            <Checkbox
+              label="Active"
+              checked={item.isActive}
+              onChange={handleChangeActiveEmploymentStatus}
+            />
           </FormLayout.Group>
         </FormLayout>
       </Card>
@@ -394,20 +347,20 @@ const AddEditEmployee = (props) => {
   );
 
   function handleSave() {
-    if (!item.firstName || !item.phoneNumber || !item.lastName || !item.workEmailAddress || !item.gender 
-      || !item.title || !item.joiningDate || !item.employmentEndDate
-      || !item.employmentType || !item.probationPeriod || !item.department || !item.jobTitle ) {
+    if (
+      !item.firstName ||
+      !item.phoneNumber ||
+      !item.lastName ||
+      !item.workEmailAddress ||
+      !item.joiningDate ||
+      !item.jobTitle
+    ) {
       !item.firstName && setFirstNameError("This field is required");
       !item.lastName && setLastNameError("This field is required");
       !item.phoneNumber && setPhoneNumberError("This field is required");
-      !item.workEmailAddress && setWorkEmailAddressError("This field is required");
-      !item.gender && setGenderError("This field is required");
-      !item.title && setTitleError("This field is required");
+      !item.workEmailAddress &&
+        setWorkEmailAddressError("This field is required");
       !item.joiningDate && setJoiningDateError("This field is required");
-      // !item.employmentEndDate && setEmploymentEndDateError("This field is required");
-      !item.employmentType && setEmploymentTypeError("This field is required");
-      !item.probationPeriod && setprobationPeriodError("This field is required");
-      !item.department && setDepartmentError("This field is required");
       !item.jobTitle && setJobTitleError("This field is required");
     } else {
       // setIsSaving(true);
