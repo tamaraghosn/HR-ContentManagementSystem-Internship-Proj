@@ -13,7 +13,11 @@ import Employees from "./Pages/Employees/List";
 import AddEditEmployee from "./Pages/Employees/AddEdit";
 import { Nav } from "react-bootstrap";
 import EmployeeProfile from "./Pages/Employees/EmployeeProfile";
-
+import Departments from "./Pages/Departments/List";
+import AddEditDepartment from "./Pages/Departments/AddEdit";
+import JobTitles from "./Pages/JobTitles/List";
+import AddEditJobTtile from "./Pages/JobTitles/AddEdit";
+// import Departments from "./Pages/Departments/List";
 
 function App() {
   if (process.env.NODE_ENV === "production") {
@@ -30,6 +34,38 @@ function App() {
       element: (
         <NavigationLayout>
           <Employees />
+        </NavigationLayout>
+      ),
+    },
+    {
+      path: "/admin/departments",
+      element: (
+        <NavigationLayout>
+          <Departments></Departments>
+        </NavigationLayout>
+      ),
+    },
+    {
+      path: "/admin/departments/new",
+      element: (
+        <NavigationLayout>
+          <AddEditDepartment type="add"></AddEditDepartment>
+        </NavigationLayout>
+      ),
+    },
+    {
+      path: "/admin/jobtitles",
+      element: (
+        <NavigationLayout>
+          <JobTitles></JobTitles>
+        </NavigationLayout>
+      ),
+    },
+    {
+      path: "/admin/jobtitles/new",
+      element: (
+        <NavigationLayout>
+          <AddEditJobTtile type="add"></AddEditJobTtile>
         </NavigationLayout>
       ),
     },
