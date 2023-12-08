@@ -84,18 +84,13 @@ const AddEditDepartment = (props) => {
       {isSaving ? <Loading /> : null}
       <Card sectioned>
         <FormLayout>
-          <Text variant="headingSm" as="h6">
-            DEPARTMENT
-          </Text>
-          <FormLayout.Group>
-            <TextField
-              value={item.depName}
-              onChange={handleChangeDepName}
-              error={depNameError}
-              label="Name"
-              requiredIndicator
-            />
-          </FormLayout.Group>
+          <TextField
+            value={item.depName}
+            onChange={handleChangeDepName}
+            error={depNameError}
+            label="Name"
+            requiredIndicator
+          />
         </FormLayout>
       </Card>
       <PageActions
