@@ -21,13 +21,13 @@ const AddEditDepartment = (props) => {
   const { id } = useParams();
   const [isSaving, setIsSaving] = useState(true);
   const [item, setItem] = useState({
-    depName: "",
+    name: "",
   });
-  const handleChangeDepName = (newValue) => {
-    setItem({ ...item, depName: newValue });
-    setDepNameError("");
+  const handleChangeName = (newValue) => {
+    setItem({ ...item, name: newValue });
+    setNameError("");
   };
-  const [depNameError, setDepNameError] = useState("");
+  const [nameError, setNameError] = useState("");
 
   useEffect(() => {
     fetchData();
@@ -85,9 +85,9 @@ const AddEditDepartment = (props) => {
       <Card sectioned>
         <FormLayout>
           <TextField
-            value={item.depName}
-            onChange={handleChangeDepName}
-            error={depNameError}
+            value={item.name}
+            onChange={handleChangeName}
+            error={nameError}
             label="Name"
             requiredIndicator
           />
@@ -123,27 +123,27 @@ const AddEditDepartment = (props) => {
   );
 
   function handleSave() {
-    if (!item.depName) {
-      !item.depName && setDepNameError("This field is required");
+    if (!item.name) {
+      !item.name && setNameError("This field is required");
     } else {
-      // setIsSaving(true);
-      // const bodyObj = {
-      //   name: item.firstName,
-      // };
-      // props.type === "add"
-      //   ? axios
-      //       .post(`departments`, bodyObj)
-      //       .then((result) => {
-      //         navigate("/admin/departments");
-      //       })
-      //       .catch((err) => console.log(err))
-      //   : axios
-      //       .patch(`departments/${id}`, bodyObj)
-      //       .then((result) => {
-      //         toggleActive();
-      //         setIsSaving(false);
-      //       })
-      //       .catch((err) => console.log(err));
+      setIsSaving(true);
+      const bodyObj = {
+        name: item.name,
+      };
+      props.type === "add"
+        ? axios
+            .post(`departments`, bodyObj)
+            .then((result) => {
+              navigate("/admin/departments");
+            })
+            .catch((err) => console.log(err))
+        : axios
+            .patch(`departments/${id}`, bodyObj)
+            .then((result) => {
+              toggleActive();
+              setIsSaving(false);
+            })
+            .catch((err) => console.log(err));
     }
   }
 };
