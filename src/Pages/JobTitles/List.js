@@ -47,7 +47,7 @@ const JobTitles = () => {
     isListEmpty: false,
   });
   const handleAddJobTitle = () => {
-    navigate("/admin/jobtitles/new");
+    navigate("/admin/job-titles/new");
   };
   function handleFiltersQueryChange(queryValue) {
     refBoolPage.current = false;
@@ -124,7 +124,7 @@ const JobTitles = () => {
     setPage(value);
   };
   const handleEdit = (id) => {
-    navigate(`/admin/jobtitles/${id}`);
+    navigate(`/admin/job-titles/${id}`);
   };
 
   useEffect(() => {
@@ -137,7 +137,9 @@ const JobTitles = () => {
 
     try {
       responseJobTitles = await axios.get(
-        `/jobtitles?per_page=${perPage}&page=${refBoolPage.current ? page : 1}${
+        `/job-titles?per_page=${perPage}&page=${
+          refBoolPage.current ? page : 1
+        }${
           queryValue
             ? `&filter[${
                 availability === "" ? "name" : availability
@@ -149,11 +151,6 @@ const JobTitles = () => {
         ...pageObject,
         tableItems: responseJobTitles.data.data.data.map((item, index) => [
           item?.name && item.name,
-          item.is_active ? (
-            <Badge status="success">Active</Badge>
-          ) : (
-            <Badge status="info">Inactive</Badge>
-          ),
           <ButtonGroup>
             <Button onClick={() => handleEdit(item.id)}>Edit</Button>
           </ButtonGroup>,
@@ -220,7 +217,6 @@ const JobTitles = () => {
             <Text variant="bodyMd" as="p" fontWeight="medium">
               Name
             </Text>,
-            <Text variant="bodyMd" as="p" fontWeight="medium"></Text>,
             <Text variant="bodyMd" as="p" fontWeight="medium"></Text>,
           ]}
           rows={pageObject.tableItems}

@@ -37,27 +37,13 @@ const AddEditDepartment = (props) => {
     let responseItem = "";
     if (props.type === "edit") {
       try {
-        responseItem = await axios.get(`departments/${id}`);
-        // setItem({
-        //   name: responseItem?.data?.data?.name
-        //     ? responseItem?.data?.data?.name
-        //     : "",
-        //   isActive: responseItem?.data?.data?.is_active ? true : false,
-        //   features: responseItem?.data?.data?.features.map((item, index) => {
-        //     return {
-        //       label: item.name,
-        //       value: String(item.id),
-        //       key: String(item.id),
-        //     };
-        //   }),
-        //   discounts: responseItem?.data?.data?.discounts.map((item, index) => {
-        //     return {
-        //       label: item.name,
-        //       value: String(item.id),
-        //       key: String(item.id),
-        //     };
-        //   }),
-        // });
+        responseItem = await axios.get(`/departments/${id}`);
+        setItem({
+          name: responseItem?.data?.data?.name
+            ? responseItem?.data?.data?.name
+            : "",
+          isActive: responseItem?.data?.data?.is_active ? true : false,
+        });
       } catch (error) {
         console.log(error);
       }
@@ -132,13 +118,13 @@ const AddEditDepartment = (props) => {
       };
       props.type === "add"
         ? axios
-            .post(`departments`, bodyObj)
+            .post(`/departments`, bodyObj)
             .then((result) => {
               navigate("/admin/departments");
             })
             .catch((err) => console.log(err))
         : axios
-            .patch(`departments/${id}`, bodyObj)
+            .patch(`/departments/${id}`, bodyObj)
             .then((result) => {
               toggleActive();
               setIsSaving(false);

@@ -16,7 +16,7 @@ import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { genders } from "../../constants";
 
-const AddEditJobTtile = (props) => {
+const AddEditEmploymentType = (props) => {
   const navigate = useNavigate();
   const { id } = useParams();
   const [isSaving, setIsSaving] = useState(true);
@@ -37,7 +37,7 @@ const AddEditJobTtile = (props) => {
     let responseItem = "";
     if (props.type === "edit") {
       try {
-        responseItem = await axios.get(`/job-titles/${id}`);
+        responseItem = await axios.get(`/employment-types/${id}`);
         setItem({
           name: responseItem?.data?.data?.name
             ? responseItem?.data?.data?.name
@@ -62,9 +62,9 @@ const AddEditJobTtile = (props) => {
 
   return (
     <Page
-      title={`${props.type === "add" ? "Add" : "Edit"} Job Title`}
+      title={`${props.type === "add" ? "Add" : "Edit"} Employment Type`}
       // backAction={[{ onAction: () => navigate("/admin/users") }]}
-      backAction={{ onAction: () => navigate("/admin/job-titles") }}
+      backAction={{ onAction: () => navigate("/admin/employment-types") }}
       narrowWidth
     >
       {isSaving ? <Loading /> : null}
@@ -94,9 +94,9 @@ const AddEditJobTtile = (props) => {
               onClick: () => {
                 setIsSaving(true);
                 axios
-                  .delete(`job-titles/${id}`)
+                  .delete(`employment-types/${id}`)
                   .then((result) => {
-                    navigate("/admin/job-titles");
+                    navigate("/admin/employment-types");
                   })
                   .catch((err) => console.log(err));
               },
@@ -118,13 +118,13 @@ const AddEditJobTtile = (props) => {
       };
       props.type === "add"
         ? axios
-            .post(`/job-titles`, bodyObj)
+            .post(`/employment-types`, bodyObj)
             .then((result) => {
-              navigate("/admin/job-titles");
+              navigate("/admin/employment-types");
             })
             .catch((err) => console.log(err))
         : axios
-            .patch(`/job-titles/${id}`, bodyObj)
+            .patch(`/employment-types/${id}`, bodyObj)
             .then((result) => {
               toggleActive();
               setIsSaving(false);
@@ -134,4 +134,4 @@ const AddEditJobTtile = (props) => {
   }
 };
 
-export default AddEditJobTtile;
+export default AddEditEmploymentType;

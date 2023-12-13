@@ -150,12 +150,8 @@ const Departments = () => {
       setPageObject({
         ...pageObject,
         tableItems: responseDepartments.data.data.data.map((item, index) => [
-          item?.name && item.name,
-          item.is_active ? (
-            <Badge status="success">Active</Badge>
-          ) : (
-            <Badge status="info">Inactive</Badge>
-          ),
+          item?.name ? item?.name : "-",
+
           <ButtonGroup>
             <Button onClick={() => handleEdit(item.id)}>Edit</Button>
           </ButtonGroup>,
@@ -222,7 +218,6 @@ const Departments = () => {
             <Text variant="bodyMd" as="p" fontWeight="medium">
               Name
             </Text>,
-            <Text variant="bodyMd" as="p" fontWeight="medium"></Text>,
             <Text variant="bodyMd" as="p" fontWeight="medium"></Text>,
           ]}
           rows={pageObject.tableItems}

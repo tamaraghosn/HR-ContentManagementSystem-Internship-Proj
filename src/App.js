@@ -17,6 +17,8 @@ import Departments from "./Pages/Departments/List";
 import AddEditDepartment from "./Pages/Departments/AddEdit";
 import JobTitles from "./Pages/JobTitles/List";
 import AddEditJobTtile from "./Pages/JobTitles/AddEdit";
+import EmploymentTypes from "./Pages/Employment Types/List";
+import AddEditEmploymentType from "./Pages/Employment Types/AddEdit";
 // import Departments from "./Pages/Departments/List";
 
 function App() {
@@ -54,7 +56,15 @@ function App() {
       ),
     },
     {
-      path: "/admin/jobtitles",
+      path: "/admin/departments/:id",
+      element: (
+        <NavigationLayout>
+          <AddEditDepartment type="edit"></AddEditDepartment>
+        </NavigationLayout>
+      ),
+    },
+    {
+      path: "/admin/job-titles",
       element: (
         <NavigationLayout>
           <JobTitles></JobTitles>
@@ -62,10 +72,42 @@ function App() {
       ),
     },
     {
-      path: "/admin/jobtitles/new",
+      path: "/admin/job-titles/new",
       element: (
         <NavigationLayout>
           <AddEditJobTtile type="add"></AddEditJobTtile>
+        </NavigationLayout>
+      ),
+    },
+    {
+      path: "/admin/job-titles/:id",
+      element: (
+        <NavigationLayout>
+          <AddEditJobTtile type="edit"></AddEditJobTtile>
+        </NavigationLayout>
+      ),
+    },
+    {
+      path: "/admin/employment-types",
+      element: (
+        <NavigationLayout>
+          <EmploymentTypes></EmploymentTypes>
+        </NavigationLayout>
+      ),
+    },
+    {
+      path: "/admin/employment-types/new",
+      element: (
+        <NavigationLayout>
+          <AddEditEmploymentType type="add"></AddEditEmploymentType>
+        </NavigationLayout>
+      ),
+    },
+    {
+      path: "/admin/employment-types/:id",
+      element: (
+        <NavigationLayout>
+          <AddEditEmploymentType type="edit"></AddEditEmploymentType>
         </NavigationLayout>
       ),
     },
@@ -74,6 +116,14 @@ function App() {
       element: (
         <NavigationLayout>
           <AddEditEmployee type="add" />
+        </NavigationLayout>
+      ),
+    },
+    {
+      path: "/admin/employees/:id",
+      element: (
+        <NavigationLayout>
+          <AddEditEmployee type="edit" />
         </NavigationLayout>
       ),
     },

@@ -26,6 +26,7 @@ import {
   ProductsMajor,
   DiscountsMajor,
   CategoriesMajor,
+  ListMajor,
 } from "@shopify/polaris-icons";
 import Cookies from "js-cookie";
 import logoImg from "../Assets/Images/logoWhite.svg";
@@ -248,10 +249,18 @@ function NavigationLayout(props) {
           },
           {
             url: "/",
-            onClick: () => navigate("/admin/jobtitles"),
+            onClick: () => navigate("/admin/job-titles"),
             label: "Job Titles",
-            icon: CustomersMajor,
-            selected: window.location.href.indexOf("/admin/jobtitles") > -1,
+            icon: ProductsMajor,
+            selected: window.location.href.indexOf("/admin/job-titles") > -1,
+          },
+          {
+            url: "/",
+            onClick: () => navigate("/admin/employment-types"),
+            label: "Employment Types",
+            icon: ListMajor,
+            selected:
+              window.location.href.indexOf("/admin/employment-types") > -1,
           },
         ]}
       ></Navigation.Section>
