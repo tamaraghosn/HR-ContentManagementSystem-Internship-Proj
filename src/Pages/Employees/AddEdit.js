@@ -15,6 +15,7 @@ import axios from "../../Assets/Lib/axios";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { genders } from "../../constants";
+import Select2 from "react-select";
 
 const AddEditEmployee = (props) => {
   const navigate = useNavigate();
@@ -100,12 +101,7 @@ const AddEditEmployee = (props) => {
   //   setItem({ ...item, isInactive: checked });
   // };
 
-  const optionsEmploymentType = [
-    { label: "Part-Time", value: "part-time" },
-    { label: "Full-Time", value: "full-time" },
-    { label: "FreeLancer", value: "freelancer" },
-  ];
-
+  const [optionsEmploymentType, setOptionsEmploymentType] = useState([]);
   const optionsJobTitle = [{ label: "Frontend", value: "front-end" }];
 
   const handleSelectChangeEmploymentType = (newValue) => {
@@ -139,6 +135,20 @@ const AddEditEmployee = (props) => {
 
   async function fetchData() {
     let responseItem = "";
+    let responseEmploymentTypes = "";
+    try {
+      responseEmploymentTypes = await axios.get(`/employment-types`);
+      setOptionsEmploymentType(
+        responseEmploymentTypes.data.data.data.map((item, index) => {
+          return {
+            label: item.name,
+            value: String(item.id),
+          };
+        })
+      );
+    } catch (error) {
+      console.log(error);
+    }
     if (props.type === "edit") {
       try {
         responseItem = await axios.get(`/employees/${id}`);
@@ -256,7 +266,20 @@ const AddEditEmployee = (props) => {
           </FormLayout.Group>
 
           <FormLayout.Group>
-            <Select
+            <FormLayout>
+              <Text>Employment Type</Text>
+              <Select2
+                options={optionsEmploymentType}
+                onChange={handleSelectChangeEmploymentType}
+                value={item.employmentType}
+                placeholder="Please select"
+                styles={{
+                  // Fixes the overlapping problem of the component
+                  menu: (provided) => ({ ...provided, zIndex: 9999 }),
+                }}
+              />
+            </FormLayout>
+            {/* <Select
               label="Employment Type"
               options={optionsEmploymentType.map((item, index) => {
                 return { label: item.label, value: item.value };
@@ -264,7 +287,7 @@ const AddEditEmployee = (props) => {
               onChange={handleSelectChangeEmploymentType}
               value={item.employmentType}
               placeholder="Please choose an option"
-            />
+            /> */}
             <TextField
               value={item.probationPeriod}
               onChange={handleChangeProbationPeriod}
@@ -362,7 +385,7 @@ const AddEditEmployee = (props) => {
         employment_status: item.status,
         probation_period: item.probationPeriod,
         work_email_address: item.workEmailAddress,
-        employment_type_id: item.employmentType,
+        employment_type_id: item.employmentType.value,
         job_title_id: item.jobTitle,
         department_id: item.department,
         line_manager_id: item.lineManager,
