@@ -31,7 +31,7 @@ import makeAnimated from "react-select/animated";
 import Pagination from "@mui/material/Pagination";
 
 const animatedComponents = makeAnimated();
-const Employees = () => {
+const EmploymentTypes = () => {
   const navigate = useNavigate();
   const addEditState = useRef("");
   const perPage = 100;
@@ -46,8 +46,8 @@ const Employees = () => {
     tableTotalPages: 0,
     isListEmpty: false,
   });
-  const handleAddEmployee = () => {
-    navigate("/admin/employees/new");
+  const handleAddEmploymentType = () => {
+    navigate("/admin/employment-types/new");
   };
   function handleFiltersQueryChange(queryValue) {
     refBoolPage.current = false;
@@ -124,7 +124,7 @@ const Employees = () => {
     setPage(value);
   };
   const handleEdit = (id) => {
-    navigate(`/admin/employees/${id}`);
+    navigate(`/admin/employment-types/${id}`);
   };
 
   useEffect(() => {
@@ -132,12 +132,14 @@ const Employees = () => {
   }, [ts, availability, queryValue, page]);
 
   async function fetchData() {
-    let responseEmployees = "";
+    let responseEmploymentTypes = "";
     let responseFeatures = [];
 
     try {
-      responseEmployees = await axios.get(
-        `/employees?per_page=${perPage}&page=${refBoolPage.current ? page : 1}${
+      responseEmploymentTypes = await axios.get(
+        `/employment-types?per_page=${perPage}&page=${
+          refBoolPage.current ? page : 1
+        }${
           queryValue
             ? `&filter[${
                 availability === "" ? "name" : availability
@@ -147,16 +149,20 @@ const Employees = () => {
       );
       setPageObject({
         ...pageObject,
-        tableItems: responseEmployees.data.data.data.map((item, index) => [
-          item?.firstName && item.firstName,
+        tableItems: responseEmploymentTypes.data.data.data.map(
+          (item, index) => [
+            item?.name ? item?.name : "-",
 
-          <ButtonGroup>
-            <Button onClick={() => handleEdit(item.id)}>Edit</Button>
-          </ButtonGroup>,
-        ]),
+            <ButtonGroup>
+              <Button onClick={() => handleEdit(item.id)}>Edit</Button>
+            </ButtonGroup>,
+          ]
+        ),
         isLoading: false,
-        isListEmpty: !responseEmployees.data.data.data.length ? true : false,
-        tableTotalPages: responseEmployees.data.data.total,
+        isListEmpty: !responseEmploymentTypes.data.data.data.length
+          ? true
+          : false,
+        tableTotalPages: responseEmploymentTypes.data.data.total,
       });
     } catch (error) {
       console.log(error);
@@ -181,7 +187,7 @@ const Employees = () => {
   const [active, setActive] = useState(false);
   const toggleActive = useCallback(() => setActive((active) => !active), []);
   const [toastContent, setToastContent] = useState(
-    "This employee has been successfully deleted"
+    "This Employment Type has been successfully deleted"
   );
 
   const toastMarkup = active ? (
@@ -190,10 +196,10 @@ const Employees = () => {
 
   return (
     <Page
-      title="Employees"
+      title="Employment Type"
       primaryAction={
-        <Button variant="primary" onClick={handleAddEmployee}>
-          Add Employee
+        <Button variant="primary" onClick={handleAddEmploymentType}>
+          Add Employment Type
         </Button>
       }
     >
@@ -273,4 +279,4 @@ const Employees = () => {
   }
 };
 
-export default Employees;
+export default EmploymentTypes;

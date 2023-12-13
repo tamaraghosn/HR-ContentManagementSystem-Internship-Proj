@@ -24,19 +24,18 @@ const AddEditEmployee = (props) => {
     firstName: "",
     lastName: "",
     phoneNumber: "",
-    name: "",
     gender: "",
     workEmailAddress: "",
     title: "",
     joiningDate: null,
     employmentEndDate: null,
-    isActive: false,
+    status: false,
     // isInactive: false,
     employmentType: "",
     probationPeriod: "",
-    department: "",
-    jobTitle: "",
-    activeEmployees: "",
+    department: " ",
+    jobTitle: " ",
+    lineManager: " ",
   });
   const handleChangeFirstName = (newValue) => {
     setItem({ ...item, firstName: newValue });
@@ -75,11 +74,11 @@ const AddEditEmployee = (props) => {
     setItem({ ...item, title: newValue });
   };
   const optionsTitle = [
-    { label: "Mr", value: "mr" },
-    { label: "Mrs", value: "mrs" },
-    { label: "Ms", value: "ms" },
-    { label: "Miss", value: "miss" },
-    { label: "Mstr", value: "mstr" },
+    { label: "Mr", value: "1" },
+    { label: "Mrs", value: "2" },
+    { label: "Ms", value: "3" },
+    { label: "Miss", value: "4" },
+    { label: "Mstr", value: "5" },
   ];
 
   const handleChangeJoiningDate = (date) => {
@@ -94,7 +93,7 @@ const AddEditEmployee = (props) => {
   };
 
   const handleChangeActiveEmploymentStatus = (checked) => {
-    setItem({ ...item, isActive: checked });
+    setItem({ ...item, status: checked });
   };
 
   // const handleChangeInactiveEmploymentStatus = (checked) => {
@@ -106,6 +105,8 @@ const AddEditEmployee = (props) => {
     { label: "Full-Time", value: "full-time" },
     { label: "FreeLancer", value: "freelancer" },
   ];
+
+  const optionsJobTitle = [{ label: "Frontend", value: "front-end" }];
 
   const handleSelectChangeEmploymentType = (newValue) => {
     setItem({ ...item, employmentType: newValue });
@@ -128,8 +129,8 @@ const AddEditEmployee = (props) => {
   };
   const [jobTitleError, setJobTitleError] = useState("");
 
-  const handleSelectChangeActiveEmployees = (newValue) => {
-    setItem({ ...item, activeEmployees: newValue });
+  const handleSelectChangeLineManager = (newValue) => {
+    setItem({ ...item, lineManager: newValue });
   };
 
   useEffect(() => {
@@ -140,27 +141,13 @@ const AddEditEmployee = (props) => {
     let responseItem = "";
     if (props.type === "edit") {
       try {
-        responseItem = await axios.get(`employees/${id}`);
-        // setItem({
-        //   name: responseItem?.data?.data?.name
-        //     ? responseItem?.data?.data?.name
-        //     : "",
-        //   isActive: responseItem?.data?.data?.is_active ? true : false,
-        //   features: responseItem?.data?.data?.features.map((item, index) => {
-        //     return {
-        //       label: item.name,
-        //       value: String(item.id),
-        //       key: String(item.id),
-        //     };
-        //   }),
-        //   discounts: responseItem?.data?.data?.discounts.map((item, index) => {
-        //     return {
-        //       label: item.name,
-        //       value: String(item.id),
-        //       key: String(item.id),
-        //     };
-        //   }),
-        // });
+        responseItem = await axios.get(`/employees/${id}`);
+        setItem({
+          firstName: responseItem?.data?.data?.firstName
+            ? responseItem?.data?.data?.firstName
+            : "",
+          isActive: responseItem?.data?.data?.is_active ? true : false,
+        });
       } catch (error) {
         console.log(error);
       }
@@ -295,6 +282,9 @@ const AddEditEmployee = (props) => {
             <Select
               label="Job Title"
               onChange={handleSelectChangeJobTitle}
+              options={optionsJobTitle.map((item, index) => {
+                return { label: item.label, value: item.value };
+              })}
               error={jobTitleError}
               value={item.jobTitle}
               placeholder="Please choose an option"
@@ -303,15 +293,15 @@ const AddEditEmployee = (props) => {
           </FormLayout.Group>
           <Select
             label="Line manager/supervisor"
-            onChange={handleSelectChangeActiveEmployees}
-            value={item.activeEmployees}
+            onChange={handleSelectChangeLineManager}
+            value={item.lineManager}
           />
 
           <Text>Employment Status</Text>
           <FormLayout.Group>
             <Checkbox
               label="Active"
-              checked={item.isActive}
+              checked={item.status}
               onChange={handleChangeActiveEmploymentStatus}
             />
           </FormLayout.Group>
@@ -363,24 +353,34 @@ const AddEditEmployee = (props) => {
       !item.joiningDate && setJoiningDateError("This field is required");
       !item.jobTitle && setJobTitleError("This field is required");
     } else {
-      // setIsSaving(true);
-      // const bodyObj = {
-      //   name: item.firstName,
-      // };
-      // props.type === "add"
-      //   ? axios
-      //       .post(`employees`, bodyObj)
-      //       .then((result) => {
-      //         navigate("/admin/employees");
-      //       })
-      //       .catch((err) => console.log(err))
-      //   : axios
-      //       .patch(`employees/${id}`, bodyObj)
-      //       .then((result) => {
-      //         toggleActive();
-      //         setIsSaving(false);
-      //       })
-      //       .catch((err) => console.log(err));
+      setIsSaving(true);
+      const bodyObj = {
+        title: item.title,
+        first_name: item.firstName,
+        joining_date: item.joiningDate,
+        employment_end_date: item.employmentEndDate,
+        employment_status: item.status,
+        probation_period: item.probationPeriod,
+        work_email_address: item.workEmailAddress,
+        employment_type_id: item.employmentType,
+        job_title_id: item.jobTitle,
+        department_id: item.department,
+        line_manager_id: item.lineManager,
+      };
+      props.type === "add"
+        ? axios
+            .post(`/employees`, bodyObj)
+            .then((result) => {
+              navigate("/admin/employees");
+            })
+            .catch((err) => console.log(err))
+        : axios
+            .patch(`/employees/${id}`, bodyObj)
+            .then((result) => {
+              toggleActive();
+              setIsSaving(false);
+            })
+            .catch((err) => console.log(err));
     }
   }
 };
