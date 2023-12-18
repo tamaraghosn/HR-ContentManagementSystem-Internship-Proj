@@ -243,29 +243,40 @@ const PersonalInformationForm = () => {
   );
 
   function handleSave() {
-    if (!item.firstName || !item.lastName) {
-      !item.firstName && setFirstNameError("This field is required");
-      !item.lastName && setLastNameError("This field is required");
-    } else {
-      // setIsSaving(true);
-      // const bodyObj = {
-      //   name: item.firstName,
-      // };
-      // props.type === "add"
-      //   ? axios
-      //       .post(`employees`, bodyObj)
-      //       .then((result) => {
-      //         navigate("/admin/employees");
-      //       })
-      //       .catch((err) => console.log(err))
-      //   : axios
-      //       .patch(`employees/${id}`, bodyObj)
-      //       .then((result) => {
-      //         toggleActive();
-      //         setIsSaving(false);
-      //       })
-      //       .catch((err) => console.log(err));
-    }
+    // if (!item.firstName || !item.lastName) {
+    //   !item.firstName && setFirstNameError("This field is required");
+    //   !item.lastName && setLastNameError("This field is required");
+    // } else {
+    //   setIsSaving(true);
+    //   const bodyObj = {
+    //     last_name: item.lastName,
+    //     display_name: item.displayName,
+    //     father_name: item.fatherName,
+    //     mother_name: item.motherName,
+    //     date_of_birth: item.dateOfBirth,
+    //     blood_type: item.bloodType,
+    //     gender: item.gender,
+    //     nationality: item.nationality,
+    //     other_nationality: item.otherNationality,
+    //     profile_picture: item.profilePicture,
+    //     linkedIn_profile: item.linkedInLink,
+    //     bio: item.bio,
+    //   };
+    //   props.type === "add"
+    //     ? axios
+    //         .post(`employees`, bodyObj)
+    //         .then((result) => {
+    //           navigate("/admin/employees");
+    //         })
+    //         .catch((err) => console.log(err))
+    //     : axios
+    //         .patch(`employees/${id}`, bodyObj)
+    //         .then((result) => {
+    //           toggleActive();
+    //           setIsSaving(false);
+    //         })
+    //         .catch((err) => console.log(err));
+    // }
   }
 };
 

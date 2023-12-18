@@ -50,11 +50,11 @@ const AddEditEmployee = (props) => {
   };
   const [lastNameError, setLastNameError] = useState("");
 
-  const handleChangePhoneNumber = (newValue) => {
-    setItem({ ...item, phoneNumber: newValue });
-    setPhoneNumberError("");
-  };
-  const [phoneNumberError, setPhoneNumberError] = useState("");
+  // const handleChangePhoneNumber = (newValue) => {
+  //   setItem({ ...item, phoneNumber: newValue });
+  //   setPhoneNumberError("");
+  // };
+  // const [phoneNumberError, setPhoneNumberError] = useState("");
 
   const handleChangeWorkEmailAddress = (newValue) => {
     setItem({ ...item, workEmailAddress: newValue });
@@ -62,14 +62,14 @@ const AddEditEmployee = (props) => {
   };
   const [workEmailAddressError, setWorkEmailAddressError] = useState("");
 
-  const handleSelectChangeGender = (newValue) => {
-    setItem({ ...item, gender: newValue });
-  };
+  // const handleSelectChangeGender = (newValue) => {
+  //   setItem({ ...item, gender: newValue });
+  // };
 
-  const optionsGender = [
-    { label: "Male", value: "male" },
-    { label: "Female", value: "female" },
-  ];
+  // const optionsGender = [
+  //   { label: "Male", value: "male" },
+  //   { label: "Female", value: "female" },
+  // ];
 
   const handleSelectChangeTitle = (newValue) => {
     setItem({ ...item, title: newValue });
@@ -90,7 +90,6 @@ const AddEditEmployee = (props) => {
 
   const handleChangeEmploymentEndDate = (date) => {
     setItem({ ...item, employmentEndDate: date });
-    setItem({ ...item, isInactive: true });
   };
 
   const handleChangeActiveEmploymentStatus = (checked) => {
@@ -102,7 +101,8 @@ const AddEditEmployee = (props) => {
   // };
 
   const [optionsEmploymentType, setOptionsEmploymentType] = useState([]);
-  const optionsJobTitle = [{ label: "Frontend", value: "front-end" }];
+  const [optionsDepartment, setOptionsDepartment] = useState([]);
+  const [optionsJobTitle, setOptionsJobTitle] = useState([]);
 
   const handleSelectChangeEmploymentType = (newValue) => {
     setItem({ ...item, employmentType: newValue });
@@ -125,7 +125,7 @@ const AddEditEmployee = (props) => {
   };
   const [jobTitleError, setJobTitleError] = useState("");
 
-  const handleSelectChangeLineManager = (newValue) => {
+  const handleChangeLineManager = (newValue) => {
     setItem({ ...item, lineManager: newValue });
   };
 
@@ -136,6 +136,8 @@ const AddEditEmployee = (props) => {
   async function fetchData() {
     let responseItem = "";
     let responseEmploymentTypes = "";
+    let responseDepartments = "";
+    let responseJobTitles = "";
     try {
       responseEmploymentTypes = await axios.get(`/employment-types`);
       setOptionsEmploymentType(
@@ -149,12 +151,72 @@ const AddEditEmployee = (props) => {
     } catch (error) {
       console.log(error);
     }
+
+    try {
+      responseDepartments = await axios.get(`/departments`);
+      setOptionsDepartment(
+        responseDepartments.data.data.data.map((item, index) => {
+          return {
+            label: item.name,
+            value: String(item.id),
+          };
+        })
+      );
+    } catch (error) {
+      console.log(error);
+    }
+
+    try {
+      responseJobTitles = await axios.get(`/job-titles`);
+      setOptionsJobTitle(
+        responseJobTitles.data.data.data.map((item, index) => {
+          return {
+            label: item.name,
+            value: String(item.id),
+          };
+        })
+      );
+    } catch (error) {
+      console.log(error);
+    }
+
     if (props.type === "edit") {
       try {
         responseItem = await axios.get(`/employees/${id}`);
+        console.log(responseItem.data.data);
         setItem({
-          firstName: responseItem?.data?.data?.firstName
-            ? responseItem?.data?.data?.firstName
+          firstName: responseItem?.data?.data?.first_name
+            ? responseItem?.data?.data?.first_name
+            : "",
+          lastName: responseItem?.data?.data?.last_name
+            ? responseItem?.data?.data?.last_name
+            : "",
+          workEmailAddress: responseItem?.data?.data?.work_email_address
+            ? responseItem?.data?.data?.work_email_address
+            : "",
+          title: responseItem?.data?.data?.title
+            ? String(responseItem?.data?.data?.title)
+            : "",
+          joiningDate: responseItem?.data?.data?.joining_date
+            ? responseItem?.data?.data?.joining_date
+            : "",
+          jobTitle: responseItem?.data?.data?.job_title_id
+            ? String(responseItem?.data?.data?.job_title_id)
+            : "",
+          employmentEndDate: responseItem?.data?.data?.employment_end_date
+            ? responseItem?.data?.data?.employment_end_date
+            : "",
+          department: responseItem?.data?.data?.department_id
+            ? String(responseItem?.data?.data?.department_id)
+            : "",
+          employmentType: responseItem?.data?.data?.employment_type_id
+            ? String(responseItem?.data?.data?.employment_type_id)
+            : "",
+          lineManager: responseItem?.data?.data?.line_manager
+            ? responseItem?.data?.data?.line_manager
+            : "",
+          probationPeriod: responseItem?.data?.data?.probation_period
+            ? responseItem?.data?.data?.probation_period
             : "",
           isActive: responseItem?.data?.data?.is_active ? true : false,
         });
@@ -205,14 +267,14 @@ const AddEditEmployee = (props) => {
           </FormLayout.Group>
 
           <FormLayout.Group>
-            <TextField
+            {/* <TextField
               value={item.phoneNumber}
               onChange={handleChangePhoneNumber}
               error={phoneNumberError}
               label="Phone Number"
               type="email"
               requiredIndicator
-            />
+            /> */}
 
             <TextField
               value={item.workEmailAddress}
@@ -225,7 +287,7 @@ const AddEditEmployee = (props) => {
           </FormLayout.Group>
 
           <FormLayout.Group>
-            <Select
+            {/* <Select
               label="Gender"
               options={optionsGender.map((item, index) => {
                 return { label: item.label, value: item.value };
@@ -233,7 +295,7 @@ const AddEditEmployee = (props) => {
               onChange={handleSelectChangeGender}
               value={item.gender}
               placeholder="Please choose an option"
-            />
+            /> */}
 
             <Select
               label="Title"
@@ -279,51 +341,51 @@ const AddEditEmployee = (props) => {
                 }}
               />
             </FormLayout>
-            {/* <Select
-              label="Employment Type"
-              options={optionsEmploymentType.map((item, index) => {
-                return { label: item.label, value: item.value };
-              })}
-              onChange={handleSelectChangeEmploymentType}
-              value={item.employmentType}
-              placeholder="Please choose an option"
-            /> */}
+          </FormLayout.Group>
+          <FormLayout.Group>
+            <FormLayout>
+              <Text>Department</Text>
+              <SelectSearchable
+                options={optionsDepartment}
+                onChange={handleSelectChangeDepartment}
+                value={item.department}
+                placeholder="Please select"
+                styles={{
+                  // Fixes the overlapping problem of the component
+                  menu: (provided) => ({ ...provided, zIndex: 9999 }),
+                }}
+              />
+            </FormLayout>
+            <FormLayout>
+              <Text>Job Title</Text>
+              <SelectSearchable
+                options={optionsJobTitle}
+                onChange={handleSelectChangeJobTitle}
+                value={item.jobTitle}
+                placeholder="Please select"
+                styles={{
+                  // Fixes the overlapping problem of the component
+                  menu: (provided) => ({ ...provided, zIndex: 9999 }),
+                }}
+              />
+            </FormLayout>
+          </FormLayout.Group>
+          <FormLayout.Group>
+            <TextField
+              label="Line manager/supervisor"
+              onChange={handleChangeLineManager}
+              value={item.lineManager}
+            />
             <TextField
               value={item.probationPeriod}
               onChange={handleChangeProbationPeriod}
               label="Probation Period"
             />
           </FormLayout.Group>
-          <FormLayout.Group>
-            <Select
-              label="Department"
-              onChange={handleSelectChangeDepartment}
-              value={item.department}
-              placeholder="Please choose an option"
-              r
-            />
-            <Select
-              label="Job Title"
-              onChange={handleSelectChangeJobTitle}
-              options={optionsJobTitle.map((item, index) => {
-                return { label: item.label, value: item.value };
-              })}
-              error={jobTitleError}
-              value={item.jobTitle}
-              placeholder="Please choose an option"
-              requiredIndicator
-            />
-          </FormLayout.Group>
-          <Select
-            label="Line manager/supervisor"
-            onChange={handleSelectChangeLineManager}
-            value={item.lineManager}
-          />
 
-          <Text>Employment Status</Text>
           <FormLayout.Group>
             <Checkbox
-              label="Active"
+              label="Is Active"
               checked={item.status}
               onChange={handleChangeActiveEmploymentStatus}
             />
@@ -362,7 +424,7 @@ const AddEditEmployee = (props) => {
   function handleSave() {
     if (
       !item.firstName ||
-      !item.phoneNumber ||
+      // !item.phoneNumber ||
       !item.lastName ||
       !item.workEmailAddress ||
       !item.joiningDate ||
@@ -370,7 +432,7 @@ const AddEditEmployee = (props) => {
     ) {
       !item.firstName && setFirstNameError("This field is required");
       !item.lastName && setLastNameError("This field is required");
-      !item.phoneNumber && setPhoneNumberError("This field is required");
+      // !item.phoneNumber && setPhoneNumberError("This field is required");
       !item.workEmailAddress &&
         setWorkEmailAddressError("This field is required");
       !item.joiningDate && setJoiningDateError("This field is required");
@@ -380,15 +442,16 @@ const AddEditEmployee = (props) => {
       const bodyObj = {
         title: item.title,
         first_name: item.firstName,
+        last_name: item.lastName,
         joining_date: item.joiningDate,
         employment_end_date: item.employmentEndDate,
         employment_status: item.status,
         probation_period: item.probationPeriod,
         work_email_address: item.workEmailAddress,
         employment_type_id: item.employmentType.value,
-        job_title_id: item.jobTitle,
-        department_id: item.department,
-        line_manager_id: item.lineManager,
+        job_title_id: item.jobTitle.value,
+        department_id: item.department.value,
+        line_manager: item.lineManager,
       };
       props.type === "add"
         ? axios

@@ -49,6 +49,21 @@ const Employees = () => {
   const handleAddEmployee = () => {
     navigate("/admin/employees/new");
   };
+
+  function getTitleById(id) {
+    switch (id) {
+      case 1:
+        return "Mr";
+      case 2:
+        return "Mrs";
+      case 3:
+        return "Ms";
+      case 4:
+        return "Miss";
+      case 5:
+        return "Mstr";
+    }
+  }
   function handleFiltersQueryChange(queryValue) {
     refBoolPage.current = false;
     setQueryValue(queryValue);
@@ -145,10 +160,17 @@ const Employees = () => {
             : ""
         }`
       );
+
       setPageObject({
         ...pageObject,
         tableItems: responseEmployees.data.data.data.map((item, index) => [
-          item?.firstName && item.firstName,
+          item?.first_name ? item.first_name : "-",
+          item?.last_name ? item.last_name : "-",
+          item?.work_email_address ? item.work_email_address : "-",
+          item?.title ? getTitleById(item.title) : "-",
+          item?.joining_date ? item.joining_date : "-",
+          item?.employment_end_date ? item.employment_end_date : "-",
+          item?.department && item.department.name ? item.department.name : "-",
 
           <ButtonGroup>
             <Button onClick={() => handleEdit(item.id)}>Edit</Button>
@@ -214,7 +236,25 @@ const Employees = () => {
           columnContentTypes={["text", "text", "text", "text"]}
           headings={[
             <Text variant="bodyMd" as="p" fontWeight="medium">
-              Name
+              First Name
+            </Text>,
+            <Text variant="bodyMd" as="p" fontWeight="medium">
+              Last Name
+            </Text>,
+            <Text variant="bodyMd" as="p" fontWeight="medium">
+              Email
+            </Text>,
+            <Text variant="bodyMd" as="p" fontWeight="medium">
+              Title
+            </Text>,
+            <Text variant="bodyMd" as="p" fontWeight="medium">
+              Starting Date
+            </Text>,
+            <Text variant="bodyMd" as="p" fontWeight="medium">
+              End Date
+            </Text>,
+            <Text variant="bodyMd" as="p" fontWeight="medium">
+              Department
             </Text>,
             <Text variant="bodyMd" as="p" fontWeight="medium"></Text>,
           ]}
