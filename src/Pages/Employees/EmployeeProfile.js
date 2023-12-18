@@ -51,12 +51,12 @@ const EmployeeProfile = () => {
   return (
     <Page
       title="Employee Profile"
-      primaryAction={{
-        content: "Save",
-        onAction: () => {
-          // Handle save action logic here
-        },
-      }}
+      // primaryAction={{
+      //   content: "Save",
+      //   onAction: () => {
+      //     // Handle save action logic here
+      //   },
+      // }}
     >
       <Card>
         <Tabs tabs={tabs} selected={selected} onSelect={handleTabChange}>

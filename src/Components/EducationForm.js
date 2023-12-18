@@ -1,5 +1,7 @@
 import { FormLayout, Text, TextField, Select } from "@shopify/polaris";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import SelectSearchable from "react-select";
+import axios from "../Assets/Lib/axios";
 
 const EducationForm = () => {
   const [item, setItem] = useState({
@@ -62,6 +64,30 @@ const EducationForm = () => {
   const handleChangeEndDate = (date) => {
     setItem({ ...item, endDate: date });
   };
+  const [optionsLanguage, setOptionsLanguage] = useState([]);
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  async function fetchData() {
+    let responseItem = "";
+    let responseLanguages = "";
+
+    try {
+      responseLanguages = await axios.get(`/languages`);
+      setOptionsLanguage(
+        responseLanguages.data.data.data.map((item, index) => {
+          return {
+            label: item.name,
+            value: String(item.id),
+          };
+        })
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <FormLayout>
@@ -70,15 +96,19 @@ const EducationForm = () => {
       </Text>
 
       <FormLayout.Group>
-        <Select
-          label="Language"
-          // options={optionsLanguage.map((item, index) => {
-          //     return { label: item.label, value: item.value };
-          // })}
-          onChange={handleSelectChangeLanguage}
-          value={item.language}
-          placeholder="Choose an option"
-        />
+        <FormLayout>
+          <Text>Language</Text>
+          <SelectSearchable
+            options={optionsLanguage}
+            onChange={handleSelectChangeLanguage}
+            value={item.language}
+            placeholder="Please select"
+            styles={{
+              // Fixes the overlapping problem of the component
+              menu: (provided) => ({ ...provided, zIndex: 9999 }),
+            }}
+          />
+        </FormLayout>
       </FormLayout.Group>
       <FormLayout.Group>
         <Select

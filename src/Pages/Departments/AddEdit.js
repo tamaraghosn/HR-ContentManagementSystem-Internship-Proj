@@ -115,6 +115,7 @@ const AddEditDepartment = (props) => {
       setIsSaving(true);
       const bodyObj = {
         name: item.name,
+        is_active: 1,
       };
       props.type === "add"
         ? axios
