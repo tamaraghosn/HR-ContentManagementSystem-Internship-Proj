@@ -15,7 +15,7 @@ import axios from "../../Assets/Lib/axios";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { genders } from "../../constants";
-import Select2 from "react-select";
+import SelectSearchable from "react-select";
 
 const AddEditEmployee = (props) => {
   const navigate = useNavigate();
@@ -330,7 +330,7 @@ const AddEditEmployee = (props) => {
           <FormLayout.Group>
             <FormLayout>
               <Text>Employment Type</Text>
-              <Select2
+              <SelectSearchable
                 options={optionsEmploymentType}
                 onChange={handleSelectChangeEmploymentType}
                 value={item.employmentType}
