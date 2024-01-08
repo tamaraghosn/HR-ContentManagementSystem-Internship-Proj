@@ -31,7 +31,7 @@ import makeAnimated from "react-select/animated";
 import Pagination from "@mui/material/Pagination";
 
 const animatedComponents = makeAnimated();
-const Employees = () => {
+const Interns = () => {
   const navigate = useNavigate();
   const addEditState = useRef("");
   const perPage = 100;
@@ -46,8 +46,8 @@ const Employees = () => {
     tableTotalPages: 0,
     isListEmpty: false,
   });
-  const handleAddEmployee = () => {
-    navigate("/admin/employees/new");
+  const handleAddIntern = () => {
+    navigate("/admin/interns/new");
   };
 
   function getTitleById(id) {
@@ -139,10 +139,10 @@ const Employees = () => {
     setPage(value);
   };
   const handleEdit = (id) => {
-    navigate(`/admin/employees/${id}`);
+    navigate(`/admin/interns/${id}`);
   };
   const handleProfile = (id) => {
-    navigate(`/admin/employees/profile/${id}`);
+    navigate(`/admin/interns/profile/${id}`);
   };
 
   useEffect(() => {
@@ -150,12 +150,12 @@ const Employees = () => {
   }, [ts, availability, queryValue, page]);
 
   async function fetchData() {
-    let responseEmployees = "";
+    let responseInterns = "";
     let responseFeatures = [];
 
     try {
-      responseEmployees = await axios.get(
-        `/employees?per_page=${perPage}&page=${refBoolPage.current ? page : 1}${
+      responseInterns = await axios.get(
+        `/interns?per_page=${perPage}&page=${refBoolPage.current ? page : 1}${
           queryValue
             ? `&filter[${
                 availability === "" ? "name" : availability
@@ -166,14 +166,11 @@ const Employees = () => {
 
       setPageObject({
         ...pageObject,
-        tableItems: responseEmployees.data.data.data.map((item, index) => [
+        tableItems: responseInterns.data.data.data.map((item, index) => [
           item?.first_name ? item.first_name : "-",
           item?.last_name ? item.last_name : "-",
-          item?.work_email_address ? item.work_email_address : "-",
+          item?.email ? item.email : "-",
           item?.title ? getTitleById(item.title) : "-",
-          item?.joining_date ? item.joining_date : "-",
-          item?.employment_end_date ? item.employment_end_date : "-",
-          item?.department && item.department.name ? item.department.name : "-",
 
           <ButtonGroup>
             <Button onClick={() => handleEdit(item.id)}>Edit</Button>
@@ -181,8 +178,8 @@ const Employees = () => {
           </ButtonGroup>,
         ]),
         isLoading: false,
-        isListEmpty: !responseEmployees.data.data.data.length ? true : false,
-        tableTotalPages: responseEmployees.data.data.total,
+        isListEmpty: !responseInterns.data.data.data.length ? true : false,
+        tableTotalPages: responseInterns.data.data.total,
       });
     } catch (error) {
       console.log(error);
@@ -207,7 +204,7 @@ const Employees = () => {
   const [active, setActive] = useState(false);
   const toggleActive = useCallback(() => setActive((active) => !active), []);
   const [toastContent, setToastContent] = useState(
-    "This employee has been successfully deleted"
+    "This Intern has been successfully deleted"
   );
 
   const toastMarkup = active ? (
@@ -216,10 +213,10 @@ const Employees = () => {
 
   return (
     <Page
-      title="Employees"
+      title="Interns"
       primaryAction={
-        <Button variant="primary" onClick={handleAddEmployee}>
-          Add Employee
+        <Button variant="primary" onClick={handleAddIntern}>
+          Add Intern
         </Button>
       }
     >
@@ -251,15 +248,7 @@ const Employees = () => {
             <Text variant="bodyMd" as="p" fontWeight="medium">
               Title
             </Text>,
-            <Text variant="bodyMd" as="p" fontWeight="medium">
-              Starting Date
-            </Text>,
-            <Text variant="bodyMd" as="p" fontWeight="medium">
-              End Date
-            </Text>,
-            <Text variant="bodyMd" as="p" fontWeight="medium">
-              Department
-            </Text>,
+
             <Text variant="bodyMd" as="p" fontWeight="medium"></Text>,
           ]}
           rows={pageObject.tableItems}
@@ -317,4 +306,4 @@ const Employees = () => {
   }
 };
 
-export default Employees;
+export default Interns;

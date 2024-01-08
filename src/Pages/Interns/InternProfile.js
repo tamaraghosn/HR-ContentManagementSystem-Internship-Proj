@@ -1,13 +1,13 @@
 import { Card, Tabs, Page } from "@shopify/polaris";
 import { useState, useCallback } from "react";
-import ContactDetailsForm from "../../Components/ContactDetailsForm.js";
-import BankDetailsForm from "../../Components/BankDetailsForm.js";
-import WorkExperienceForm from "../../Components/WorkExperienceForm.js";
-import EducationForm from "../../Components/EducationForm.js";
-import PersonalInformationForm from "../../Components/PersonalInformationForm.js";
+import ContactDetailsForm from "../../InternComponents/ContactDetailsForm.js";
+import WorkExperienceForm from "../../InternComponents/InternshipProgramDetailsForm.js";
+import EducationForm from "../../InternComponents/EducationForm.js";
+import PersonalInformationForm from "../../InternComponents/PersonalInformationForm.js";
 import { useNavigate } from "react-router-dom";
+import InternshipProgramDetailsForm from "../../InternComponents/InternshipProgramDetailsForm.js";
 
-const EmployeeProfile = () => {
+const InternProfile = () => {
   const navigate = useNavigate();
   const [selected, setSelected] = useState(0);
 
@@ -31,29 +31,23 @@ const EmployeeProfile = () => {
       formComponent: <ContactDetailsForm />,
     },
     {
-      id: "bank-details-1",
-      content: "Bank Details",
-      panelID: "bank-details-content-1",
-      formComponent: <BankDetailsForm />,
-    },
-    {
-      id: "work-experience-1",
-      content: "Work Experience",
-      panelID: "work-experience-1",
-      formComponent: <WorkExperienceForm />,
-    },
-    {
       id: "education-1",
       content: "Education",
       panelID: "education-content-1",
       formComponent: <EducationForm />,
     },
+    {
+      id: "internship-program-details-1",
+      content: "Internship Program Details",
+      panelID: "internship-program-details-1",
+      formComponent: <InternshipProgramDetailsForm />,
+    },
   ];
 
   return (
     <Page
-      title="Employee Profile"
-      backAction={{ onAction: () => navigate("/admin/employees") }}
+      title="Intern Profile"
+      backAction={{ onAction: () => navigate("/admin/interns") }}
       // primaryAction={{
       //   content: "Save",
       //   onAction: () => {
@@ -72,4 +66,4 @@ const EmployeeProfile = () => {
   );
 };
 
-export default EmployeeProfile;
+export default InternProfile;

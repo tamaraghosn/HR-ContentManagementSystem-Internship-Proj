@@ -1,7 +1,12 @@
-import { FormLayout, Text, TextField, Select } from "@shopify/polaris";
+import { FormLayout, Text, TextField, Button } from "@shopify/polaris";
 import React, { useState } from "react";
+import { countryList } from "../countries";
+import SelectSearchable from "react-select";
+import axios from "../Assets/Lib/axios";
+import { useParams } from "react-router-dom";
 
 const WorkExperienceForm = () => {
+  const { id } = useParams();
   const [item, setItem] = useState({
     company: "",
     country: "",
@@ -42,15 +47,23 @@ const WorkExperienceForm = () => {
           value={item.company}
           onChange={handleChangeCompany}
         />
-        <Select
-          label="Country"
-          // options={optionsCountry.map((item, index) => {
-          //     return { label: item.label, value: item.value };
-          // })}
-          onChange={handleSelectChangeCountry}
-          value={item.country}
-          placeholder="Choose an option"
-        />
+      </FormLayout.Group>
+      <FormLayout.Group>
+        <FormLayout>
+          <Text>Country</Text>
+          <SelectSearchable
+            options={countryList.map((item, index) => {
+              return { label: item.name, value: item.name };
+            })}
+            onChange={handleSelectChangeCountry}
+            value={item.country}
+            placeholder="Please select"
+            styles={{
+              // Fixes the overlapping problem of the component
+              menu: (provided) => ({ ...provided, zIndex: 9999 }),
+            }}
+          />
+        </FormLayout>
       </FormLayout.Group>
       <FormLayout.Group>
         <TextField
@@ -79,8 +92,28 @@ const WorkExperienceForm = () => {
         value={item.responsibilities}
         onChange={handleChangeResponisibilities}
       />
+      <Button onClick={handleSave}>save</Button>
     </FormLayout>
   );
+  function handleSave() {
+    const bodyObj = {
+      company: item.company,
+      country: item.country.value,
+      position: item.position,
+      start_date: item.startDate,
+      end_date: item.endDate,
+      responsibilities: item.responsibilities,
+      employee_id: id,
+    };
+
+    axios
+      .patch(`/work-experiences/${id}`, bodyObj)
+      .then((result) => {
+        console.log(result);
+        console.log("work experience updated");
+      })
+      .catch((err) => console.log(err));
+  }
 };
 
 export default WorkExperienceForm;

@@ -20,16 +20,12 @@ const PersonalInformationForm = () => {
     middleName: "",
     lastName: "",
     displayName: "",
-    fatherName: "",
-    motherName: "",
     dateOfBirth: null,
     bloodType: "",
     gender: "",
     nationality: "",
-    otherNationality: "",
-    maritalStatus: "",
     profilePicture: "",
-    linkedInLink: "",
+    resumePortfolio: "",
     bio: "",
   });
 
@@ -53,14 +49,6 @@ const PersonalInformationForm = () => {
     setItem({ ...item, displayName: newValue });
   };
 
-  const handleChangeFatherName = (newValue) => {
-    setItem({ ...item, fatherName: newValue });
-  };
-
-  const handleChangeMotherName = (newValue) => {
-    setItem({ ...item, motherName: newValue });
-  };
-
   const handleChangeDateOfBirth = (date) => {
     setItem({ ...item, dateOfBirth: date });
   };
@@ -79,12 +67,6 @@ const PersonalInformationForm = () => {
     { label: "AB-", value: "8" },
   ];
 
-  const optionsMaritalStatus = [
-    { label: "Single", value: "1" },
-    { label: "Married", value: "2" },
-    { label: "Divorced", value: "3" },
-  ];
-
   const handleSelectChangeGender = (newValue) => {
     setItem({ ...item, gender: newValue });
   };
@@ -97,15 +79,7 @@ const PersonalInformationForm = () => {
   const handleSelectChangeNationality = (newValue) => {
     setItem({ ...item, nationality: newValue });
   };
-  const handleSelectChangeOtherNationality = (newValue) => {
-    setItem({ ...item, otherNationality: newValue });
-  };
-  const handleSelectChangeMaritalStatus = (newValue) => {
-    setItem({ ...item, maritalStatus: newValue });
-  };
-  const handleChangeLinkedInLink = (newValue) => {
-    setItem({ ...item, linkedInLink: newValue });
-  };
+
   const handleChangeBio = (newValue) => {
     setItem({ ...item, bio: newValue });
   };
@@ -118,6 +92,9 @@ const PersonalInformationForm = () => {
       console.error("Invalid file format for the profile picture.");
       // You may also set an error state to display a message to the user
     }
+  };
+  const handleDropResumePortfolio = (file) => {
+    setItem({ ...item, resumePortfolio: file });
   };
 
   return (
@@ -153,18 +130,7 @@ const PersonalInformationForm = () => {
           label="Display Name"
         />
       </FormLayout.Group>
-      <FormLayout.Group>
-        <TextField
-          value={item.fatherName}
-          onChange={handleChangeFatherName}
-          label="Father Name"
-        />
-        <TextField
-          value={item.motherName}
-          onChange={handleChangeMotherName}
-          label="Mother Name"
-        />
-      </FormLayout.Group>
+
       <FormLayout.Group>
         <TextField
           label="Date Of Birth"
@@ -184,26 +150,6 @@ const PersonalInformationForm = () => {
         />
       </FormLayout.Group>
       <FormLayout.Group>
-        <Select
-          label="Marital Status"
-          options={optionsMaritalStatus.map((item, index) => {
-            return { label: item.label, value: item.value };
-          })}
-          onChange={handleSelectChangeMaritalStatus}
-          value={item.maritalStatus}
-          placeholder="Please choose an option"
-        />
-        <Select
-          label="Gender"
-          options={optionsGender.map((item, index) => {
-            return { label: item.label, value: item.value };
-          })}
-          onChange={handleSelectChangeGender}
-          value={item.gender}
-          placeholder="Please choose an option"
-        />
-      </FormLayout.Group>
-      <FormLayout.Group>
         <FormLayout>
           <Text>Nationality</Text>
           <SelectSearchable
@@ -219,24 +165,17 @@ const PersonalInformationForm = () => {
             }}
           />
         </FormLayout>
-        <FormLayout>
-          <Text>Other Nationality</Text>
-          <SelectSearchable
-            options={countryList.map((item, index) => {
-              return { label: item.name, value: item.name };
-            })}
-            onChange={handleSelectChangeOtherNationality}
-            value={item.otherNationality}
-            placeholder="Please select"
-            styles={{
-              // Fixes the overlapping problem of the component
-              menu: (provided) => ({ ...provided, zIndex: 9999 }),
-            }}
-          />
-        </FormLayout>
       </FormLayout.Group>
-
       <FormLayout.Group>
+        <Select
+          label="Gender"
+          options={optionsGender.map((item, index) => {
+            return { label: item.label, value: item.value };
+          })}
+          onChange={handleSelectChangeGender}
+          value={item.gender}
+          placeholder="Please choose an option"
+        />
         <TextField
           label="Bio"
           value={item.bio}
@@ -244,18 +183,22 @@ const PersonalInformationForm = () => {
           placeholder="Write a short bio"
           showCharacterCount
         />
-        <TextField
-          label="LinkedIn Profile Link"
-          value={item.linkedInLink}
-          onChange={handleChangeLinkedInLink}
-        />
       </FormLayout.Group>
+
       <DropZone
         label="Profile Picture"
         type="image"
         onDrop={handleDropProfilePicture}
         value={item.profilePicture}
       ></DropZone>
+
+      <DropZone
+        label="Resume/Portfolio"
+        type="image"
+        onDrop={handleDropResumePortfolio}
+        value={item.resumePortfolio}
+      ></DropZone>
+
       <Button onClick={handleSave}>save</Button>
     </FormLayout>
   );

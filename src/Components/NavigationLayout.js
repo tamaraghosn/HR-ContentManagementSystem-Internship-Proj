@@ -24,7 +24,7 @@ import {
   LogOutMinor,
   CustomersMajor,
   ProductsMajor,
-  DiscountsMajor,
+  CardReaderChipMajor,
   CategoriesMajor,
   ListMajor,
 } from "@shopify/polaris-icons";
@@ -259,6 +259,14 @@ function NavigationLayout(props) {
             onClick: () => navigate("/admin/employment-types"),
             label: "Employment Types",
             icon: ListMajor,
+            selected:
+              window.location.href.indexOf("/admin/employment-types") > -1,
+          },
+          {
+            url: "/",
+            onClick: () => navigate("/admin/interns"),
+            label: "Interns",
+            icon: CardReaderChipMajor,
             selected:
               window.location.href.indexOf("/admin/employment-types") > -1,
           },
