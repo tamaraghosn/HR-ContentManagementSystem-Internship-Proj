@@ -1,4 +1,11 @@
-import { FormLayout, Text, TextField, Select, Button } from "@shopify/polaris";
+import {
+  FormLayout,
+  Text,
+  TextField,
+  Select,
+  Button,
+  PageActions,
+} from "@shopify/polaris";
 import React, { useState, useEffect } from "react";
 import SelectSearchable from "react-select";
 
@@ -197,7 +204,12 @@ const EducationForm = () => {
           onChange={handleChangeEndDate}
         />
       </FormLayout.Group>
-      <Button onClick={handleSave}>save</Button>
+      <PageActions
+        primaryAction={{
+          content: "Save",
+          onClick: handleSave,
+        }}
+      ></PageActions>
     </FormLayout>
   );
   function handleSave() {

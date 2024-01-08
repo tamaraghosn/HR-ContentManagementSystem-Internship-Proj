@@ -21,3 +21,7 @@
 .Polaris-Filters__AddFilter span::after {
   content: "Add filter" !important;
 }
+
+.Polaris-DataTable__Cell .Polaris-ButtonGroup {
+  float: right;
+}
