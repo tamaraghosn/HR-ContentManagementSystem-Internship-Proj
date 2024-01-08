@@ -4,28 +4,39 @@ import {
   TextField,
   Select,
   DropZone,
+  Button,
 } from "@shopify/polaris";
+import axios from "../Assets/Lib/axios";
+import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import React, { useState, useCallback, useEffect } from "react";
+import { countryList } from "../countries";
+import SelectSearchable from "react-select";
 
 const ContactDetailsForm = () => {
+  const { id } = useParams();
   const [item, setItem] = useState({
-    phoneNumber: "",
-    email: "",
+    workMobile: "",
+    workEmail: "",
+    personalMobile: "",
     residenceAddress: "",
     residencePhone: "",
-    country: "",
-    firstName: "",
-    lastName: "",
-    relationship: "",
+    emergencyCountry: "",
+    emergencyFirstName: "",
+    emergencyLastName: "",
+    emergencyRelation: "",
     emergencyPhoneContact: "",
     identificationCountry: "",
     idDocumentsPassport: "",
   });
-  const handleChangePhoneNumber = (newValue) => {
-    setItem({ ...item, phoneNumber: newValue });
+  const handleChangeWorkMobile = (newValue) => {
+    setItem({ ...item, workMobile: newValue });
   };
-  const handleChangeEmail = (newValue) => {
-    setItem({ ...item, email: newValue });
+  const handleChangeWorkEmail = (newValue) => {
+    setItem({ ...item, workEmail: newValue });
+  };
+  const handleChangePersonalMobile = (newValue) => {
+    setItem({ ...item, personalMobile: newValue });
   };
 
   const handleChangeResidenceAddress = (newValue) => {
@@ -34,17 +45,17 @@ const ContactDetailsForm = () => {
   const handleChangeResidencePhone = (newValue) => {
     setItem({ ...item, residencePhone: newValue });
   };
-  const handleChangeCountry = (newValue) => {
-    setItem({ ...item, country: newValue });
+  const handleSelectChangeCountry = (newValue) => {
+    setItem({ ...item, emergencyCountry: newValue });
   };
   const handleChangeFirstName = (newValue) => {
-    setItem({ ...item, firstName: newValue });
+    setItem({ ...item, emergencyFirstName: newValue });
   };
   const handleChangeLastName = (newValue) => {
-    setItem({ ...item, lastName: newValue });
+    setItem({ ...item, emergencyLastName: newValue });
   };
   const handleChangeRelationship = (newValue) => {
-    setItem({ ...item, relationship: newValue });
+    setItem({ ...item, emergencyRelation: newValue });
   };
   const handleChangeEmergencyPhoneContact = (newValue) => {
     setItem({ ...item, emergencyPhoneContact: newValue });
@@ -63,17 +74,22 @@ const ContactDetailsForm = () => {
       </Text>
       <FormLayout.Group>
         <TextField
-          label="Phone Number"
-          value={item.phoneNumber}
-          onChange={handleChangePhoneNumber}
+          label="Work Mobile"
+          value={item.workMobile}
+          onChange={handleChangeWorkMobile}
         />
         <TextField
-          label="Email"
-          value={item.email}
+          label="Work Email"
+          value={item.workEmail}
           type="email"
-          onChange={handleChangeEmail}
+          onChange={handleChangeWorkEmail}
         />
       </FormLayout.Group>
+      <TextField
+        label="Personal Mobile"
+        value={item.personalMobile}
+        onChange={handleChangePersonalMobile}
+      />
       <FormLayout.Group>
         <TextField
           label="Residential Address"
@@ -92,51 +108,111 @@ const ContactDetailsForm = () => {
       <FormLayout.Group>
         <TextField
           label="First Name"
-          value={item.firstName}
+          value={item.emergencyFirstName}
           onChange={handleChangeFirstName}
         />
         <TextField
           label="Last Name"
-          value={item.lastName}
+          value={item.emergencyLastName}
           onChange={handleChangeLastName}
         />
       </FormLayout.Group>
       <FormLayout.Group>
-        <TextField
-          label="Country"
-          value={item.country}
-          onChange={handleChangeCountry}
-        />
+        <FormLayout>
+          <Text>Country</Text>
+          <SelectSearchable
+            options={countryList.map((item, index) => {
+              return { label: item.name, value: item.name };
+            })}
+            onChange={handleSelectChangeCountry}
+            value={item.emergencyCountry}
+            placeholder="Please select"
+            styles={{
+              // Fixes the overlapping problem of the component
+              menu: (provided) => ({ ...provided, zIndex: 9999 }),
+            }}
+          />
+        </FormLayout>
+      </FormLayout.Group>
+      <FormLayout.Group>
         <TextField
           label="Relationship"
-          value={item.relationship}
+          value={item.emergencyRelation}
           onChange={handleChangeRelationship}
         />
       </FormLayout.Group>
       <TextField
-        label="Contact Details - Phone Number"
+        label="Emergency Contact - Phone Number"
         value={item.emergencyPhoneContact}
         onChange={handleChangeEmergencyPhoneContact}
       />
       <Text variant="headingSm" as="h6">
         IDENTIFICATION DOCUMENTS
       </Text>
-      <Select
-        label="Country"
-        //   options={optionsCountry.map((item, index) => {
-        //     return { label: item.label, value: item.value };
-        //   })}
-        onChange={handleSelectChangeIdentificationCountry}
-        value={item.identificationCountry}
-        placeholder="Please choose an option"
-      />
+      <FormLayout>
+        <Text>Country</Text>
+        <SelectSearchable
+          options={countryList.map((item, index) => {
+            return { label: item.name, value: item.name };
+          })}
+          onChange={handleSelectChangeIdentificationCountry}
+          value={item.identificationCountry}
+          placeholder="Please select"
+          styles={{
+            // Fixes the overlapping problem of the component
+            menu: (provided) => ({ ...provided, zIndex: 9999 }),
+          }}
+        />
+      </FormLayout>
       <DropZone
         label="ID Document/ Passport"
         onDrop={handleDropDocs}
         value={item.idDocumentsPassport}
       ></DropZone>
+      <Button onClick={handleSave}>save</Button>
     </FormLayout>
   );
+
+  function handleSave() {
+    const bodyObj1 = {
+      work_mobile: item.workMobile,
+      work_email: item.workEmail,
+      personal_mobile: item.personalMobile,
+      residential_address: item.residenceAddress,
+      residential_phone: item.residencePhone,
+
+      employee_id: id,
+      personal_email: item.workEmail,
+
+      primary_emergency_contact_country: item.emergencyCountry.value,
+      primary_emergency_contact_first_name: item.emergencyFirstName,
+      primary_emergency_contact_last_name: item.emergencyLastName,
+      primary_emergency_contact_phone_number: item.emergencyPhoneContact,
+      primary_emergency_contact_relation: item.emergencyRelation,
+    };
+    const bodyObj2 = {
+      country: item.identificationCountry.value,
+      passport_or_id: item.idDocumentsPassport,
+      first_image: "",
+      second_image: "",
+    };
+
+    axios
+      .patch(`/contact-details/${id}`, bodyObj1)
+      .then((result) => {
+        console.log(result);
+        console.log("contact details updated");
+      })
+      .catch((err) => console.log(err));
+
+    axios
+      .patch(`/identification-documents/${id}`, bodyObj2)
+      .then((result) => {
+        console.log(result);
+        console.log("Identification Documents updated");
+      })
+      .catch((err) => console.log(err));
+  }
 };
 
 export default ContactDetailsForm;

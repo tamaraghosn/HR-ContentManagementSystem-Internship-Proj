@@ -200,23 +200,35 @@ const AddEditEmployee = (props) => {
           joiningDate: responseItem?.data?.data?.joining_date
             ? responseItem?.data?.data?.joining_date
             : "",
-          jobTitle: responseItem?.data?.data?.job_title_id
-            ? String(responseItem?.data?.data?.job_title_id)
+          jobTitle: responseItem?.data?.data?.job_title
+            ? {
+                label: responseItem?.data?.data?.job_title?.name,
+                value: String(responseItem?.data?.data?.job_title?.id),
+              }
             : "",
           employmentEndDate: responseItem?.data?.data?.employment_end_date
             ? responseItem?.data?.data?.employment_end_date
             : "",
-          department: responseItem?.data?.data?.department_id
-            ? String(responseItem?.data?.data?.department_id)
+          department: responseItem?.data?.data?.department
+            ? {
+                label: responseItem?.data?.data?.department?.name,
+                value: String(responseItem?.data?.data?.department?.id),
+              }
             : "",
-          employmentType: responseItem?.data?.data?.employment_type_id
-            ? String(responseItem?.data?.data?.employment_type_id)
+          employmentType: responseItem?.data?.data?.employment_type
+            ? {
+                label: responseItem?.data?.data?.employment_type?.name,
+                value: String(responseItem?.data?.data?.employment_type?.id),
+              }
             : "",
           lineManager: responseItem?.data?.data?.line_manager
             ? responseItem?.data?.data?.line_manager
             : "",
           probationPeriod: responseItem?.data?.data?.probation_period
             ? responseItem?.data?.data?.probation_period
+            : "",
+          status: responseItem?.data?.data?.employment_status
+            ? responseItem?.data?.data?.employment_status
             : "",
           isActive: responseItem?.data?.data?.is_active ? true : false,
         });

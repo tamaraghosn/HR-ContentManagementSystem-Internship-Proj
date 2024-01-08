@@ -1,7 +1,12 @@
-import { FormLayout, Text, TextField, Select } from "@shopify/polaris";
+import { FormLayout, Text, TextField, Select, Button } from "@shopify/polaris";
 import React, { useState } from "react";
+import { countryList } from "../countries";
+import SelectSearchable from "react-select";
+import axios from "../Assets/Lib/axios";
+import { useParams } from "react-router-dom";
 
 const BankDetailsForm = () => {
+  const { id } = useParams();
   const [item, setItem] = useState({
     country: "",
     bankName: "",
@@ -36,15 +41,23 @@ const BankDetailsForm = () => {
         BANK DETAILS
       </Text>
       <FormLayout.Group>
-        <Select
-          label="Country"
-          // options={optionsCountry.map((item, index) => {
-          //     return { label: item.label, value: item.value };
-          // })}
-          onChange={handleSelectChangeCountry}
-          value={item.country}
-          placeholder="Choose an option"
-        />
+        <FormLayout>
+          <Text>Country</Text>
+          <SelectSearchable
+            options={countryList.map((item, index) => {
+              return { label: item.name, value: item.name };
+            })}
+            onChange={handleSelectChangeCountry}
+            value={item.country}
+            placeholder="Please select"
+            styles={{
+              // Fixes the overlapping problem of the component
+              menu: (provided) => ({ ...provided, zIndex: 9999 }),
+            }}
+          />
+        </FormLayout>
+      </FormLayout.Group>
+      <FormLayout.Group>
         <TextField
           label="Bank Name"
           value={item.bankName}
@@ -71,8 +84,28 @@ const BankDetailsForm = () => {
           onChange={handleChangeSwiftCode}
         />
       </FormLayout.Group>
+      <Button onClick={handleSave}>save</Button>
     </FormLayout>
   );
+  function handleSave() {
+    const bodyObj = {
+      country: item.country.value,
+      bank_name: item.bankName,
+      account_name: item.accountName,
+      account_number: item.accountNumber,
+      iban: item.iban,
+      swift_code: item.swiftCode,
+      employee_id: id,
+    };
+
+    axios
+      .patch(`/bank-details/${id}`, bodyObj)
+      .then((result) => {
+        console.log(result);
+        console.log("bank details updated");
+      })
+      .catch((err) => console.log(err));
+  }
 };
 
 export default BankDetailsForm;

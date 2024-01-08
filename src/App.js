@@ -19,6 +19,9 @@ import JobTitles from "./Pages/JobTitles/List";
 import AddEditJobTtile from "./Pages/JobTitles/AddEdit";
 import EmploymentTypes from "./Pages/Employment Types/List";
 import AddEditEmploymentType from "./Pages/Employment Types/AddEdit";
+import Interns from "./Pages/Interns/List";
+import AddEditIntern from "./Pages/Interns/AddEdit";
+import InternProfile from "./Pages/Interns/InternProfile";
 // import Departments from "./Pages/Departments/List";
 
 function App() {
@@ -128,10 +131,42 @@ function App() {
       ),
     },
     {
-      path: "/admin/employees/profile",
+      path: "/admin/employees/profile/:id",
       element: (
         <NavigationLayout>
           <EmployeeProfile></EmployeeProfile>
+        </NavigationLayout>
+      ),
+    },
+    {
+      path: "/admin/interns",
+      element: (
+        <NavigationLayout>
+          <Interns />
+        </NavigationLayout>
+      ),
+    },
+    {
+      path: "/admin/interns/new",
+      element: (
+        <NavigationLayout>
+          <AddEditIntern type="add" />
+        </NavigationLayout>
+      ),
+    },
+    {
+      path: "/admin/interns/:id",
+      element: (
+        <NavigationLayout>
+          <AddEditIntern type="edit" />
+        </NavigationLayout>
+      ),
+    },
+    {
+      path: "/admin/interns/profile/:id",
+      element: (
+        <NavigationLayout>
+          <InternProfile></InternProfile>
         </NavigationLayout>
       ),
     },

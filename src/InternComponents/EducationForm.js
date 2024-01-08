@@ -9,17 +9,19 @@ import { useParams } from "react-router-dom";
 const EducationForm = () => {
   const { id } = useParams();
   const [item, setItem] = useState({
+    educationStatus: "",
+    major: "",
+    university: "",
+    educationalYear: null,
+    gpa: "",
+    completedCredits: "",
+    graduationYear: "",
     language: "",
     speakingLevel: "",
     readingLevel: "",
     writingLevel: "",
-    country: "",
-    institution: "",
-    degree: "",
-    major: "",
-    startDate: null,
-    endDate: null,
   });
+
   const optionsLanguageLevels = [
     { label: "Beginner", value: "Beginner" },
     { label: "Conversational", value: "Conversational" },
@@ -28,12 +30,27 @@ const EducationForm = () => {
     { label: "Native", value: "Native" },
   ];
 
-  const optionsDegree = [
+  const optionsStatus = [
     { label: "Pursuing Undergraduate Degree", value: "1" },
     { label: "Holding Undergraduate Degree", value: "2" },
     { label: "Pursuing Graduate Degree", value: "3" },
     { label: "Holding Graduate Degree", value: "4" },
     { label: "Self Educated Enthusiast", value: "5" },
+  ];
+
+  const optionsCompletedCredits = [
+    { label: "0% - 20%", value: "1" },
+    { label: "21% - 40%", value: "2" },
+    { label: "41% - 60%", value: "3" },
+    { label: "61% - 80%", value: "4" },
+    { label: "81% - 100%", value: "5" },
+  ];
+  const optionsEducationalYear = [
+    { label: "1st", value: "1" },
+    { label: "2nd", value: "2" },
+    { label: "3rd", value: "3" },
+    { label: "4th", value: "4" },
+    { label: "5th", value: "5" },
   ];
 
   const handleSelectChangeLanguage = (newValue) => {
@@ -48,24 +65,29 @@ const EducationForm = () => {
   const handleSelectChangeWritingLevel = (newValue) => {
     setItem({ ...item, writingLevel: newValue });
   };
-  const handleSelectChangeCountry = (newValue) => {
-    setItem({ ...item, country: newValue });
-  };
-  const handleChangeInstitution = (newValue) => {
-    setItem({ ...item, institution: newValue });
-  };
-  const handleSelectChangeDegree = (newValue) => {
-    setItem({ ...item, degree: newValue });
+
+  const handleSelectChangeEducationStatus = (newValue) => {
+    setItem({ ...item, educationStatus: newValue });
   };
   const handleChangeMajor = (newValue) => {
     setItem({ ...item, major: newValue });
   };
-  const handleChangeStartDate = (date) => {
-    setItem({ ...item, startDate: date });
+  const handleChangeUniversity = (newValue) => {
+    setItem({ ...item, university: newValue });
   };
-  const handleChangeEndDate = (date) => {
-    setItem({ ...item, endDate: date });
+  const handleSelectChangeEducationalYear = (newValue) => {
+    setItem({ ...item, educationalYear: newValue });
   };
+  const handleSelectChangeGPA = (newValue) => {
+    setItem({ ...item, gpa: newValue });
+  };
+  const handleSelectChangeCompletedCredits = (newValue) => {
+    setItem({ ...item, completedCredits: newValue });
+  };
+  const handleSelectChangeGraduationYear = (newValue) => {
+    setItem({ ...item, graduationYear: newValue });
+  };
+
   const [optionsLanguage, setOptionsLanguage] = useState([]);
 
   useEffect(() => {
@@ -95,6 +117,60 @@ const EducationForm = () => {
       <Text variant="headingSm" as="h6">
         EDUCATION
       </Text>
+      <FormLayout.Group>
+        <Select
+          label="Education Status"
+          options={optionsStatus.map((item, index) => {
+            return { label: item.label, value: item.value };
+          })}
+          onChange={handleSelectChangeEducationStatus}
+          value={item.educationStatus}
+          placeholder="Choose an option"
+        />
+        <TextField
+          label="Major"
+          value={item.major}
+          onChange={handleChangeMajor}
+        />
+      </FormLayout.Group>
+      <FormLayout.Group>
+        <TextField
+          label="University"
+          value={item.university}
+          onChange={handleChangeUniversity}
+        />
+        <Select
+          label="Educational Year"
+          options={optionsEducationalYear.map((item, index) => {
+            return { label: item.label, value: item.value };
+          })}
+          onChange={handleSelectChangeEducationalYear}
+          value={item.educationalYear}
+          placeholder="Choose an option"
+        />
+      </FormLayout.Group>
+      <FormLayout.Group>
+        <TextField
+          label="GPA"
+          value={item.gpa}
+          onChange={handleChangeUniversity}
+        />
+        <Select
+          label="Percentage of completed credits"
+          options={optionsCompletedCredits.map((item, index) => {
+            return { label: item.label, value: item.value };
+          })}
+          onChange={handleSelectChangeCompletedCredits}
+          value={item.completedCredits}
+          placeholder="Choose an option"
+        />
+      </FormLayout.Group>
+      <TextField
+        label="Expected Graduation Year/ Graduation Year"
+        value={item.graduationYear}
+        type="date"
+        onChange={handleSelectChangeGraduationYear}
+      />
 
       <FormLayout.Group>
         <FormLayout>
@@ -111,6 +187,7 @@ const EducationForm = () => {
           />
         </FormLayout>
       </FormLayout.Group>
+
       <FormLayout.Group>
         <Select
           label="Speaking Level"
@@ -140,63 +217,7 @@ const EducationForm = () => {
           placeholder="Choose an option"
         />
       </FormLayout.Group>
-      <Text variant="headingSm" as="h6">
-        DEGREES & CERTIFICATIONS
-      </Text>
-      <FormLayout.Group>
-        <FormLayout>
-          <Text>Country</Text>
-          <SelectSearchable
-            options={countryList.map((item, index) => {
-              return { label: item.name, value: item.name };
-            })}
-            onChange={handleSelectChangeCountry}
-            value={item.country}
-            placeholder="Please select"
-            styles={{
-              // Fixes the overlapping problem of the component
-              menu: (provided) => ({ ...provided, zIndex: 9999 }),
-            }}
-          />
-        </FormLayout>
-      </FormLayout.Group>
-      <FormLayout.Group>
-        <TextField
-          label="Institution"
-          value={item.institution}
-          onChange={handleChangeInstitution}
-        />
-      </FormLayout.Group>
-      <FormLayout.Group>
-        <Select
-          label="Degree"
-          options={optionsDegree.map((item, index) => {
-            return { label: item.label, value: item.value };
-          })}
-          onChange={handleSelectChangeDegree}
-          value={item.degree}
-          placeholder="Choose an option"
-        />
-        <TextField
-          label="Subject/Major"
-          value={item.major}
-          onChange={handleChangeMajor}
-        />
-      </FormLayout.Group>
-      <FormLayout.Group>
-        <TextField
-          label="Start Date"
-          value={item.startDate}
-          type="date"
-          onChange={handleChangeStartDate}
-        />
-        <TextField
-          label="End Date"
-          type="date"
-          value={item.endDate}
-          onChange={handleChangeEndDate}
-        />
-      </FormLayout.Group>
+
       <Button onClick={handleSave}>save</Button>
     </FormLayout>
   );
