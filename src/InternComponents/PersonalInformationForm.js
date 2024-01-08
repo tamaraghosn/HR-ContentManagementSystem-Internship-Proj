@@ -5,6 +5,8 @@ import {
   Select,
   DropZone,
   Button,
+  Page,
+  PageActions,
 } from "@shopify/polaris";
 import React, { useState, useCallback, useEffect } from "react";
 import SelectSearchable from "react-select";
@@ -198,8 +200,12 @@ const PersonalInformationForm = () => {
         onDrop={handleDropResumePortfolio}
         value={item.resumePortfolio}
       ></DropZone>
-
-      <Button onClick={handleSave}>save</Button>
+      <PageActions
+        primaryAction={{
+          content: "Save",
+          onClick: handleSave,
+        }}
+      ></PageActions>
     </FormLayout>
   );
 
@@ -213,18 +219,13 @@ const PersonalInformationForm = () => {
         middle_name: item.middleName,
         last_name: item.lastName,
         display_name: item.displayName,
-        father_name: item.fatherName,
-        mother_name: item.motherName,
-        marital_status: item.maritalStatus,
+        email: item.email,
         date_of_birth: item.dateOfBirth,
         blood_type: item.bloodType,
         gender: item.gender,
         nationality: item.nationality.value,
-        other_nationality: item.otherNationality.value,
         profile_picture: item.profilePicture,
-        linkedIn_profile: item.linkedInLink,
-        employee_id: id,
-        bio: item.bio,
+        // resume/portfolio: item.resumePortfolio,
       };
 
       axios

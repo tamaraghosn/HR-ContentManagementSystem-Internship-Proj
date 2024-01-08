@@ -27,6 +27,9 @@
 .App-link {
   color: #61dafb;
 }
+.Polaris-DataTable__Cell .Polaris-ButtonGroup {
+  float: right;
+}
 
 @keyframes App-logo-spin {
   from {

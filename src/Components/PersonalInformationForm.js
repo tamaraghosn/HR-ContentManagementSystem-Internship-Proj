@@ -5,6 +5,7 @@ import {
   Select,
   DropZone,
   Button,
+  PageActions,
 } from "@shopify/polaris";
 import React, { useState, useCallback, useEffect } from "react";
 import SelectSearchable from "react-select";
@@ -256,7 +257,12 @@ const PersonalInformationForm = () => {
         onDrop={handleDropProfilePicture}
         value={item.profilePicture}
       ></DropZone>
-      <Button onClick={handleSave}>save</Button>
+      <PageActions
+        primaryAction={{
+          content: "Save",
+          onClick: handleSave,
+        }}
+      ></PageActions>
     </FormLayout>
   );
 

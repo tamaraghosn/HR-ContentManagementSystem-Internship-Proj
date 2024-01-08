@@ -1,4 +1,10 @@
-import { FormLayout, Text, TextField, Button } from "@shopify/polaris";
+import {
+  FormLayout,
+  Text,
+  TextField,
+  Button,
+  PageActions,
+} from "@shopify/polaris";
 import React, { useState } from "react";
 import { countryList } from "../countries";
 import SelectSearchable from "react-select";
@@ -92,7 +98,12 @@ const WorkExperienceForm = () => {
         value={item.responsibilities}
         onChange={handleChangeResponisibilities}
       />
-      <Button onClick={handleSave}>save</Button>
+      <PageActions
+        primaryAction={{
+          content: "Save",
+          onClick: handleSave,
+        }}
+      ></PageActions>
     </FormLayout>
   );
   function handleSave() {

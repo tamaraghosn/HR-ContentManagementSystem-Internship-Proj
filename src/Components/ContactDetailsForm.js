@@ -5,6 +5,7 @@ import {
   Select,
   DropZone,
   Button,
+  PageActions,
 } from "@shopify/polaris";
 import axios from "../Assets/Lib/axios";
 import { useParams } from "react-router-dom";
@@ -169,7 +170,12 @@ const ContactDetailsForm = () => {
         onDrop={handleDropDocs}
         value={item.idDocumentsPassport}
       ></DropZone>
-      <Button onClick={handleSave}>save</Button>
+      <PageActions
+        primaryAction={{
+          content: "Save",
+          onClick: handleSave,
+        }}
+      ></PageActions>
     </FormLayout>
   );
 

@@ -1,4 +1,11 @@
-import { FormLayout, Text, TextField, Select, Button } from "@shopify/polaris";
+import {
+  FormLayout,
+  Text,
+  TextField,
+  Select,
+  Button,
+  PageActions,
+} from "@shopify/polaris";
 import React, { useState } from "react";
 import { countryList } from "../countries";
 import SelectSearchable from "react-select";
@@ -84,7 +91,12 @@ const BankDetailsForm = () => {
           onChange={handleChangeSwiftCode}
         />
       </FormLayout.Group>
-      <Button onClick={handleSave}>save</Button>
+      <PageActions
+        primaryAction={{
+          content: "Save",
+          onClick: handleSave,
+        }}
+      ></PageActions>
     </FormLayout>
   );
   function handleSave() {
