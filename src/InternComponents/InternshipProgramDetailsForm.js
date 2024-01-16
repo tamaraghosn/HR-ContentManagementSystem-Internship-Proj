@@ -17,7 +17,7 @@ import { Card } from "react-bootstrap";
 const InternshipProgramDetailsForm = () => {
   const { id } = useParams();
   const [item, setItem] = useState({
-    specialty: "",
+    speciality: "",
     specify: "",
     startDate: "",
     endDate: "",
@@ -29,10 +29,12 @@ const InternshipProgramDetailsForm = () => {
     schedule: "",
   });
   const [optionsJobTitle, setOptionsJobTitle] = useState([]);
+  const [optionsSpeciality, setOptionsSpeciality] = useState([]);
+
   const [optionsActiveEmployee, setOptionsActiveEmployee] = useState([]);
 
-  const handleSelectChangeSpecialty = (newValue) => {
-    setItem({ ...item, specialty: newValue });
+  const handleSelectChangeSpeciality = (newValue) => {
+    setItem({ ...item, speciality: newValue });
   };
   const handleChangeSpecify = (newValue) => {
     setItem({ ...item, specify: newValue });
@@ -59,15 +61,83 @@ const InternshipProgramDetailsForm = () => {
     setItem({ ...item, assistantMentorPosition: newValue });
   };
   const handleChangeSchedule = (newValue) => {
-    setItem({ ...item, schedule: newValue });
+    setItem({ ...item, schedule: newValue ? "standard" : "custom" });
   };
+
   useEffect(() => {
     fetchData();
   }, []);
 
   async function fetchData() {
+    let responseSpecialities = "";
     let responseJobTitles = "";
     let responseActiveEmployees = "";
+    let responseItem = "";
+
+    try {
+      responseItem = await axios.get(`/internship-program/${id}`);
+      console.log(responseItem.data.data);
+      setItem({
+        speciality_id: item.speciality.value,
+        speciality_other: item.specify,
+        internship_status: item.internshipStatus,
+        start_date: item.startDate,
+        end_date: item.endDate,
+        schedule: item.schedule,
+        mentor_id: item.mentor.value,
+        mentor_position_id: item.mentorPosition.value,
+        assistant_mentor_id: item.assistantMentor.value,
+        assistant_mentor_position_id: item.assistantMentorPosition.value,
+        intern_id: id,
+
+        speciality: responseItem?.data?.data?.speciality_id
+          ? responseItem?.data?.data?.speciality_id
+          : "",
+        speciality_other: responseItem?.data?.data?.speciality_other
+          ? responseItem?.data?.data?.speciality_other
+          : "",
+        internshipStatus: responseItem?.data?.data?.internship_status
+          ? responseItem?.data?.data?.internship_status
+          : "",
+        startDate: responseItem?.data?.data?.start_date
+          ? responseItem?.data?.data?.start_date
+          : "",
+        endDate: responseItem?.data?.data?.end_date
+          ? responseItem?.data?.data?.end_date
+          : "",
+        mentor: responseItem?.data?.data?.mentor_id
+          ? responseItem?.data?.data?.mentor_id
+          : "",
+        mentorPosition: responseItem?.data?.data?.mentor_position_id
+          ? responseItem?.data?.data?.mentor_position_id
+          : "",
+        assistantMentor: responseItem?.data?.data?.assistant_mentor_id
+          ? responseItem?.data?.data?.assistant_mentor_id
+          : "",
+        assistantMentorPosition: responseItem?.data?.data
+          ?.assistant_mentor_position_id
+          ? responseItem?.data?.data?.assistant_mentor_position_id
+          : "",
+
+        isActive: responseItem?.data?.data?.is_active ? true : false,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+
+    try {
+      responseSpecialities = await axios.get(`/specialities`);
+      setOptionsSpeciality(
+        responseSpecialities.data.data.data.map((item, index) => {
+          return {
+            label: item.speciality,
+            value: String(item.id),
+          };
+        })
+      );
+    } catch (error) {
+      console.log(error);
+    }
 
     try {
       responseJobTitles = await axios.get(`/job-titles`);
@@ -104,11 +174,11 @@ const InternshipProgramDetailsForm = () => {
       </Text>
       <FormLayout.Group>
         <FormLayout>
-          <Text>Specialty</Text>
+          <Text>Speciality</Text>
           <SelectSearchable
-            options={optionsJobTitle}
-            onChange={handleSelectChangeSpecialty}
-            value={item.specialty}
+            options={optionsSpeciality}
+            onChange={handleSelectChangeSpeciality}
+            value={item.speciality}
             placeholder="Please select"
             styles={{
               // Fixes the overlapping problem of the component
@@ -242,17 +312,21 @@ const InternshipProgramDetailsForm = () => {
   );
   function handleSave() {
     const bodyObj = {
-      company: item.company,
-      country: item.country.value,
-      position: item.position,
+      speciality_id: item.speciality.value,
+      speciality_other: item.specify,
+      internship_status: item.internshipStatus,
       start_date: item.startDate,
       end_date: item.endDate,
-      responsibilities: item.responsibilities,
-      employee_id: id,
+      schedule: item.schedule,
+      mentor_id: item.mentor.value,
+      mentor_position_id: item.mentorPosition.value,
+      assistant_mentor_id: item.assistantMentor.value,
+      assistant_mentor_position_id: item.assistantMentorPosition.value,
+      intern_id: id,
     };
 
     axios
-      .patch(`/intern-program/${id}`, bodyObj)
+      .patch(`/internship-program/${id}`, bodyObj)
       .then((result) => {
         console.log(result);
         console.log("internship program details updated");

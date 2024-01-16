@@ -104,6 +104,62 @@ const EducationForm = () => {
 
   async function fetchData() {
     let responseLanguages = "";
+    let responseItem1 = "";
+    let responseItem2 = "";
+
+    try {
+      responseItem1 = await axios.get(`/intern-education/${id}`);
+      console.log(responseItem1.data.data);
+      setItem({
+        educationStatus: responseItem1?.data?.data?.education_status
+          ? String(responseItem1?.data?.data?.education_status)
+          : "",
+        major: responseItem1?.data?.data?.major
+          ? responseItem1?.data?.data?.major
+          : "",
+        university: responseItem1?.data?.data?.university
+          ? responseItem1?.data?.data?.university
+          : "",
+        educationalYear: responseItem1?.data?.data?.educational_year
+          ? String(responseItem1?.data?.data?.educational_year)
+          : "",
+        gpa: responseItem1?.data?.data?.gpa
+          ? responseItem1?.data?.data?.gpa
+          : "",
+        completedCredits: responseItem1?.data?.data
+          ?.completed_credits_percentage
+          ? String(responseItem1?.data?.data?.completed_credits_percentage)
+          : "",
+        graduationYear: responseItem1?.data?.data?.expected_graduation_year
+          ? responseItem1?.data?.data?.expected_graduation_year
+          : "",
+
+        isActive: responseItem1?.data?.data?.is_active ? true : false,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+
+    try {
+      responseItem2 = await axios.get(`/language-skills/${id}`);
+      console.log(responseItem2.data.data);
+      setItem({
+        language: responseItem2?.data?.data?.language_id
+          ? responseItem2?.data?.data?.language_id
+          : "",
+        speakingLevel: responseItem2?.data?.data?.speaking_level
+          ? responseItem2?.data?.data?.speaking_level
+          : "",
+        readingLevel: responseItem2?.data?.data?.reading_level
+          ? responseItem2?.data?.data?.reading_level
+          : "",
+        writingLevel: responseItem2?.data?.data?.writing_level
+          ? responseItem2?.data?.data?.writing_level
+          : "",
+      });
+    } catch (error) {
+      console.log(error);
+    }
 
     try {
       responseLanguages = await axios.get(`/languages`);
@@ -133,7 +189,7 @@ const EducationForm = () => {
           })}
           onChange={handleSelectChangeEducationStatus}
           value={item.educationStatus}
-          placeholder="Choose an option"
+          placeholder="Please select"
         />
         <TextField
           label="Major"
@@ -154,14 +210,14 @@ const EducationForm = () => {
           })}
           onChange={handleSelectChangeEducationalYear}
           value={item.educationalYear}
-          placeholder="Choose an option"
+          placeholder="Please select"
         />
       </FormLayout.Group>
       <FormLayout.Group>
         <TextField
           label="GPA"
           value={item.gpa}
-          onChange={handleChangeUniversity}
+          onChange={handleSelectChangeGPA}
         />
         <Select
           label="Percentage of completed credits"
@@ -170,7 +226,7 @@ const EducationForm = () => {
           })}
           onChange={handleSelectChangeCompletedCredits}
           value={item.completedCredits}
-          placeholder="Choose an option"
+          placeholder="Please select"
         />
       </FormLayout.Group>
       <TextField
@@ -204,7 +260,7 @@ const EducationForm = () => {
           })}
           onChange={handleSelectChangeSpeakingLevel}
           value={item.speakingLevel}
-          placeholder="Choose an option"
+          placeholder="Please select"
         />
         <Select
           label="Reading Level"
@@ -213,7 +269,7 @@ const EducationForm = () => {
           })}
           onChange={handleSelectChangeReadingLevel}
           value={item.readingLevel}
-          placeholder="Choose an option"
+          placeholder="Please select"
         />
         <Select
           label="Writing Level"
@@ -222,7 +278,7 @@ const EducationForm = () => {
           })}
           onChange={handleSelectChangeWritingLevel}
           value={item.writingLevel}
-          placeholder="Choose an option"
+          placeholder="Please select"
         />
       </FormLayout.Group>
 
@@ -236,36 +292,36 @@ const EducationForm = () => {
   );
   function handleSave() {
     const bodyObj1 = {
-      // language_id: item.language.value,
-      language_id: "1",
-      employee_id: id,
+      education_status: item.educationStatus,
+      major: item.major,
+      university: item.university,
+      educational_year: item.educationalYear,
+      gpa: item.gpa,
+      completed_credits_percentage: item.completedCredits,
+      intern_id: id,
+      expected_graduation_year: item.graduationYear,
+    };
+    const bodyObj2 = {
+      language_id: item.language,
+      intern_id: id,
       speaking_level: item.speakingLevel,
       reading_level: item.readingLevel,
       writing_level: item.writingLevel,
     };
-    const bodyObj2 = {
-      country: item.country.value,
-      institution: item.institution,
-      degree: item.degree,
-      major: item.major,
-      start_date: item.startDate,
-      end_date: item.endDate,
-      employee_id: id,
-    };
 
     axios
-      .patch(`/language-skills/${id}`, bodyObj1)
+      .patch(`/intern-education/${id}`, bodyObj1)
       .then((result) => {
         console.log(result);
-        console.log("language skills updated");
+        console.log(" contact details updated");
       })
       .catch((err) => console.log(err));
 
     axios
-      .patch(`/degrees-certifications/${id}`, bodyObj2)
+      .patch(`/language-skills/${id}`, bodyObj2)
       .then((result) => {
         console.log(result);
-        console.log("degrees and certifications updated");
+        console.log(" language skills updated");
       })
       .catch((err) => console.log(err));
   }

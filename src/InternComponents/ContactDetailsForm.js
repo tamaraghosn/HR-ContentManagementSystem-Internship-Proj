@@ -20,7 +20,7 @@ const ContactDetailsForm = () => {
   const [item, setItem] = useState({
     workMobile: "",
     personalMobile: "",
-    perosnalEmail: "",
+    personalEmail: "",
     residenceAddress: "",
     residencePhone: "",
   });
@@ -31,7 +31,7 @@ const ContactDetailsForm = () => {
     setItem({ ...item, workMobile: newValue });
   };
   const handleChangePersonalEmail = (newValue) => {
-    setItem({ ...item, workEmail: newValue });
+    setItem({ ...item, personalEmail: newValue });
   };
 
   const handleChangeResidenceAddress = (newValue) => {
@@ -40,6 +40,40 @@ const ContactDetailsForm = () => {
   const handleChangeResidencePhone = (newValue) => {
     setItem({ ...item, residencePhone: newValue });
   };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  async function fetchData() {
+    let responseItem = "";
+
+    try {
+      responseItem = await axios.get(`/intern-contact-details/${id}`);
+      console.log(responseItem.data.data);
+      setItem({
+        personalMobile: responseItem?.data?.data?.phone_number
+          ? responseItem?.data?.data?.phone_number
+          : "",
+        workMobile: responseItem?.data?.data?.work_mobile
+          ? responseItem?.data?.data?.work_mobile
+          : "",
+        personalEmail: responseItem?.data?.data?.email
+          ? responseItem?.data?.data?.email
+          : "",
+        residenceAddress: responseItem?.data?.data?.residential_address
+          ? responseItem?.data?.data?.residential_address
+          : "",
+        residencePhone: responseItem?.data?.data?.residential_phone
+          ? responseItem?.data?.data?.residential_phone
+          : "",
+
+        isActive: responseItem?.data?.data?.is_active ? true : false,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <FormLayout>
@@ -61,7 +95,7 @@ const ContactDetailsForm = () => {
       </FormLayout.Group>
       <TextField
         label="Personal Email"
-        value={item.perosnalEmail}
+        value={item.personalEmail}
         onChange={handleChangePersonalEmail}
       />
       <FormLayout.Group>
@@ -87,39 +121,17 @@ const ContactDetailsForm = () => {
   );
 
   function handleSave() {
-    const bodyObj1 = {
+    const bodyObj = {
       work_mobile: item.workMobile,
-      work_email: item.workEmail,
-      personal_mobile: item.personalMobile,
+      phone_number: item.personalMobile,
+      email: item.personalEmail,
       residential_address: item.residenceAddress,
       residential_phone: item.residencePhone,
-
-      employee_id: id,
-      personal_email: item.workEmail,
-
-      primary_emergency_contact_country: item.emergencyCountry.value,
-      primary_emergency_contact_first_name: item.emergencyFirstName,
-      primary_emergency_contact_last_name: item.emergencyLastName,
-      primary_emergency_contact_phone_number: item.emergencyPhoneContact,
-      primary_emergency_contact_relation: item.emergencyRelation,
-    };
-    const bodyObj2 = {
-      country: item.identificationCountry.value,
-      passport_or_id: item.idDocumentsPassport,
-      first_image: "",
-      second_image: "",
+      intern_id: id,
     };
 
     axios
-      .patch(`/contact-details/${id}`, bodyObj1)
-      .then((result) => {
-        console.log(result);
-        console.log("contact details updated");
-      })
-      .catch((err) => console.log(err));
-
-    axios
-      .patch(`/identification-documents/${id}`, bodyObj2)
+      .patch(`/intern-contact-details/${id}`, bodyObj)
       .then((result) => {
         console.log(result);
         console.log("Identification Documents updated");

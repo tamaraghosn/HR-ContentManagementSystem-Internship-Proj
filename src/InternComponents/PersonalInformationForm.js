@@ -99,6 +99,55 @@ const PersonalInformationForm = () => {
     setItem({ ...item, resumePortfolio: file });
   };
 
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  async function fetchData() {
+    let responseItem = "";
+
+    try {
+      responseItem = await axios.get(`/intern-general-information/${id}`);
+      console.log(responseItem.data.data);
+      setItem({
+        firstName: responseItem?.data?.data?.first_name
+          ? responseItem?.data?.data?.first_name
+          : "",
+        middleName: responseItem?.data?.data?.middle_name
+          ? responseItem?.data?.data?.middle_name
+          : "",
+        lastName: responseItem?.data?.data?.last_name
+          ? responseItem?.data?.data?.last_name
+          : "",
+        displayName: responseItem?.data?.data?.display_name
+          ? responseItem?.data?.data?.display_name
+          : "",
+        dateOfBirth: responseItem?.data?.data?.date_of_birth
+          ? responseItem?.data?.data?.date_of_birth
+          : "",
+        bloodType: responseItem?.data?.data?.blood_type
+          ? responseItem?.data?.data?.blood_type
+          : "",
+        gender: responseItem?.data?.data?.gender
+          ? String(responseItem?.data?.data?.gender)
+          : "",
+        nationality: responseItem?.data?.data?.nationality
+          ? responseItem?.data?.data?.nationality
+          : "",
+        bio: responseItem?.data?.data?.bio ? responseItem?.data?.data?.bio : "",
+        resumePortfolio: responseItem?.data?.data?.resume_portfolio
+          ? responseItem?.data?.data?.resume_portfolio
+          : "",
+        profilePicture: responseItem?.data?.data?.profile_picture
+          ? responseItem?.data?.data?.profile_picture
+          : "",
+        isActive: responseItem?.data?.data?.is_active ? true : false,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <FormLayout>
       <Text variant="headingSm" as="h6">
@@ -148,7 +197,7 @@ const PersonalInformationForm = () => {
           })}
           onChange={handleSelectChangeBloodType}
           value={item.bloodType}
-          placeholder="Please choose an option"
+          placeholder="Please select"
         />
       </FormLayout.Group>
       <FormLayout.Group>
@@ -176,7 +225,7 @@ const PersonalInformationForm = () => {
           })}
           onChange={handleSelectChangeGender}
           value={item.gender}
-          placeholder="Please choose an option"
+          placeholder="Please select"
         />
         <TextField
           label="Bio"
@@ -215,21 +264,26 @@ const PersonalInformationForm = () => {
       !item.lastName && setLastNameError("This field is required");
     } else {
       const bodyObj = {
+        intern_id: id,
         first_name: item.firstName,
         middle_name: item.middleName,
         last_name: item.lastName,
         display_name: item.displayName,
-        email: item.email,
+        //  email: item.email,
+        //
+
         date_of_birth: item.dateOfBirth,
+        phone_number: "",
         blood_type: item.bloodType,
         gender: item.gender,
         nationality: item.nationality.value,
         profile_picture: item.profilePicture,
-        // resume/portfolio: item.resumePortfolio,
+        resume_portfolio: item.resumePortfolio,
+        bio: item.bio,
       };
 
       axios
-        .patch(`/employee-general-informations/${id}`, bodyObj)
+        .patch(`/intern-general-information/${id}`, bodyObj)
         .then((result) => {
           // console.log(result);
           console.log("general information updated");
