@@ -81,6 +81,56 @@ const EducationForm = () => {
 
   async function fetchData() {
     let responseLanguages = "";
+    let responseItem1 = "";
+    let responseItem2 = "";
+
+    try {
+      responseItem1 = await axios.get(`/language-skills/${id}`);
+      console.log(responseItem1.data.data);
+      setItem({
+        language: responseItem1?.data?.data?.language_id
+          ? responseItem1?.data?.data?.language_id
+          : "",
+        speakingLevel: responseItem1?.data?.data?.speaking_level
+          ? responseItem1?.data?.data?.speaking_level
+          : "",
+        readingLevel: responseItem1?.data?.data?.reading_level
+          ? String(responseItem1?.data?.data?.reading_level)
+          : "",
+        writingLevel: responseItem1?.data?.data?.writing_level
+          ? String(responseItem1?.data?.data?.writing_level)
+          : "",
+
+        isActive: responseItem1?.data?.data?.is_active ? true : false,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+    try {
+      responseItem2 = await axios.get(`/degrees-certifications/${id}`);
+      console.log(responseItem2.data.data);
+      setItem({
+        country: responseItem2?.data?.data?.country
+          ? responseItem2?.data?.data?.country
+          : "",
+        institution: responseItem2?.data?.data?.institution
+          ? responseItem2?.data?.data?.institution
+          : "",
+        major: responseItem2?.data?.data?.major
+          ? responseItem2?.data?.data?.major
+          : "",
+        degree: responseItem2?.data?.data?.degree
+          ? responseItem2?.data?.data?.degree
+          : "",
+        startDate: responseItem2?.data?.data?.start_date
+          ? responseItem2?.data?.data?.end_date
+          : "",
+
+        isActive: responseItem1?.data?.data?.is_active ? true : false,
+      });
+    } catch (error) {
+      console.log(error);
+    }
 
     try {
       responseLanguages = await axios.get(`/languages`);
@@ -126,7 +176,7 @@ const EducationForm = () => {
           })}
           onChange={handleSelectChangeSpeakingLevel}
           value={item.speakingLevel}
-          placeholder="Choose an option"
+          placeholder="Please select"
         />
         <Select
           label="Reading Level"
@@ -135,7 +185,7 @@ const EducationForm = () => {
           })}
           onChange={handleSelectChangeReadingLevel}
           value={item.readingLevel}
-          placeholder="Choose an option"
+          placeholder="Please select"
         />
         <Select
           label="Writing Level"
@@ -144,7 +194,7 @@ const EducationForm = () => {
           })}
           onChange={handleSelectChangeWritingLevel}
           value={item.writingLevel}
-          placeholder="Choose an option"
+          placeholder="Please select"
         />
       </FormLayout.Group>
       <Text variant="headingSm" as="h6">
@@ -182,7 +232,7 @@ const EducationForm = () => {
           })}
           onChange={handleSelectChangeDegree}
           value={item.degree}
-          placeholder="Choose an option"
+          placeholder="Please select"
         />
         <TextField
           label="Subject/Major"

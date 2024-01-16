@@ -121,6 +121,68 @@ const PersonalInformationForm = () => {
     }
   };
 
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  async function fetchData() {
+    let responseItem = "";
+
+    try {
+      responseItem = await axios.get(`/employee-general-information/${id}`);
+      console.log(responseItem.data.data);
+      setItem({
+        firstName: responseItem?.data?.data?.first_name
+          ? responseItem?.data?.data?.first_name
+          : "",
+        middleName: responseItem?.data?.data?.middle_name
+          ? responseItem?.data?.data?.middle_name
+          : "",
+        lastName: responseItem?.data?.data?.last_name
+          ? responseItem?.data?.data?.last_name
+          : "",
+        displayName: responseItem?.data?.data?.display_name
+          ? responseItem?.data?.data?.display_name
+          : "",
+        fatherName: responseItem?.data?.data?.father_name
+          ? responseItem?.data?.data?.father_name
+          : "",
+        motherName: responseItem?.data?.data?.mother_name
+          ? responseItem?.data?.data?.mother_name
+          : "",
+        dateOfBirth: responseItem?.data?.data?.date_of_birth
+          ? responseItem?.data?.data?.date_of_birth
+          : "",
+        bloodType: responseItem?.data?.data?.blood_type
+          ? responseItem?.data?.data?.blood_type
+          : "",
+        maritalStatus: responseItem?.data?.data?.marital_status
+          ? responseItem?.data?.data?.marital_status
+          : "",
+        gender: responseItem?.data?.data?.gender
+          ? responseItem?.data?.data?.gender
+          : "",
+        nationality: responseItem?.data?.data?.nationality
+          ? responseItem?.data?.data?.nationality
+          : "",
+        otherNationality: responseItem?.data?.data?.other_nationality
+          ? responseItem?.data?.data?.other_nationality
+          : "",
+        bio: responseItem?.data?.data?.bio ? responseItem?.data?.data?.bio : "",
+        linkedInLink: responseItem?.data?.data?.linkedIn_profile
+          ? responseItem?.data?.data?.linkedIn_profile
+          : "",
+        profilePicture: responseItem?.data?.data?.profile_picture
+          ? responseItem?.data?.data?.profile_picture
+          : "",
+
+        isActive: responseItem?.data?.data?.is_active ? true : false,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <FormLayout>
       <Text variant="headingSm" as="h6">
@@ -181,7 +243,7 @@ const PersonalInformationForm = () => {
           })}
           onChange={handleSelectChangeBloodType}
           value={item.bloodType}
-          placeholder="Please choose an option"
+          placeholder="Please select"
         />
       </FormLayout.Group>
       <FormLayout.Group>
@@ -192,7 +254,7 @@ const PersonalInformationForm = () => {
           })}
           onChange={handleSelectChangeMaritalStatus}
           value={item.maritalStatus}
-          placeholder="Please choose an option"
+          placeholder="Please select"
         />
         <Select
           label="Gender"
@@ -201,7 +263,7 @@ const PersonalInformationForm = () => {
           })}
           onChange={handleSelectChangeGender}
           value={item.gender}
-          placeholder="Please choose an option"
+          placeholder="Please select"
         />
       </FormLayout.Group>
       <FormLayout.Group>

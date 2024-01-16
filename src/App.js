@@ -22,6 +22,8 @@ import AddEditEmploymentType from "./Pages/Employment Types/AddEdit";
 import Interns from "./Pages/Interns/List";
 import AddEditIntern from "./Pages/Interns/AddEdit";
 import InternProfile from "./Pages/Interns/InternProfile";
+import Speciality from "./Pages/Specialty/List";
+import AddEditSpeciality from "./Pages/Specialty/AddEdit";
 // import Departments from "./Pages/Departments/List";
 
 function App() {
@@ -63,6 +65,30 @@ function App() {
       element: (
         <NavigationLayout>
           <AddEditDepartment type="edit"></AddEditDepartment>
+        </NavigationLayout>
+      ),
+    },
+    {
+      path: "/admin/specialities",
+      element: (
+        <NavigationLayout>
+          <Speciality></Speciality>
+        </NavigationLayout>
+      ),
+    },
+    {
+      path: "/admin/specialities/new",
+      element: (
+        <NavigationLayout>
+          <AddEditSpeciality type="add"></AddEditSpeciality>
+        </NavigationLayout>
+      ),
+    },
+    {
+      path: "/admin/specialities/:id",
+      element: (
+        <NavigationLayout>
+          <AddEditSpeciality type="edit"></AddEditSpeciality>
         </NavigationLayout>
       ),
     },

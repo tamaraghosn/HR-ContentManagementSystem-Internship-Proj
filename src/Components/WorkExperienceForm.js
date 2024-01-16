@@ -5,7 +5,7 @@ import {
   Button,
   PageActions,
 } from "@shopify/polaris";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { countryList } from "../countries";
 import SelectSearchable from "react-select";
 import axios from "../Assets/Lib/axios";
@@ -41,6 +41,41 @@ const WorkExperienceForm = () => {
   const handleChangeResponisibilities = (newValue) => {
     setItem({ ...item, responsibilities: newValue });
   };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  async function fetchData() {
+    let responseItem = "";
+    try {
+      responseItem = await axios.get(`/work-experiences/${id}`);
+      console.log(responseItem.data.data);
+      setItem({
+        company: responseItem?.data?.data?.company
+          ? responseItem?.data?.data?.company
+          : "",
+        country: responseItem?.data?.data?.country
+          ? responseItem?.data?.data?.country
+          : "",
+        position: responseItem?.data?.data?.position
+          ? responseItem?.data?.data?.position
+          : "",
+        startDate: responseItem?.data?.data?.start_date
+          ? responseItem?.data?.data?.start_date
+          : "",
+        endDate: responseItem?.data?.data?.end_date
+          ? responseItem?.data?.data?.end_date
+          : "",
+        responsibilities: responseItem?.data?.data?.responsibilities
+          ? responseItem?.data?.data?.responsibilities
+          : "",
+        isActive: responseItem?.data?.data?.is_active ? true : false,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <FormLayout>

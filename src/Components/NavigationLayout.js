@@ -33,6 +33,7 @@ import {
   CardReaderChipMajor,
   CategoriesMajor,
   ListMajor,
+  AppsFilledMajor,
 } from "@shopify/polaris-icons";
 import Cookies from "js-cookie";
 import logoImg from "../Assets/Images/logoWhite.svg";
@@ -255,6 +256,13 @@ function NavigationLayout(props) {
           },
           {
             url: "/",
+            onClick: () => navigate("/admin/specialities"),
+            label: "Specialities",
+            icon: AppsFilledMajor,
+            selected: window.location.href.indexOf("/admin/specialities") > -1,
+          },
+          {
+            url: "/",
             onClick: () => navigate("/admin/job-titles"),
             label: "Job Titles",
             icon: ProductsMajor,
@@ -273,8 +281,7 @@ function NavigationLayout(props) {
             onClick: () => navigate("/admin/interns"),
             label: "Interns",
             icon: CardReaderChipMajor,
-            selected:
-              window.location.href.indexOf("/admin/employment-types") > -1,
+            selected: window.location.href.indexOf("/admin/interns") > -1,
           },
         ]}
       ></Navigation.Section>

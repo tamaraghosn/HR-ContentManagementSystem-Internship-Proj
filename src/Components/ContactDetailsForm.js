@@ -68,6 +68,75 @@ const ContactDetailsForm = () => {
     setItem({ ...item, idDocumentsPassport: file });
   };
 
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  async function fetchData() {
+    let responseItem1 = "";
+    let responseItem2 = "";
+
+    try {
+      responseItem1 = await axios.get(`/contact-details/${id}`);
+      console.log(responseItem1.data.data);
+      setItem({
+        workMobile: responseItem1?.data?.data?.work_mobile
+          ? responseItem1?.data?.data?.work_mobile
+          : "",
+        workEmail: responseItem1?.data?.data?.work_email
+          ? responseItem1?.data?.data?.work_email
+          : "",
+        personalMobile: responseItem1?.data?.data?.personal_mobile
+          ? responseItem1?.data?.data?.personal_mobile
+          : "",
+        residential_address: responseItem1?.data?.data?.residential_address
+          ? responseItem1?.data?.data?.residential_address
+          : "",
+        residencePhone: responseItem1?.data?.data?.residential_phone
+          ? responseItem1?.data?.data?.residential_phone
+          : "",
+        emergencyFirstName: responseItem1?.data?.data
+          ?.primary_emergency_contact_first_name
+          ? responseItem1?.data?.data?.primary_emergency_contact_first_name
+          : "",
+        emergencyLastName: responseItem1?.data?.data
+          ?.primary_emergency_contact_last_name
+          ? responseItem1?.data?.data?.primary_emergency_contact_last_name
+          : "",
+        primary_emergency_contact_country: responseItem1?.data?.data
+          ?.primary_emergency_contact_country
+          ? responseItem1?.data?.data?.primary_emergency_contact_country
+          : "",
+        emergencyRelation: responseItem1?.data?.data
+          ?.primary_emergency_contact_relation
+          ? responseItem1?.data?.data?.primary_emergency_contact_relation
+          : "",
+        emergencyPhoneContact: responseItem1?.data?.data
+          ?.primary_emergency_contact_phone_number
+          ? responseItem1?.data?.data?.primary_emergency_contact_phone_number
+          : "",
+        isActive: responseItem1?.data?.data?.is_active ? true : false,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+
+    try {
+      responseItem2 = await axios.get(`/identification-documents/${id}`);
+      console.log(responseItem2.data.data);
+      setItem({
+        identificationCountry: responseItem2?.data?.data?.country
+          ? responseItem2?.data?.data?.country
+          : "",
+        idDocumentsPassport: responseItem2?.data?.data?.document
+          ? responseItem2?.data?.data?.document
+          : "",
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <FormLayout>
       <Text variant="headingSm" as="h6">

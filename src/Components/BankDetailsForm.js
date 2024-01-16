@@ -6,7 +6,7 @@ import {
   Button,
   PageActions,
 } from "@shopify/polaris";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { countryList } from "../countries";
 import SelectSearchable from "react-select";
 import axios from "../Assets/Lib/axios";
@@ -14,6 +14,8 @@ import { useParams } from "react-router-dom";
 
 const BankDetailsForm = () => {
   const { id } = useParams();
+
+  const [isSaving, setIsSaving] = useState(true);
   const [item, setItem] = useState({
     country: "",
     bankName: "",
@@ -41,6 +43,42 @@ const BankDetailsForm = () => {
   const handleChangeSwiftCode = (newValue) => {
     setItem({ ...item, swiftCode: newValue });
   };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  async function fetchData() {
+    let responseItem = "";
+
+    try {
+      responseItem = await axios.get(`/bank-details/${id}`);
+      console.log(responseItem.data.data);
+      setItem({
+        country: responseItem?.data?.data?.country
+          ? responseItem?.data?.data?.country
+          : "",
+        bankName: responseItem?.data?.data?.bank_name
+          ? responseItem?.data?.data?.bank_name
+          : "",
+        accountName: responseItem?.data?.data?.account_name
+          ? responseItem?.data?.data?.account_name
+          : "",
+        accountNumber: responseItem?.data?.data?.account_number
+          ? responseItem?.data?.data?.account_number
+          : "",
+        iban: responseItem?.data?.data?.iban
+          ? responseItem?.data?.data?.iban
+          : "",
+        swiftCode: responseItem?.data?.data?.swift_code
+          ? responseItem?.data?.data?.swift_code
+          : "",
+        isActive: responseItem?.data?.data?.is_active ? true : false,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <FormLayout>
