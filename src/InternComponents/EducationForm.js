@@ -105,7 +105,6 @@ const EducationForm = () => {
   async function fetchData() {
     let responseLanguages = "";
     let responseItem1 = "";
-    let responseItem2 = "";
 
     try {
       responseItem1 = await axios.get(`/intern-education/${id}`);
@@ -133,29 +132,20 @@ const EducationForm = () => {
         graduationYear: responseItem1?.data?.data?.expected_graduation_year
           ? responseItem1?.data?.data?.expected_graduation_year
           : "",
+        language: responseItem1?.data?.data?.language_id
+          ? responseItem1?.data?.data?.language_id
+          : "",
+        speakingLevel: responseItem1?.data?.data?.speaking_level
+          ? responseItem1?.data?.data?.speaking_level
+          : "",
+        readingLevel: responseItem1?.data?.data?.reading_level
+          ? responseItem1?.data?.data?.reading_level
+          : "",
+        writingLevel: responseItem1?.data?.data?.writing_level
+          ? responseItem1?.data?.data?.writing_level
+          : "",
 
         isActive: responseItem1?.data?.data?.is_active ? true : false,
-      });
-    } catch (error) {
-      console.log(error);
-    }
-
-    try {
-      responseItem2 = await axios.get(`/language-skills/${id}`);
-      console.log(responseItem2.data.data);
-      setItem({
-        language: responseItem2?.data?.data?.language_id
-          ? responseItem2?.data?.data?.language_id
-          : "",
-        speakingLevel: responseItem2?.data?.data?.speaking_level
-          ? responseItem2?.data?.data?.speaking_level
-          : "",
-        readingLevel: responseItem2?.data?.data?.reading_level
-          ? responseItem2?.data?.data?.reading_level
-          : "",
-        writingLevel: responseItem2?.data?.data?.writing_level
-          ? responseItem2?.data?.data?.writing_level
-          : "",
       });
     } catch (error) {
       console.log(error);
@@ -300,10 +290,8 @@ const EducationForm = () => {
       completed_credits_percentage: item.completedCredits,
       intern_id: id,
       expected_graduation_year: item.graduationYear,
-    };
-    const bodyObj2 = {
-      language_id: item.language,
-      intern_id: id,
+      language_id: item.language.value,
+
       speaking_level: item.speakingLevel,
       reading_level: item.readingLevel,
       writing_level: item.writingLevel,
@@ -314,14 +302,6 @@ const EducationForm = () => {
       .then((result) => {
         console.log(result);
         console.log(" contact details updated");
-      })
-      .catch((err) => console.log(err));
-
-    axios
-      .patch(`/language-skills/${id}`, bodyObj2)
-      .then((result) => {
-        console.log(result);
-        console.log(" language skills updated");
       })
       .catch((err) => console.log(err));
   }

@@ -2,10 +2,9 @@ import {
   FormLayout,
   Text,
   TextField,
-  Select,
   DropZone,
-  Button,
   PageActions,
+  Thumbnail,
 } from "@shopify/polaris";
 import axios from "../Assets/Lib/axios";
 import { useParams } from "react-router-dom";
@@ -13,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import React, { useState, useCallback, useEffect } from "react";
 import { countryList } from "../countries";
 import SelectSearchable from "react-select";
+const validImageTypes = ["image/gif", "image/jpeg", "image/png"];
 
 const ContactDetailsForm = () => {
   const { id } = useParams();
@@ -64,9 +64,50 @@ const ContactDetailsForm = () => {
   const handleSelectChangeIdentificationCountry = (newValue) => {
     setItem({ ...item, identificationCountry: newValue });
   };
-  const handleDropDocs = (file) => {
-    setItem({ ...item, idDocumentsPassport: file });
-  };
+
+  const [files, setFiles] = useState([]);
+  const [imagePreview, setImagePreview] = useState(null);
+
+  const handleDropZoneDrop = useCallback(
+    (_dropFiles, acceptedFiles, _rejectedFiles) => {
+      setFiles(acceptedFiles); // Update files state with the new files
+    },
+    []
+  );
+
+  const sendImage = useCallback((files) => {
+    const isImageType = validImageTypes.indexOf(files[0].type) >= 0;
+
+    setImagePreview(
+      isImageType
+        ? window.URL.createObjectURL(files[0])
+        : "https://cdn.shopify.com/s/files/1/0757/9955/files/New_Post.png?12678548500147524304"
+    );
+
+    setItem((prevItem) => ({
+      ...prevItem,
+      idDocumentsPassport: isImageType
+        ? window.URL.createObjectURL(files[0])
+        : "",
+    }));
+  }, []);
+
+  const uploadedFiles = files.length > 0 && (
+    <div alignment="center">
+      <Thumbnail
+        size="small"
+        alt={files[0].name}
+        source={
+          validImageTypes.indexOf(files[0].type) >= 0
+            ? window.URL.createObjectURL(files[0])
+            : "https://cdn.shopify.com/s/files/1/0757/9955/files/New_Post.png?12678548500147524304"
+        }
+      />
+      <div>
+        {files[0].name} <Text>{files[0].size} bytes</Text>
+      </div>
+    </div>
+  );
 
   useEffect(() => {
     fetchData();
@@ -74,7 +115,6 @@ const ContactDetailsForm = () => {
 
   async function fetchData() {
     let responseItem1 = "";
-    let responseItem2 = "";
 
     try {
       responseItem1 = await axios.get(`/contact-details/${id}`);
@@ -115,22 +155,13 @@ const ContactDetailsForm = () => {
           ?.primary_emergency_contact_phone_number
           ? responseItem1?.data?.data?.primary_emergency_contact_phone_number
           : "",
+        identificationCountry: responseItem1?.data?.data?.country
+          ? responseItem1?.data?.data?.country
+          : "",
+        idDocumentsPassport: responseItem1?.data?.data?.document
+          ? responseItem1?.data?.data?.document
+          : "",
         isActive: responseItem1?.data?.data?.is_active ? true : false,
-      });
-    } catch (error) {
-      console.log(error);
-    }
-
-    try {
-      responseItem2 = await axios.get(`/identification-documents/${id}`);
-      console.log(responseItem2.data.data);
-      setItem({
-        identificationCountry: responseItem2?.data?.data?.country
-          ? responseItem2?.data?.data?.country
-          : "",
-        idDocumentsPassport: responseItem2?.data?.data?.document
-          ? responseItem2?.data?.data?.document
-          : "",
       });
     } catch (error) {
       console.log(error);
@@ -234,11 +265,25 @@ const ContactDetailsForm = () => {
           }}
         />
       </FormLayout>
-      <DropZone
-        label="ID Document/ Passport"
-        onDrop={handleDropDocs}
-        value={item.idDocumentsPassport}
-      ></DropZone>
+
+      <Text>ID Document/ Passport</Text>
+
+      <div style={{ display: "flex", flexDirection: "row", width: "100%" }}>
+        <div style={{ float: "left" }}>
+          <Thumbnail size="large" source={imagePreview || ""} />
+        </div>
+        <div style={{ width: "100%", marginLeft: "10px" }}>
+          <DropZone
+            accept=".png,.jpeg,.jpg,.svg,.json"
+            allowMultiple={false}
+            onDrop={handleDropZoneDrop}
+            onDropAccepted={sendImage}
+          >
+            {uploadedFiles}
+            {!files.length && <DropZone.FileUpload />}
+          </DropZone>
+        </div>
+      </div>
       <PageActions
         primaryAction={{
           content: "Save",
@@ -249,42 +294,66 @@ const ContactDetailsForm = () => {
   );
 
   function handleSave() {
-    const bodyObj1 = {
-      work_mobile: item.workMobile,
-      work_email: item.workEmail,
-      personal_mobile: item.personalMobile,
-      residential_address: item.residenceAddress,
-      residential_phone: item.residencePhone,
+    // const bodyObj1 = {
+    //   work_mobile: item.workMobile,
+    //   work_email: item.workEmail,
+    //   personal_mobile: item.personalMobile,
+    //   residential_address: item.residenceAddress,
+    //   residential_phone: item.residencePhone,
 
-      employee_id: id,
-      personal_email: item.workEmail,
+    //   employee_id: id,
+    //   personal_email: item.workEmail,
 
-      primary_emergency_contact_country: item.emergencyCountry.value,
-      primary_emergency_contact_first_name: item.emergencyFirstName,
-      primary_emergency_contact_last_name: item.emergencyLastName,
-      primary_emergency_contact_phone_number: item.emergencyPhoneContact,
-      primary_emergency_contact_relation: item.emergencyRelation,
-    };
-    const bodyObj2 = {
-      country: item.identificationCountry.value,
-      passport_or_id: item.idDocumentsPassport,
-      first_image: "",
-      second_image: "",
-    };
+    //   primary_emergency_contact_country: item.emergencyCountry.value,
+    //   primary_emergency_contact_first_name: item.emergencyFirstName,
+    //   primary_emergency_contact_last_name: item.emergencyLastName,
+    //   primary_emergency_contact_phone_number: item.emergencyPhoneContact,
+    //   primary_emergency_contact_relation: item.emergencyRelation,
+    //   country: item.identificationCountry.value,
+    //   first_image: files[files.length - 1].name,
+    //   second_image: "",
+    // };
+
+    const formData = new FormData();
+
+    formData.append("work_mobile", item.workMobile);
+    formData.append("work_email", item.workEmail);
+    formData.append("personal_mobile", item.personalMobile);
+    formData.append("residential_address", item.residenceAddress);
+    formData.append("residential_phone", item.residencePhone);
+    formData.append("employee_id", id);
+    formData.append("personal_email", item.workEmail);
+    formData.append(
+      "primary_emergency_contact_country",
+      item.emergencyCountry.value
+    );
+    formData.append(
+      "primary_emergency_contact_first_name",
+      item.emergencyFirstName
+    );
+    formData.append(
+      "primary_emergency_contact_last_name",
+      item.emergencyLastName
+    );
+    formData.append(
+      "primary_emergency_contact_phone_number",
+      item.emergencyPhoneContact
+    );
+    formData.append(
+      "primary_emergency_contact_relation",
+      item.emergencyRelation
+    );
+    formData.append("country", item.identificationCountry.value);
+    formData.append("first_image", files[files.length - 1]);
+    formData.append("second_image", "");
+
+    console.log(files[files.length - 1]);
 
     axios
-      .patch(`/contact-details/${id}`, bodyObj1)
+      .patch(`/contact-details/${id}`, formData)
       .then((result) => {
         console.log(result);
         console.log("contact details updated");
-      })
-      .catch((err) => console.log(err));
-
-    axios
-      .patch(`/identification-documents/${id}`, bodyObj2)
-      .then((result) => {
-        console.log(result);
-        console.log("Identification Documents updated");
       })
       .catch((err) => console.log(err));
   }

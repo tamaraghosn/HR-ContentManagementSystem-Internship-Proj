@@ -75,7 +75,7 @@ const InternshipProgramDetailsForm = () => {
     let responseItem = "";
 
     try {
-      responseItem = await axios.get(`/internship-program/${id}`);
+      responseItem = await axios.get(`/internship-program-details/${id}`);
       console.log(responseItem.data.data);
       setItem({
         speciality_id: item.speciality.value,
@@ -326,7 +326,7 @@ const InternshipProgramDetailsForm = () => {
     };
 
     axios
-      .patch(`/internship-program/${id}`, bodyObj)
+      .patch(`/internship-program-details/${id}`, bodyObj)
       .then((result) => {
         console.log(result);
         console.log("internship program details updated");
