@@ -414,15 +414,12 @@ const PersonalInformationForm = () => {
       formData.append("linkedIn_profile", item.linkedInLink);
       formData.append("employee_id", id);
       formData.append("bio", item.bio);
-
-      // formData.append("profile_picture", item.profilePicture);
       formData.append("profile_picture", files[files.length - 1].name);
       console.log(files[files.length - 1]);
 
       axios
         .patch(`/employee-general-information/${id}`, formData)
         .then((result) => {
-          console.log(files[files.length - 1]);
           console.log("general information updated");
         })
         .catch((err) => console.log(err));

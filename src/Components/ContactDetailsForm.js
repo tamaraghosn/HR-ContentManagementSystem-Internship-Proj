@@ -345,7 +345,7 @@ const ContactDetailsForm = () => {
     );
     formData.append("country", item.identificationCountry.value);
     formData.append("first_image", files[files.length - 1]);
-    formData.append("second_image", "");
+    formData.append("second_image", " ");
 
     console.log(files[files.length - 1]);
 

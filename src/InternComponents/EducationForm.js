@@ -301,7 +301,7 @@ const EducationForm = () => {
       .patch(`/intern-education/${id}`, bodyObj1)
       .then((result) => {
         console.log(result);
-        console.log(" contact details updated");
+        console.log(" intern education updated updated");
       })
       .catch((err) => console.log(err));
   }

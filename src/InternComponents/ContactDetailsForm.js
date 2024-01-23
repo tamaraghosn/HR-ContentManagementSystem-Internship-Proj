@@ -134,7 +134,7 @@ const ContactDetailsForm = () => {
       .patch(`/intern-contact-details/${id}`, bodyObj)
       .then((result) => {
         console.log(result);
-        console.log("Identification Documents updated");
+        console.log("contact details updated");
       })
       .catch((err) => console.log(err));
   }

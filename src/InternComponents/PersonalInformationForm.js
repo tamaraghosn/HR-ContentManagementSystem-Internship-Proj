@@ -363,23 +363,24 @@ const PersonalInformationForm = () => {
       !item.firstName && setFirstNameError("This field is required");
       !item.lastName && setLastNameError("This field is required");
     } else {
-      const bodyObj = {
-        first_name: item.firstName,
-        middle_name: item.middleName,
-        last_name: item.lastName,
-        display_name: item.displayName,
-        date_of_birth: item.dateOfBirth,
-        phone_number: "",
-        blood_type: item.bloodType,
-        gender: item.gender,
-        nationality: item.nationality.value,
-        profile_picture: profilePictureFiles[profilePictureFiles.length - 1],
-        resume_portfolio: portfolioFiles[portfolioFiles.length - 1],
-        bio: item.bio,
-      };
+      // const bodyObj = {
+      //   first_name: item.firstName,
+      //   middle_name: item.middleName,
+      //   last_name: item.lastName,
+      //   display_name: item.displayName,
+      //   date_of_birth: item.dateOfBirth,
+      //   phone_number: "",
+      //   blood_type: item.bloodType,
+      //   gender: item.gender,
+      //   nationality: item.nationality.value,
+      //   profile_picture: profilePictureFiles[profilePictureFiles.length - 1],
+      //   resume_portfolio: portfolioFiles[portfolioFiles.length - 1],
+      //   bio: item.bio,
+      // };
       const formData = new FormData();
 
       formData.append("intern_id", id);
+      formData.append("first_name", item.firstName);
       formData.append("middle_name", item.middleName);
       formData.append("last_name", item.lastName);
       formData.append("display_name", item.displayName);
