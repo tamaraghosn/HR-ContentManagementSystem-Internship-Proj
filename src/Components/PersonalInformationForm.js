@@ -4,8 +4,8 @@ import {
   TextField,
   Select,
   DropZone,
-  Button,
   PageActions,
+  Thumbnail,
 } from "@shopify/polaris";
 import React, { useState, useCallback, useEffect } from "react";
 import SelectSearchable from "react-select";
@@ -13,8 +13,12 @@ import axios from "../Assets/Lib/axios";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { countryList } from "../countries";
+const validImageTypes = ["image/gif", "image/jpeg", "image/png"];
 
 const PersonalInformationForm = () => {
+  const [files, setFiles] = useState([]);
+  const [imagePreview, setImagePreview] = useState(null);
+
   const { id } = useParams();
   const [item, setItem] = useState({
     firstName: "",
@@ -110,16 +114,45 @@ const PersonalInformationForm = () => {
   const handleChangeBio = (newValue) => {
     setItem({ ...item, bio: newValue });
   };
-  const handleDropProfilePicture = (file) => {
-    // Check if the file object is defined and has a type property
-    if (file && file.type && file.type.startsWith("image/")) {
-      setItem({ ...item, profilePicture: file });
-    } else {
-      // Handle the case where the file is undefined or does not have a type property
-      console.error("Invalid file format for the profile picture.");
-      // You may also set an error state to display a message to the user
-    }
-  };
+
+  const handleDropZoneDrop = useCallback(
+    (_dropFiles, acceptedFiles, _rejectedFiles) => {
+      setFiles(acceptedFiles); // Update files state with the new files
+    },
+    []
+  );
+
+  const sendImage = useCallback((files) => {
+    const isImageType = validImageTypes.indexOf(files[0].type) >= 0;
+
+    setImagePreview(
+      isImageType
+        ? window.URL.createObjectURL(files[0])
+        : "https://cdn.shopify.com/s/files/1/0757/9955/files/New_Post.png?12678548500147524304"
+    );
+
+    setItem((prevItem) => ({
+      ...prevItem,
+      profilePicture: isImageType ? window.URL.createObjectURL(files[0]) : "",
+    }));
+  }, []);
+
+  const uploadedFiles = files.length > 0 && (
+    <div alignment="center">
+      <Thumbnail
+        size="small"
+        alt={files[0].name}
+        source={
+          validImageTypes.indexOf(files[0].type) >= 0
+            ? window.URL.createObjectURL(files[0])
+            : "https://cdn.shopify.com/s/files/1/0757/9955/files/New_Post.png?12678548500147524304"
+        }
+      />
+      <div>
+        {files[0].name} <Text>{files[0].size} bytes</Text>
+      </div>
+    </div>
+  );
 
   useEffect(() => {
     fetchData();
@@ -313,12 +346,25 @@ const PersonalInformationForm = () => {
           onChange={handleChangeLinkedInLink}
         />
       </FormLayout.Group>
-      <DropZone
-        label="Profile Picture"
-        type="image"
-        onDrop={handleDropProfilePicture}
-        value={item.profilePicture}
-      ></DropZone>
+
+      <Text>Profile Picture</Text>
+      <div style={{ display: "flex", flexDirection: "row", width: "100%" }}>
+        <div style={{ float: "left" }}>
+          <Thumbnail size="large" source={imagePreview || ""} />
+        </div>
+        <div style={{ width: "100%", marginLeft: "10px" }}>
+          <DropZone
+            accept=".png,.jpeg,.jpg,.svg,.json"
+            allowMultiple={false}
+            onDrop={handleDropZoneDrop}
+            onDropAccepted={sendImage}
+          >
+            {uploadedFiles}
+            {!files.length && <DropZone.FileUpload />}
+          </DropZone>
+        </div>
+      </div>
+
       <PageActions
         primaryAction={{
           content: "Save",
@@ -333,29 +379,47 @@ const PersonalInformationForm = () => {
       !item.firstName && setFirstNameError("This field is required");
       !item.lastName && setLastNameError("This field is required");
     } else {
-      const bodyObj = {
-        first_name: item.firstName,
-        middle_name: item.middleName,
-        last_name: item.lastName,
-        display_name: item.displayName,
-        father_name: item.fatherName,
-        mother_name: item.motherName,
-        marital_status: item.maritalStatus,
-        date_of_birth: item.dateOfBirth,
-        blood_type: item.bloodType,
-        gender: item.gender,
-        nationality: item.nationality.value,
-        other_nationality: item.otherNationality.value,
-        profile_picture: item.profilePicture,
-        linkedIn_profile: item.linkedInLink,
-        employee_id: id,
-        bio: item.bio,
-      };
+      // const bodyObj = {
+      //   first_name: item.firstName,
+      //   middle_name: item.middleName,
+      //   last_name: item.lastName,
+      //   display_name: item.displayName,
+      //   father_name: item.fatherName,
+      //   mother_name: item.motherName,
+      //   marital_status: item.maritalStatus,
+      //   date_of_birth: item.dateOfBirth,
+      //   blood_type: item.bloodType,
+      //   gender: item.gender,
+      //   nationality: item.nationality.value,
+      //   other_nationality: item.otherNationality.value,
+      //   profile_picture: item.profilePicture,
+      //   linkedIn_profile: item.linkedInLink,
+      //   employee_id: id,
+      //   bio: item.bio,
+      // };
+      const formData = new FormData();
+
+      formData.append("first_name", item.firstName);
+      formData.append("middle_name", item.middleName);
+      formData.append("last_name", item.lastName);
+      formData.append("display_name", item.displayName);
+      formData.append("father_name", item.fatherName);
+      formData.append("mother_name", item.motherName);
+      formData.append("marital_status", item.maritalStatus);
+      formData.append("date_of_birth", item.dateOfBirth);
+      formData.append("blood_type", item.bloodType);
+      formData.append("gender", item.gender);
+      formData.append("nationality", item.nationality.value);
+      formData.append("other_nationality", item.otherNationality.value);
+      formData.append("linkedIn_profile", item.linkedInLink);
+      formData.append("employee_id", id);
+      formData.append("bio", item.bio);
+      formData.append("profile_picture", files[files.length - 1].name);
+      console.log(files[files.length - 1]);
 
       axios
-        .patch(`/employee-general-informations/${id}`, bodyObj)
+        .patch(`/employee-general-information/${id}`, formData)
         .then((result) => {
-          // console.log(result);
           console.log("general information updated");
         })
         .catch((err) => console.log(err));

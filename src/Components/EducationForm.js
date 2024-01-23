@@ -82,10 +82,9 @@ const EducationForm = () => {
   async function fetchData() {
     let responseLanguages = "";
     let responseItem1 = "";
-    let responseItem2 = "";
 
     try {
-      responseItem1 = await axios.get(`/language-skills/${id}`);
+      responseItem1 = await axios.get(`/employee-education/${id}`);
       console.log(responseItem1.data.data);
       setItem({
         language: responseItem1?.data?.data?.language_id
@@ -100,30 +99,20 @@ const EducationForm = () => {
         writingLevel: responseItem1?.data?.data?.writing_level
           ? String(responseItem1?.data?.data?.writing_level)
           : "",
-
-        isActive: responseItem1?.data?.data?.is_active ? true : false,
-      });
-    } catch (error) {
-      console.log(error);
-    }
-    try {
-      responseItem2 = await axios.get(`/degrees-certifications/${id}`);
-      console.log(responseItem2.data.data);
-      setItem({
-        country: responseItem2?.data?.data?.country
-          ? responseItem2?.data?.data?.country
+        country: responseItem1?.data?.data?.country
+          ? responseItem1?.data?.data?.country
           : "",
-        institution: responseItem2?.data?.data?.institution
-          ? responseItem2?.data?.data?.institution
+        institution: responseItem1?.data?.data?.institution
+          ? responseItem1?.data?.data?.institution
           : "",
-        major: responseItem2?.data?.data?.major
-          ? responseItem2?.data?.data?.major
+        major: responseItem1?.data?.data?.major
+          ? responseItem1?.data?.data?.major
           : "",
-        degree: responseItem2?.data?.data?.degree
-          ? responseItem2?.data?.data?.degree
+        degree: responseItem1?.data?.data?.degree
+          ? responseItem1?.data?.data?.degree
           : "",
-        startDate: responseItem2?.data?.data?.start_date
-          ? responseItem2?.data?.data?.end_date
+        startDate: responseItem1?.data?.data?.start_date
+          ? responseItem1?.data?.data?.end_date
           : "",
 
         isActive: responseItem1?.data?.data?.is_active ? true : false,
@@ -265,35 +254,24 @@ const EducationForm = () => {
   function handleSave() {
     const bodyObj1 = {
       // language_id: item.language.value,
-      language_id: "1",
+      language_id: item.language.value,
       employee_id: id,
       speaking_level: item.speakingLevel,
       reading_level: item.readingLevel,
       writing_level: item.writingLevel,
-    };
-    const bodyObj2 = {
       country: item.country.value,
       institution: item.institution,
       degree: item.degree,
       major: item.major,
       start_date: item.startDate,
       end_date: item.endDate,
-      employee_id: id,
     };
 
     axios
-      .patch(`/language-skills/${id}`, bodyObj1)
+      .patch(`/employee-education/${id}`, bodyObj1)
       .then((result) => {
         console.log(result);
-        console.log("language skills updated");
-      })
-      .catch((err) => console.log(err));
-
-    axios
-      .patch(`/degrees-certifications/${id}`, bodyObj2)
-      .then((result) => {
-        console.log(result);
-        console.log("degrees and certifications updated");
+        console.log(" employee education  updated");
       })
       .catch((err) => console.log(err));
   }

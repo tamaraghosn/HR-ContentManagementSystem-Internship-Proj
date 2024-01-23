@@ -75,21 +75,9 @@ const InternshipProgramDetailsForm = () => {
     let responseItem = "";
 
     try {
-      responseItem = await axios.get(`/internship-program/${id}`);
+      responseItem = await axios.get(`/internship-program-details/${id}`);
       console.log(responseItem.data.data);
       setItem({
-        speciality_id: item.speciality.value,
-        speciality_other: item.specify,
-        internship_status: item.internshipStatus,
-        start_date: item.startDate,
-        end_date: item.endDate,
-        schedule: item.schedule,
-        mentor_id: item.mentor.value,
-        mentor_position_id: item.mentorPosition.value,
-        assistant_mentor_id: item.assistantMentor.value,
-        assistant_mentor_position_id: item.assistantMentorPosition.value,
-        intern_id: id,
-
         speciality: responseItem?.data?.data?.speciality_id
           ? responseItem?.data?.data?.speciality_id
           : "",
@@ -326,7 +314,7 @@ const InternshipProgramDetailsForm = () => {
     };
 
     axios
-      .patch(`/internship-program/${id}`, bodyObj)
+      .patch(`/internship-program-details/${id}`, bodyObj)
       .then((result) => {
         console.log(result);
         console.log("internship program details updated");
