@@ -398,11 +398,11 @@ const PersonalInformationForm = () => {
         portfolioFiles[portfolioFiles.length - 1]
       );
       formData.append("bio", item.bio);
+      formData.append("_method", "PATCH");
 
       axios
-        .patch(`/intern-general-information/${id}`, formData)
+        .post(`/intern-general-information/${id}`, formData)
         .then((result) => {
-          // console.log(result);
           console.log("general information updated");
         })
         .catch((err) => console.log(err));
