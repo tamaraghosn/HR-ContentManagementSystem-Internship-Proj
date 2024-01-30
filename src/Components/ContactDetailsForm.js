@@ -344,13 +344,15 @@ const ContactDetailsForm = () => {
       item.emergencyRelation
     );
     formData.append("country", item.identificationCountry.value);
-    formData.append("first_image", files[files.length - 1]);
+    formData.append("first_image", files[files.length - 1].name);
     formData.append("second_image", " ");
+    formData.append("_method", "PATCH");
+    formData.append("document", files[files.length - 1].name);
 
     console.log(files[files.length - 1]);
 
     axios
-      .patch(`/contact-details/${id}`, formData)
+      .post(`/contact-details/${id}`, formData)
       .then((result) => {
         console.log(result);
         console.log("contact details updated");
