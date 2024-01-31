@@ -187,13 +187,13 @@ const PersonalInformationForm = () => {
           ? responseItem?.data?.data?.date_of_birth
           : "",
         bloodType: responseItem?.data?.data?.blood_type
-          ? responseItem?.data?.data?.blood_type
+          ? String(responseItem?.data?.data?.blood_type)
           : "",
         maritalStatus: responseItem?.data?.data?.marital_status
-          ? responseItem?.data?.data?.marital_status
+          ? String(responseItem?.data?.data?.marital_status)
           : "",
         gender: responseItem?.data?.data?.gender
-          ? responseItem?.data?.data?.gender
+          ? String(responseItem?.data?.data?.gender)
           : "",
         nationality: responseItem?.data?.data?.nationality
           ? responseItem?.data?.data?.nationality

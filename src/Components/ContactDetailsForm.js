@@ -129,7 +129,7 @@ const ContactDetailsForm = () => {
         personalMobile: responseItem1?.data?.data?.personal_mobile
           ? responseItem1?.data?.data?.personal_mobile
           : "",
-        residential_address: responseItem1?.data?.data?.residential_address
+        residenceAddress: responseItem1?.data?.data?.residential_address
           ? responseItem1?.data?.data?.residential_address
           : "",
         residencePhone: responseItem1?.data?.data?.residential_phone

@@ -2,11 +2,10 @@ import {
   FormLayout,
   Text,
   TextField,
-  Button,
   Checkbox,
   RadioButton,
-  Page,
   PageActions,
+  InlineError,
 } from "@shopify/polaris";
 import React, { useState, useEffect } from "react";
 import SelectSearchable from "react-select";
@@ -41,7 +40,10 @@ const InternshipProgramDetailsForm = () => {
   };
   const handleChangeStartDate = (newValue) => {
     setItem({ ...item, startDate: newValue });
+    setStartDateError("");
   };
+  const [startDateError, setStartDateError] = useState("");
+
   const handleChangeEndDate = (newValue) => {
     setItem({ ...item, endDate: newValue });
   };
@@ -50,7 +52,10 @@ const InternshipProgramDetailsForm = () => {
   };
   const handleChangeMentor = (newValue) => {
     setItem({ ...item, mentor: newValue });
+    setMentorError("");
   };
+  const [mentorError, setMentorError] = useState("");
+
   const handleChangeMentorPosition = (newValue) => {
     setItem({ ...item, mentorPosition: newValue });
   };
@@ -187,6 +192,8 @@ const InternshipProgramDetailsForm = () => {
           label="Joining/Starting Date"
           value={item.startDate}
           type="date"
+          error={startDateError}
+          requiredIndicator
           onChange={handleChangeStartDate}
           placeholder="MM/DD/YYYY"
         />
@@ -232,17 +239,23 @@ const InternshipProgramDetailsForm = () => {
       </Card>
       <FormLayout.Group>
         <FormLayout>
-          <Text>Mentor</Text>
+          <Text>
+            Mentor <span style={{ color: "darkred" }}>*</span>
+          </Text>
+
           <SelectSearchable
             options={optionsActiveEmployee}
             onChange={handleChangeMentor}
             value={item.mentor}
+            error={mentorError}
+            requiredIndicator
             placeholder="Please select"
             styles={{
               // Fixes the overlapping problem of the component
               menu: (provided) => ({ ...provided, zIndex: 9999 }),
             }}
           />
+          <InlineError message={mentorError} fieldID="MentorFieldID" />
         </FormLayout>
       </FormLayout.Group>
       <FormLayout.Group>
@@ -299,27 +312,32 @@ const InternshipProgramDetailsForm = () => {
     </FormLayout>
   );
   function handleSave() {
-    const bodyObj = {
-      speciality_id: item.speciality.value,
-      speciality_other: item.specify,
-      internship_status: item.internshipStatus,
-      start_date: item.startDate,
-      end_date: item.endDate,
-      schedule: item.schedule,
-      mentor_id: item.mentor.value,
-      mentor_position_id: item.mentorPosition.value,
-      assistant_mentor_id: item.assistantMentor.value,
-      assistant_mentor_position_id: item.assistantMentorPosition.value,
-      intern_id: id,
-    };
+    if (!item.startDate || !item.mentor) {
+      !item.startDate && setStartDateError("This field is required");
+      !item.mentor && setMentorError("This field is required");
+    } else {
+      const bodyObj = {
+        speciality_id: item.speciality.value,
+        speciality_other: item.specify,
+        internship_status: item.internshipStatus,
+        start_date: item.startDate,
+        end_date: item.endDate,
+        schedule: item.schedule,
+        mentor_id: item.mentor.value,
+        mentor_position_id: item.mentorPosition.value,
+        assistant_mentor_id: item.assistantMentor.value,
+        assistant_mentor_position_id: item.assistantMentorPosition.value,
+        intern_id: id,
+      };
 
-    axios
-      .patch(`/internship-program-details/${id}`, bodyObj)
-      .then((result) => {
-        console.log(result);
-        console.log("internship program details updated");
-      })
-      .catch((err) => console.log(err));
+      axios
+        .patch(`/internship-program-details/${id}`, bodyObj)
+        .then((result) => {
+          console.log(result);
+          console.log("internship program details updated");
+        })
+        .catch((err) => console.log(err));
+    }
   }
 };
 

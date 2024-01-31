@@ -76,22 +76,34 @@ const EducationForm = () => {
 
   const handleSelectChangeEducationStatus = (newValue) => {
     setItem({ ...item, educationStatus: newValue });
+    setEducationStatusError("");
   };
+  const [educationStatusError, setEducationStatusError] = useState("");
   const handleChangeMajor = (newValue) => {
     setItem({ ...item, major: newValue });
+    setMajorError("");
   };
+  const [majorError, setMajorError] = useState("");
   const handleChangeUniversity = (newValue) => {
     setItem({ ...item, university: newValue });
+    setUniversityError("");
   };
+  const [universityError, setUniversityError] = useState("");
   const handleSelectChangeEducationalYear = (newValue) => {
     setItem({ ...item, educationalYear: newValue });
+    setEducationalYearError("");
   };
+  const [educationalYearError, setEducationalYearError] = useState("");
   const handleSelectChangeGPA = (newValue) => {
     setItem({ ...item, gpa: newValue });
+    setGPAerror("");
   };
+  const [gpaError, setGPAerror] = useState("");
   const handleSelectChangeCompletedCredits = (newValue) => {
     setItem({ ...item, completedCredits: newValue });
+    setCompletedCreditCardsError("");
   };
+  const [completedCreditsError, setCompletedCreditCardsError] = useState("");
   const handleSelectChangeGraduationYear = (newValue) => {
     setItem({ ...item, graduationYear: newValue });
   };
@@ -174,6 +186,8 @@ const EducationForm = () => {
       <FormLayout.Group>
         <Select
           label="Education Status"
+          requiredIndicator
+          error={educationStatusError}
           options={optionsStatus.map((item, index) => {
             return { label: item.label, value: item.value };
           })}
@@ -183,6 +197,8 @@ const EducationForm = () => {
         />
         <TextField
           label="Major"
+          requiredIndicator
+          error={majorError}
           value={item.major}
           onChange={handleChangeMajor}
         />
@@ -190,11 +206,15 @@ const EducationForm = () => {
       <FormLayout.Group>
         <TextField
           label="University"
+          requiredIndicator
+          error={universityError}
           value={item.university}
           onChange={handleChangeUniversity}
         />
         <Select
           label="Educational Year"
+          error={educationalYearError}
+          requiredIndicator
           options={optionsEducationalYear.map((item, index) => {
             return { label: item.label, value: item.value };
           })}
@@ -207,10 +227,14 @@ const EducationForm = () => {
         <TextField
           label="GPA"
           value={item.gpa}
+          requiredIndicator
+          error={gpaError}
           onChange={handleSelectChangeGPA}
         />
         <Select
           label="Percentage of completed credits"
+          requiredIndicator
+          error={completedCreditsError}
           options={optionsCompletedCredits.map((item, index) => {
             return { label: item.label, value: item.value };
           })}
@@ -281,29 +305,48 @@ const EducationForm = () => {
     </FormLayout>
   );
   function handleSave() {
-    const bodyObj1 = {
-      education_status: item.educationStatus,
-      major: item.major,
-      university: item.university,
-      educational_year: item.educationalYear,
-      gpa: item.gpa,
-      completed_credits_percentage: item.completedCredits,
-      intern_id: id,
-      expected_graduation_year: item.graduationYear,
-      language_id: item.language.value,
+    if (
+      !item.educationStatus ||
+      !item.major ||
+      !item.university ||
+      !item.educationalYear ||
+      !item.gpa ||
+      !item.completedCredits
+    ) {
+      !item.educationStatus &&
+        setEducationStatusError("This field is required");
+      !item.major && setMajorError("This field is required");
+      !item.university && setUniversityError("This field is required");
+      !item.educationalYear &&
+        setEducationalYearError("This field is required");
+      !item.gpa && setGPAerror("This field is required");
+      !item.completedCredits &&
+        setCompletedCreditCardsError("This field is required");
+    } else {
+      const bodyObj1 = {
+        education_status: item.educationStatus,
+        major: item.major,
+        university: item.university,
+        educational_year: item.educationalYear,
+        gpa: item.gpa,
+        completed_credits_percentage: item.completedCredits,
+        intern_id: id,
+        expected_graduation_year: item.graduationYear,
+        language_id: item.language.value,
 
-      speaking_level: item.speakingLevel,
-      reading_level: item.readingLevel,
-      writing_level: item.writingLevel,
-    };
+        speaking_level: item.speakingLevel,
+        reading_level: item.readingLevel,
+        writing_level: item.writingLevel,
+      };
 
-    axios
-      .patch(`/intern-education/${id}`, bodyObj1)
-      .then((result) => {
-        console.log(result);
-        console.log(" intern education updated updated");
-      })
-      .catch((err) => console.log(err));
+      axios
+        .patch(`/intern-education/${id}`, bodyObj1)
+        .then((result) => {
+          console.log(result);
+          console.log(" intern education updated updated");
+        })
+        .catch((err) => console.log(err));
+    }
   }
 };
 

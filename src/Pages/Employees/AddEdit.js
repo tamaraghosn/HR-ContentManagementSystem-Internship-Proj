@@ -10,6 +10,7 @@ import {
   TextField,
   Toast,
   Select,
+  InlineError,
 } from "@shopify/polaris";
 import axios from "../../Assets/Lib/axios";
 import { useParams } from "react-router-dom";
@@ -34,9 +35,9 @@ const AddEditEmployee = (props) => {
     // isInactive: false,
     employmentType: "",
     probationPeriod: "",
-    department: " ",
-    jobTitle: " ",
-    lineManager: " ",
+    department: "",
+    jobTitle: "",
+    lineManager: "",
   });
   const handleChangeFirstName = (newValue) => {
     setItem({ ...item, firstName: newValue });
@@ -50,26 +51,11 @@ const AddEditEmployee = (props) => {
   };
   const [lastNameError, setLastNameError] = useState("");
 
-  // const handleChangePhoneNumber = (newValue) => {
-  //   setItem({ ...item, phoneNumber: newValue });
-  //   setPhoneNumberError("");
-  // };
-  // const [phoneNumberError, setPhoneNumberError] = useState("");
-
   const handleChangeWorkEmailAddress = (newValue) => {
     setItem({ ...item, workEmailAddress: newValue });
     setWorkEmailAddressError("");
   };
   const [workEmailAddressError, setWorkEmailAddressError] = useState("");
-
-  // const handleSelectChangeGender = (newValue) => {
-  //   setItem({ ...item, gender: newValue });
-  // };
-
-  // const optionsGender = [
-  //   { label: "Male", value: "male" },
-  //   { label: "Female", value: "female" },
-  // ];
 
   const handleSelectChangeTitle = (newValue) => {
     setItem({ ...item, title: newValue });
@@ -279,15 +265,6 @@ const AddEditEmployee = (props) => {
           </FormLayout.Group>
 
           <FormLayout.Group>
-            {/* <TextField
-              value={item.phoneNumber}
-              onChange={handleChangePhoneNumber}
-              error={phoneNumberError}
-              label="Phone Number"
-              type="email"
-              requiredIndicator
-            /> */}
-
             <TextField
               value={item.workEmailAddress}
               onChange={handleChangeWorkEmailAddress}
@@ -299,16 +276,6 @@ const AddEditEmployee = (props) => {
           </FormLayout.Group>
 
           <FormLayout.Group>
-            {/* <Select
-              label="Gender"
-              options={optionsGender.map((item, index) => {
-                return { label: item.label, value: item.value };
-              })}
-              onChange={handleSelectChangeGender}
-              value={item.gender}
-              placeholder="Please choose an option"
-            /> */}
-
             <Select
               label="Title"
               options={optionsTitle.map((item, index) => {
@@ -368,18 +335,42 @@ const AddEditEmployee = (props) => {
                 }}
               />
             </FormLayout>
-            <FormLayout>
-              <Text>Job Title</Text>
+            {/* <FormLayout>
+              <text>
+                Job Title<span style={{ color: "darkred" }}> *</span>
+              </text>
               <SelectSearchable
                 options={optionsJobTitle}
                 onChange={handleSelectChangeJobTitle}
                 value={item.jobTitle}
+                error={jobTitleError}
                 placeholder="Please select"
                 styles={{
                   // Fixes the overlapping problem of the component
                   menu: (provided) => ({ ...provided, zIndex: 9999 }),
                 }}
               />
+              <InlineError message={jobTitleError} fieldID="jobTitleFieldID" />
+            </FormLayout> */}
+          </FormLayout.Group>
+          <FormLayout.Group>
+            <FormLayout>
+              <text>
+                Job Title<span style={{ color: "darkred" }}> *</span>
+              </text>
+              <SelectSearchable
+                options={optionsJobTitle}
+                onChange={handleSelectChangeJobTitle}
+                value={item.jobTitle}
+                error={jobTitleError}
+                requiredIndicator
+                placeholder="Please select"
+                styles={{
+                  // Fixes the overlapping problem of the component
+                  menu: (provided) => ({ ...provided, zIndex: 9999 }),
+                }}
+              />
+              <InlineError message={jobTitleError} fieldID="jobTitleFieldID" />
             </FormLayout>
           </FormLayout.Group>
           <FormLayout.Group>
@@ -435,20 +426,19 @@ const AddEditEmployee = (props) => {
 
   function handleSave() {
     if (
+      !item.jobTitle ||
       !item.firstName ||
-      // !item.phoneNumber ||
       !item.lastName ||
       !item.workEmailAddress ||
-      !item.joiningDate ||
-      !item.jobTitle
+      !item.joiningDate
     ) {
       !item.firstName && setFirstNameError("This field is required");
+      !item.jobTitle && setJobTitleError("This field is required");
       !item.lastName && setLastNameError("This field is required");
-      // !item.phoneNumber && setPhoneNumberError("This field is required");
+
       !item.workEmailAddress &&
         setWorkEmailAddressError("This field is required");
       !item.joiningDate && setJoiningDateError("This field is required");
-      !item.jobTitle && setJobTitleError("This field is required");
     } else {
       setIsSaving(true);
       const bodyObj = {

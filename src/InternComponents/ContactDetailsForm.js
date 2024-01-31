@@ -24,15 +24,21 @@ const ContactDetailsForm = () => {
     residenceAddress: "",
     residencePhone: "",
   });
+
   const handleChangePersonalMobile = (newValue) => {
     setItem({ ...item, personalMobile: newValue });
+    setPersonalMobileError("");
   };
+  const [personalMobileError, setPersonalMobileError] = useState("");
   const handleChangeWorkMobile = (newValue) => {
     setItem({ ...item, workMobile: newValue });
   };
   const handleChangePersonalEmail = (newValue) => {
     setItem({ ...item, personalEmail: newValue });
+    setPersonalEmailError("");
   };
+
+  const [personalEmailError, setPersonalEmailError] = useState("");
 
   const handleChangeResidenceAddress = (newValue) => {
     setItem({ ...item, residenceAddress: newValue });
@@ -51,6 +57,7 @@ const ContactDetailsForm = () => {
     try {
       responseItem = await axios.get(`/intern-contact-details/${id}`);
       console.log(responseItem.data.data);
+
       setItem({
         personalMobile: responseItem?.data?.data?.phone_number
           ? responseItem?.data?.data?.phone_number
@@ -84,6 +91,8 @@ const ContactDetailsForm = () => {
         <TextField
           label="Personal Mobile"
           value={item.personalMobile}
+          requiredIndicator
+          error={personalMobileError}
           onChange={handleChangePersonalMobile}
         />
         <TextField
@@ -96,6 +105,8 @@ const ContactDetailsForm = () => {
       <TextField
         label="Personal Email"
         value={item.personalEmail}
+        error={personalEmailError}
+        requiredIndicator
         onChange={handleChangePersonalEmail}
       />
       <FormLayout.Group>
@@ -121,22 +132,27 @@ const ContactDetailsForm = () => {
   );
 
   function handleSave() {
-    const bodyObj = {
-      work_mobile: item.workMobile,
-      phone_number: item.personalMobile,
-      email: item.personalEmail,
-      residential_address: item.residenceAddress,
-      residential_phone: item.residencePhone,
-      intern_id: id,
-    };
+    if (!item.personalEmail || !item.personalMobile) {
+      !item.personalEmail && setPersonalEmailError("This field is required");
+      !item.personalMobile && setPersonalMobileError("This field is required");
+    } else {
+      const bodyObj = {
+        work_mobile: item.workMobile,
+        phone_number: item.personalMobile,
+        email: item.personalEmail,
+        residential_address: item.residenceAddress,
+        residential_phone: item.residencePhone,
+        intern_id: id,
+      };
 
-    axios
-      .patch(`/intern-contact-details/${id}`, bodyObj)
-      .then((result) => {
-        console.log(result);
-        console.log("contact details updated");
-      })
-      .catch((err) => console.log(err));
+      axios
+        .patch(`/intern-contact-details/${id}`, bodyObj)
+        .then((result) => {
+          console.log(result);
+          console.log("contact details updated");
+        })
+        .catch((err) => console.log(err));
+    }
   }
 };
 
