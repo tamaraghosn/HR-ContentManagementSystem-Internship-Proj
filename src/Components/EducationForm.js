@@ -112,6 +112,9 @@ const EducationForm = () => {
           ? responseItem1?.data?.data?.degree
           : "",
         startDate: responseItem1?.data?.data?.start_date
+          ? responseItem1?.data?.data?.start_date
+          : "",
+        endDate: responseItem1?.data?.data?.end_date
           ? responseItem1?.data?.data?.end_date
           : "",
 

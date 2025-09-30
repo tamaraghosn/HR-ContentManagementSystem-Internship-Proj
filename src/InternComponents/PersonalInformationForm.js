@@ -202,7 +202,7 @@ const PersonalInformationForm = () => {
           ? responseItem?.data?.data?.date_of_birth
           : "",
         bloodType: responseItem?.data?.data?.blood_type
-          ? responseItem?.data?.data?.blood_type
+          ? String(responseItem?.data?.data?.blood_type)
           : "",
         gender: responseItem?.data?.data?.gender
           ? String(responseItem?.data?.data?.gender)
@@ -214,7 +214,7 @@ const PersonalInformationForm = () => {
         resumePortfolio: responseItem?.data?.data?.resume_portfolio
           ? responseItem?.data?.data?.resume_portfolio
           : "",
-        profilePicture: responseItem?.data?.data?.profile_picture
+        profilePicturePreview: responseItem?.data?.data?.profile_picture
           ? responseItem?.data?.data?.profile_picture
           : "",
         isActive: responseItem?.data?.data?.is_active ? true : false,
